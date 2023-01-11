@@ -1,0 +1,134 @@
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+    // Apply javafxplugin for JavaFX support.
+    id 'org.openjfx.javafxplugin' version '0.0.11'
+    // Apply jlink for building the app.
+    id 'org.beryx.jlink' version '2.25.0'
+}
+
+ext {
+    os = org.gradle.internal.os.OperatingSystem.current()
+
+    // Set the version of the app.
+    appVersion = '1.0'
+
+    // Set the version of JavaFX to use.
+    javafxVersion = 19
+
+    // Compile target for jlink.
+    // Options: linux-aarch64, linux-x64, macos-aarch64, macos-x64, win-x64, all.
+    jlinkTargetPlatform = 'win-x64'
+
+    // Compile target for jpackage.
+    // Options: linux-aarch64, linux-x64, macos-aarch64, macos-x64, win-x64.
+    jpackageTargetPlatform = 'win-x64'
+}
+
+version = appVersion
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'com.megabyte6.connect4.App'
+    mainModule = 'connect4'
+}
+
+javafx {
+    version = javafxVersion
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+jlink {
+    options = [
+        '--strip-debug',
+        '--compress', '2',
+        '--no-header-files',
+        '--no-man-pages'
+    ]
+    launcher {
+        noConsole = true
+    }
+    imageZip = file("$buildDir/connect4.zip")
+
+    switch (jlinkTargetPlatform) {
+        case 'linux-aarch64':
+            targetPlatform('linux-aarch64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_aarch64_linux_hotspot_19.0.1_10.tar.gz')
+                addExtraModulePath('jmods/linux/aarch64')
+            }
+            break
+        case 'linux-x64':
+            targetPlatform('linux-x64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_linux_hotspot_19.0.1_10.tar.gz')
+                addExtraModulePath('jmods/linux/x64')
+            }
+            break
+        case 'macos-aarch64':
+            targetPlatform('macos-aarch64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_aarch64_mac_hotspot_19.0.1_10.tar.gz')
+                addExtraModulePath('jmods/macos/aarch64')
+            }
+            break
+        case 'macos-x64':
+            targetPlatform('macos-x64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_mac_hotspot_19.0.1_10.tar.gz')
+                addExtraModulePath('jmods/macos/x64')
+            }
+            break
+        case 'win-x64':
+            targetPlatform('win-x64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_windows_hotspot_19.0.1_10.zip')
+                addExtraModulePath('jmods/win/x64')
+            }
+            break
+        default:
+            // Run all cases.
+            targetPlatform('linux-aarch64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_aarch64_linux_hotspot_19.0.1_10.tar.gz')
+                addExtraModulePath('jmods/linux/aarch64')
+            }
+            targetPlatform('linux-x64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_linux_hotspot_19.0.1_10.tar.gz')
+                addExtraModulePath('jmods/linux/x64')
+            }
+            targetPlatform('macos-aarch64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_aarch64_mac_hotspot_19.0.1_10.tar.gz')
+                addExtraModulePath('jmods/macos/aarch64')
+            }
+            targetPlatform('macos-x64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_mac_hotspot_19.0.1_10.tar.gz')
+                addExtraModulePath('jmods/macos/x64')
+            }
+            targetPlatform('win-x64') {
+                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_windows_hotspot_19.0.1_10.zip')
+                addExtraModulePath('jmods/win/x64')
+            }
+    }
+
+    jpackage {
+        targetPlatformName = jpackageTargetPlatform
+        imageName = 'Connect4'
+        installerName = 'Connect4-installer'
+        icon = 'src/main/resources/icon.ico'
+        vendor = 'Brayden Chan'
+
+        if (os.windows) {
+            installerOptions = [
+                '--win-dir-chooser',
+                '--win-menu',
+                '--win-menu-group', 'Connect 4',
+                '--win-per-user-install',
+                '--win-shortcut',
+                '--win-shortcut-prompt'
+            ]
+        }
+    }
+}
