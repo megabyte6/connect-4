@@ -1,4 +1,4 @@
-module connect4 {
+module connect_four {
     requires javafx.controls;
     requires javafx.fxml;
 
