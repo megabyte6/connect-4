@@ -1,8 +1,7 @@
 module connect_four {
-    requires javafx.controls;
     requires javafx.fxml;
 
-    requires transitive javafx.graphics;
+    requires transitive javafx.controls;
 
     opens com.megabyte6.connect4.controller to javafx.fxml;
 
