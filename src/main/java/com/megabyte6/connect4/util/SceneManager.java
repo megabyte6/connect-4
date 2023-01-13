@@ -1,17 +1,26 @@
 package com.megabyte6.connect4.util;
 
+import static javafx.util.Duration.millis;
+
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 
 import com.megabyte6.connect4.controller.Controller;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -24,8 +33,6 @@ public class SceneManager {
     private static StackPane sceneStack;
     private static Color backgroundColor;
 
-    private static HashMap<String, Integer> sceneStackNames = new HashMap<>();
-
     private SceneManager() {
     }
 
@@ -36,16 +43,17 @@ public class SceneManager {
     public static void init(Stage stage, String fxmlName, Color backgroundColor) {
         SceneManager.stage = stage;
 
-        final Node fxmlData = loadFXML(fxmlName);
         SceneManager.sceneStack = new StackPane();
-        SceneManager.sceneStack.getChildren().add(fxmlData);
-        SceneManager.sceneStackNames.put(fxmlName, 0);
+        addScene(loadFXML(fxmlName));
         SceneManager.scene = new Scene(SceneManager.sceneStack);
 
         SceneManager.backgroundColor = backgroundColor;
     }
 
     private static Node loadFXML(String fxmlName) {
+        if (fxmlName == null)
+            return null;
+
         final String path = RESOURCE_PATH + fxmlName + ".fxml";
         final Node root;
         final Controller controller;
@@ -80,9 +88,6 @@ public class SceneManager {
         newSceneStack.getChildren().add(fxmlData);
         newSceneStack.setOpacity(0);
 
-        final HashMap<String, Integer> newSceneStackNames = new HashMap<>();
-        newSceneStackNames.put(fxmlName, 0);
-
         final Scene newScene = new Scene(newSceneStack);
         newScene.setFill(SceneManager.backgroundColor);
 
@@ -101,51 +106,109 @@ public class SceneManager {
         oldSceneFadeOut.setOnFinished(event -> {
             // Swap scenes between transitions.
             SceneManager.stage.setScene(newScene);
-            SceneManager.sceneStackNames = newSceneStackNames;
             // Start the new scene's fade-in animation.
             newSceneFadeIn.play();
         });
         oldSceneFadeOut.play();
     }
 
-    public static void addScene(String fxmlName) {
+    public static void popup(String text) {
+        popup(text, millis(1000), millis(250));
+    }
+
+    public static void popup(String text, Duration pauseDuration, Duration transitionDuration) {
+        final Label popup = new Label(text);
+        popup.setTextFill(Color.BLACK);
+        popup.setFont(new Font("system", 18));
+        popup.setBackground(new Background(new BackgroundFill(
+                Color.WHITE,
+                new CornerRadii(25),
+                null)));
+
+        popup(popup, pauseDuration, transitionDuration);
+    }
+
+    public static void popup(Label popup, Duration pauseDuration, Duration transitionDuration) {
+        final FadeTransition fadeIn = new FadeTransition();
+        fadeIn.setNode(popup);
+        fadeIn.setDuration(transitionDuration);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        final PauseTransition pause = new PauseTransition();
+        pause.setDuration(pauseDuration);
+
+        final FadeTransition fadeOut = new FadeTransition();
+        fadeOut.setNode(popup);
+        fadeOut.setDuration(transitionDuration);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+
+        final SequentialTransition transition = new SequentialTransition();
+        transition.getChildren().addAll(fadeIn, pause, fadeOut);
+        transition.setOnFinished(event -> removeScene(popup));
+
+        addScene(popup);
+        transition.play();
+    }
+
+    public static boolean addScene(Node node) {
+        if (node == null)
+            return false;
+        return SceneManager.sceneStack.getChildren().add(node);
+    }
+
+    public static boolean addScene(String fxmlName) {
         final Node fxmlData = loadFXML(fxmlName);
-        addScene(fxmlData);
+        if (fxmlData == null)
+            return false;
+
+        return addScene(fxmlData);
     }
 
-    public static void addScene(Node node) {
-        SceneManager.sceneStack.getChildren().add(node);
-    }
+    public static boolean addAllScenes(Node... nodes) {
+        if (Arrays.asList(nodes).contains(null))
+            return false;
 
-    public static void addAllScenes(Node... nodes) {
-        SceneManager.sceneStack.getChildren().addAll(nodes);
-    }
-
-    public static void insertScene(int index, String fxmlName) {
-        final Node fxmlData = loadFXML(fxmlName);
-        insertScene(index, fxmlData);
+        return SceneManager.sceneStack.getChildren().addAll(nodes);
     }
 
     public static void insertScene(int index, Node node) {
+        if (index < 0 || index > SceneManager.sceneStack.getChildren().size()
+                || node == null)
+            return;
+
         SceneManager.sceneStack.getChildren().add(index, node);
     }
 
-    public static void insertAllScenes(int index, Node... nodes) {
-        SceneManager.sceneStack.getChildren().addAll(index, List.of(nodes));
+    public static void insertScene(int index, String fxmlName) {
+        if (index < 0 || index > SceneManager.sceneStack.getChildren().size())
+            return;
+
+        final Node fxmlData = loadFXML(fxmlName);
+        if (fxmlData == null)
+            return;
+
+        insertScene(index, fxmlData);
+    }
+
+    public static boolean insertAllScenes(int index, Node... nodes) {
+        if (index < 0 || index > SceneManager.sceneStack.getChildren().size()
+                || Arrays.asList(nodes).contains(null))
+            return false;
+        return SceneManager.sceneStack.getChildren().addAll(index, List.of(nodes));
+    }
+
+    public static boolean removeScene(Object o) {
+        if (o == null)
+            return false;
+        return SceneManager.sceneStack.getChildren().remove(o);
     }
 
     public static Node removeScene(int index) {
         if (index < 0 || index >= SceneManager.sceneStack.getChildren().size())
             return null;
-
         return SceneManager.sceneStack.getChildren().remove(index);
-    }
-
-    public static Node removeScene(String name) {
-        if (!SceneManager.sceneStackNames.containsKey(name))
-            return null;
-
-        return removeScene(SceneManager.sceneStackNames.get(name));
     }
 
     public static Stage getStage() {
