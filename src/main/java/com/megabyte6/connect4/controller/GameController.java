@@ -8,9 +8,6 @@ public class GameController implements Controller {
     @FXML
     private GridPane gameBoard;
 
-    private GameController() {
-    }
-
     @Override
     public void initialize() {
     }

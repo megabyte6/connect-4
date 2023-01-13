@@ -8,9 +8,6 @@ import javafx.util.Duration;
 
 public class StartController implements Controller {
 
-    private StartController() {
-    }
-
     @Override
     public void initialize() {
     }
