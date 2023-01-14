@@ -12,6 +12,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -48,6 +49,8 @@ public class SceneManager {
         SceneManager.scene = new Scene(SceneManager.sceneStack);
 
         SceneManager.backgroundColor = backgroundColor;
+
+        SceneManager.stage.setScene(SceneManager.getScene());
     }
 
     private static Node loadFXML(String fxmlName) {
@@ -105,7 +108,9 @@ public class SceneManager {
         // Play transitions.
         oldSceneFadeOut.setOnFinished(event -> {
             // Swap scenes between transitions.
-            SceneManager.stage.setScene(newScene);
+            SceneManager.scene = newScene;
+            SceneManager.sceneStack = newSceneStack;
+            SceneManager.stage.setScene(SceneManager.scene);
             // Start the new scene's fade-in animation.
             newSceneFadeIn.play();
         });
@@ -113,22 +118,23 @@ public class SceneManager {
     }
 
     public static void popup(String text) {
-        popup(text, millis(1000), millis(250));
+        popup(text, millis(250), millis(1000));
     }
 
-    public static void popup(String text, Duration pauseDuration, Duration transitionDuration) {
+    public static void popup(String text, Duration transitionDuration, Duration pauseDuration) {
         final Label popup = new Label(text);
         popup.setTextFill(Color.BLACK);
-        popup.setFont(new Font("system", 18));
+        popup.setFont(new Font("System", 18));
+        popup.setPadding(new Insets(5, 10, 5, 10));
         popup.setBackground(new Background(new BackgroundFill(
                 Color.WHITE,
                 new CornerRadii(25),
                 null)));
 
-        popup(popup, pauseDuration, transitionDuration);
+        popup(popup, transitionDuration, pauseDuration);
     }
 
-    public static void popup(Label popup, Duration pauseDuration, Duration transitionDuration) {
+    public static void popup(Label popup, Duration transitionDuration, Duration pauseDuration) {
         final FadeTransition fadeIn = new FadeTransition();
         fadeIn.setNode(popup);
         fadeIn.setDuration(transitionDuration);
