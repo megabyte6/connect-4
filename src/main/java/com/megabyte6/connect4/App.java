@@ -20,7 +20,6 @@ public class App extends Application {
 
         // primaryStage.getIcons().add(new Image("icon.png"));
         primaryStage.setTitle("Connect 4");
-        primaryStage.setScene(SceneManager.getScene());
         primaryStage.show();
     }
 
