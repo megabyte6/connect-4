@@ -1,3 +1,7 @@
+#gameBoard {
+    -fx-background-color: blue;
+}
+
 #gameBoard Line {
     -fx-stroke: #ffffff;
 }
