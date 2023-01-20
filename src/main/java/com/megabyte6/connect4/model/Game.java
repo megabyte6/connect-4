@@ -1,5 +1,7 @@
 package com.megabyte6.connect4.model;
 
+import java.util.stream.Stream;
+
 import javafx.scene.paint.Color;
 
 public class Game {
@@ -8,6 +10,9 @@ public class Game {
     private final Player player2;
 
     private Player currentPlayer;
+
+    // [column][row]
+    private final GamePiece[][] gameBoard = new GamePiece[7][6];
 
     public Game(String player1Name, String player2Name) {
         player1 = new Player(player2Name, Color.YELLOW);
@@ -32,6 +37,29 @@ public class Game {
 
     public Player getPlayer2() {
         return player2;
+    }
+
+    public GamePiece[][] getGameBoard() {
+        return gameBoard;
+    }
+
+    public GamePiece[] getGameBoardColumn(int columnNumber) {
+        return gameBoard[columnNumber];
+    }
+
+    public GamePiece[] getGameBoardRow(int rowNumber) {
+        return Stream.of(gameBoard)
+                .flatMap(Stream::of)
+                .filter(gamePiece -> gamePiece.getRow() == rowNumber)
+                .toArray(GamePiece[]::new);
+    }
+
+    public GamePiece getGamePiece(int columnIndex, int rowIndex) {
+        return gameBoard[columnIndex][rowIndex];
+    }
+
+    public void setGamePiece(GamePiece gamePiece, int columnIndex, int rowIndex) {
+        gameBoard[columnIndex][rowIndex] = gamePiece;
     }
 
 }
