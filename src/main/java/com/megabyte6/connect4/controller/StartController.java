@@ -6,11 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.util.Duration;
 
-public class StartController implements Controller {
-
-    @Override
-    public void initialize() {
-    }
+public class StartController {
 
     @FXML
     private void startButtonPressed(ActionEvent event) {
