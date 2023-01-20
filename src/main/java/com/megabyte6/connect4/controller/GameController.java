@@ -2,19 +2,20 @@ package com.megabyte6.connect4.controller;
 
 import static com.megabyte6.connect4.util.Range.range;
 
+import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.model.Game;
+import com.megabyte6.connect4.model.GamePiece;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.HPos;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class GameController implements Controller {
+public class GameController {
 
     private Game game = new Game("John", "James");
 
@@ -23,33 +24,31 @@ public class GameController implements Controller {
     private double[] markerLocations;
 
     @FXML
-    private AnchorPane rootPane;
+    private BorderPane rootPane;
 
     @FXML
     private GridPane gameBoard;
+    private Dimension2D gameBoardContainerDimensions;
 
     @FXML
-    private StackPane gameBoardContainer;
-    private Dimension2D containerDimensions;
-
-    @Override
-    public void initialize() {
+    private void initialize() {
         markerLocations = new double[gameBoard.getColumnCount()];
         for (int i : range(gameBoard.getColumnCount() + 1)) {
             // markerLocations[i] = rootPane.getWidth() * ();
         }
 
         // Initialize gameBoard.
-        containerDimensions = new Dimension2D(
+        StackPane gameBoardContainer = (StackPane) gameBoard.getParent();
+        gameBoardContainerDimensions = new Dimension2D(
                 gameBoardContainer.getWidth(), gameBoardContainer.getHeight());
         gameBoardContainer.widthProperty().addListener((observable, oldValue, newValue) -> {
-            containerDimensions = new Dimension2D(
-                    newValue.doubleValue(), containerDimensions.getHeight());
+            gameBoardContainerDimensions = new Dimension2D(
+                    newValue.doubleValue(), gameBoardContainerDimensions.getHeight());
             updateGameBoardSize();
         });
         gameBoardContainer.heightProperty().addListener((observable, oldValue, newValue) -> {
-            containerDimensions = new Dimension2D(
-                    containerDimensions.getWidth(), newValue.doubleValue());
+            gameBoardContainerDimensions = new Dimension2D(
+                    gameBoardContainerDimensions.getWidth(), newValue.doubleValue());
             updateGameBoardSize();
         });
 
@@ -59,34 +58,36 @@ public class GameController implements Controller {
                 .divide(gameBoard.getRowCount()).divide(2).subtract(border);
         for (int row : range(gameBoard.getRowCount())) {
             for (int col : range(gameBoard.getColumnCount())) {
-                Circle circle = new Circle();
-                circle.setFill(Color.WHITE);
-                circle.radiusProperty().bind(circleRadiusBinding);
-                GridPane.setHalignment(circle, HPos.CENTER);
-
-                gameBoard.add(circle, col, row);
+                GamePiece blankPiece = new GamePiece();
+                blankPiece.setColumn(col);
+                blankPiece.setRow(row);
+                blankPiece.setFill(App.BACKGROUND_COLOR);
+                blankPiece.radiusProperty().bind(circleRadiusBinding);
+                GridPane.setHalignment(blankPiece, HPos.CENTER);
+                blankPiece.addToGameBoard(gameBoard);
             }
         }
 
-        marker = new Circle();
+        // Initialize marker.
+        marker = new GamePiece();
         marker.radiusProperty().bind(circleRadiusBinding);
         marker.setFill(game.getCurrentPlayer().getColor());
 
-        rootPane.getChildren().add(marker);
-        AnchorPane.setTopAnchor(marker, 50 - marker.getRadius());
-        AnchorPane.setLeftAnchor(marker, (rootPane.getWidth() / 2) - marker.getRadius());
+        rootPane.setTop(marker);
+        marker.setTranslateX((rootPane.getWidth() / 2) - marker.getRadius()
+                - rootPane.getPadding().getLeft());
     }
 
     // Update gameBoard size because the GridPane doesn't resize automatically
     // when circles are added.
     private void updateGameBoardSize() {
         final double size = Math.min(
-                containerDimensions.getWidth() / gameBoard.getColumnCount(),
-                containerDimensions.getHeight() / gameBoard.getRowCount());
+                gameBoardContainerDimensions.getWidth() / gameBoard.getColumnCount(),
+                gameBoardContainerDimensions.getHeight() / gameBoard.getRowCount());
         gameBoard.setMaxSize(size * gameBoard.getColumnCount(), size * gameBoard.getRowCount());
 
-        AnchorPane.setTopAnchor(marker, 50 - marker.getRadius());
-        AnchorPane.setLeftAnchor(marker, (rootPane.getWidth() / 2) - marker.getRadius());
+        marker.setTranslateX((rootPane.getWidth() / 2) - marker.getRadius()
+                - rootPane.getPadding().getLeft());
     }
 
 }
