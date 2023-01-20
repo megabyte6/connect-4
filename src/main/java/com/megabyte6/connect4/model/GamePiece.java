@@ -1,35 +1,30 @@
 package com.megabyte6.connect4.model;
 
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 
 public class GamePiece extends Circle {
 
     private Player owner;
+    private int column, row;
+
+    private GridPane gameBoard = null;
 
     public GamePiece() {
         this(0, 0, 5);
     }
 
-    public GamePiece(int x, int y, int radius) {
-        this(new Player(), x, y, radius);
+    public GamePiece(int column, int row, double radius) {
+        this(Player.NONE, column, row, radius);
     }
 
-    public GamePiece(Color color, int x, int y, int radius) {
-        this(new Player(), color, x, y, radius);
-    }
-
-    public GamePiece(Player owner, int x, int y, int radius) {
-        this(owner, owner.getColor(), x, y, radius);
-    }
-
-    public GamePiece(Player owner, Color color, double x, double y, double radius) {
+    public GamePiece(Player owner, int column, int row, double radius) {
         this.owner = owner;
-        setColor(color);
-        setX(x);
-        setY(y);
+        this.column = column;
+        this.row = row;
         setRadius(radius);
+
+        setFill(owner.getColor());
     }
 
     public Player getOwner() {
@@ -38,14 +33,32 @@ public class GamePiece extends Circle {
 
     public void setOwner(Player owner) {
         this.owner = owner;
+
+        this.setFill(owner.getColor());
     }
 
-    public Paint getColor() {
-        return this.getFill();
+    public int getColumn() {
+        return column;
     }
 
-    public void setColor(Paint color) {
-        setFill(color);
+    public void setColumn(int column) {
+        this.column = column;
+
+        if (gameBoard != null) {
+            gameBoard.add(gameBoard, this.column, this.row);
+        }
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+
+        if (gameBoard != null) {
+            gameBoard.add(gameBoard, this.column, this.row);
+        }
     }
 
     public double getX() {
@@ -62,6 +75,27 @@ public class GamePiece extends Circle {
 
     public void setY(double y) {
         setCenterY(y);
+    }
+
+    public void setGameBoard(GridPane gameBoard) {
+        this.gameBoard = gameBoard;
+    }
+
+    public void addToGameBoard(GridPane gameBoard) {
+        gameBoard.add(gameBoard, column, row);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        if (obj instanceof GamePiece other) {
+            return owner.equals(other.owner)
+                    && getCenterX() == other.getCenterX()
+                    && getCenterY() == other.getCenterY()
+                    && getRadius() == other.getRadius();
+        }
+        return false;
     }
 
 }
