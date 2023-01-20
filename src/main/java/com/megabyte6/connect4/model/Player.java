@@ -4,6 +4,8 @@ import javafx.scene.paint.Color;
 
 public class Player {
 
+    public static final Player NONE = new Player("", Color.WHITE);
+
     private String name;
     private Color color;
 
@@ -34,6 +36,17 @@ public class Player {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        if (obj instanceof Player other) {
+            return name.equals(other.name)
+                    && color.equals(other.color);
+        }
+        return false;
     }
 
 }
