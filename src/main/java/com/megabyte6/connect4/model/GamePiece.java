@@ -1,15 +1,12 @@
 package com.megabyte6.connect4.model;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
-public class GamePiece {
+public class GamePiece extends Circle {
 
     private Player owner;
-    private Color color;
-    private int x;
-    private int y;
-    private int radius;
 
     public GamePiece() {
         this(0, 0, 5);
@@ -27,22 +24,12 @@ public class GamePiece {
         this(owner, owner.getColor(), x, y, radius);
     }
 
-    public GamePiece(Player owner, Color color, int x, int y, int radius) {
+    public GamePiece(Player owner, Color color, double x, double y, double radius) {
         this.owner = owner;
-        this.color = color;
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-    }
-
-    public Circle getCircle() {
-        Circle circle = new Circle();
-        circle.setCenterX(x);
-        circle.setCenterY(y);
-        circle.setRadius(radius);
-        circle.setFill(color);
-
-        return circle;
+        setColor(color);
+        setX(x);
+        setY(y);
+        setRadius(radius);
     }
 
     public Player getOwner() {
@@ -53,36 +40,28 @@ public class GamePiece {
         this.owner = owner;
     }
 
-    public Color getColor() {
-        return color;
+    public Paint getColor() {
+        return this.getFill();
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(Paint color) {
+        setFill(color);
     }
 
-    public int getX() {
-        return x;
+    public double getX() {
+        return getCenterX();
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setX(double x) {
+        setCenterX(x);
     }
 
-    public int getY() {
-        return y;
+    public double getY() {
+        return getCenterY();
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
+    public void setY(double y) {
+        setCenterY(y);
     }
 
 }
