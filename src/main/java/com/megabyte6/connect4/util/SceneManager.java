@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.megabyte6.connect4.controller.Controller;
-
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -59,20 +57,15 @@ public class SceneManager {
 
         final String path = RESOURCE_PATH + fxmlName + ".fxml";
         final Node root;
-        final Controller controller;
 
         try {
             final FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource(path));
-
             root = fxmlLoader.load();
-            controller = fxmlLoader.getController();
         } catch (IOException e) {
             System.err.println("ERROR: Cannot read file '" + path + "'");
             e.printStackTrace();
             return null;
         }
-
-        controller.initialize();
 
         return root;
     }
