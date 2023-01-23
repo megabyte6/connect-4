@@ -98,4 +98,16 @@ public class GamePiece extends Circle {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "GamePiece [" +
+                " owner=" + owner +
+                " column=" + column +
+                " row=" + row +
+                " x=" + getCenterX() +
+                " y=" + getCenterY() +
+                " radius=" + getRadius() +
+                " ]";
+    }
+
 }
