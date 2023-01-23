@@ -20,7 +20,7 @@ public class GameController {
     private Game game = new Game("John", "James");
 
     private Circle marker;
-    private double markerLocation;
+    private int markerLocationIndex;
     private double[] markerLocations;
 
     @FXML
@@ -44,12 +44,12 @@ public class GameController {
         gameBoardContainer.widthProperty().addListener((observable, oldValue, newValue) -> {
             gameBoardContainerDimensions = new Dimension2D(
                     newValue.doubleValue(), gameBoardContainerDimensions.getHeight());
-            updateGameBoardSize();
+            updateUISize();
         });
         gameBoardContainer.heightProperty().addListener((observable, oldValue, newValue) -> {
             gameBoardContainerDimensions = new Dimension2D(
                     gameBoardContainerDimensions.getWidth(), newValue.doubleValue());
-            updateGameBoardSize();
+            updateUISize();
         });
 
         // Add circles.
@@ -78,9 +78,14 @@ public class GameController {
                 - rootPane.getPadding().getLeft());
     }
 
+    private void moveMarkerToIndex(int index) {
+        final double baseTranslation = marker.getRadius() - rootPane.getPadding().getLeft();
+        marker.setTranslateX(baseTranslation + markerLocations[index]);
+    }
+
     // Update gameBoard size because the GridPane doesn't resize automatically
     // when circles are added.
-    private void updateGameBoardSize() {
+    private void updateUISize() {
         final double size = Math.min(
                 gameBoardContainerDimensions.getWidth() / gameBoard.getColumnCount(),
                 gameBoardContainerDimensions.getHeight() / gameBoard.getRowCount());
