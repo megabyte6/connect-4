@@ -11,6 +11,8 @@ public class Game {
 
     private Player currentPlayer;
 
+    private int selectedColumn = 3;
+
     // [column][row]
     private final GamePiece[][] gameBoard = new GamePiece[7][6];
 
@@ -27,16 +29,26 @@ public class Game {
                 : player1;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
     public Player getPlayer1() {
         return player1;
     }
 
     public Player getPlayer2() {
         return player2;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setSelectedColumn(int index) {
+        if (index < 0 || index >= gameBoard.length)
+            return;
+        selectedColumn = index;
+    }
+
+    public int getSelectedColumn() {
+        return selectedColumn;
     }
 
     public GamePiece[][] getGameBoard() {
