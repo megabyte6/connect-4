@@ -1,27 +1,24 @@
 package com.megabyte6.connect4.model;
 
-import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 
 public class GamePiece extends Circle {
 
     private Player owner;
-    private int column, row;
-
-    private GridPane gameBoard = null;
+    private int x, y;
 
     public GamePiece() {
         this(0, 0, 5);
     }
 
-    public GamePiece(int column, int row, double radius) {
-        this(Player.NONE, column, row, radius);
+    public GamePiece(int x, int y, double radius) {
+        this(Player.NONE, x, y, radius);
     }
 
-    public GamePiece(Player owner, int column, int row, double radius) {
+    public GamePiece(Player owner, int x, int y, double radius) {
         this.owner = owner;
-        this.column = column;
-        this.row = row;
+        this.x = x;
+        this.y = y;
         setRadius(radius);
 
         setFill(owner.getColor());
@@ -35,30 +32,6 @@ public class GamePiece extends Circle {
         this.owner = owner;
 
         this.setFill(owner.getColor());
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
-
-        if (gameBoard != null) {
-            gameBoard.add(gameBoard, this.column, this.row);
-        }
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-
-        if (gameBoard != null) {
-            gameBoard.add(gameBoard, this.column, this.row);
-        }
     }
 
     public double getX() {
@@ -77,14 +50,6 @@ public class GamePiece extends Circle {
         setCenterY(y);
     }
 
-    public void setGameBoard(GridPane gameBoard) {
-        this.gameBoard = gameBoard;
-    }
-
-    public void addToGameBoard(GridPane gameBoard) {
-        gameBoard.add(gameBoard, column, row);
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == this)
@@ -100,14 +65,14 @@ public class GamePiece extends Circle {
 
     @Override
     public String toString() {
-        return "GamePiece [" +
-                " owner=" + owner +
-                " column=" + column +
-                " row=" + row +
-                " x=" + getCenterX() +
-                " y=" + getCenterY() +
-                " radius=" + getRadius() +
-                " ]";
+        return "GamePiece[" +
+                "owner=" + owner + ", " +
+                "column=" + x + ", " +
+                "row=" + y + ", " +
+                "x=" + getCenterX() + ", " +
+                "y=" + getCenterY() + ", " +
+                "radius=" + getRadius() +
+                "]";
     }
 
 }
