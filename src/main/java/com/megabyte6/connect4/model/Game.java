@@ -1,6 +1,6 @@
 package com.megabyte6.connect4.model;
 
-import java.util.stream.Stream;
+import static com.megabyte6.connect4.util.Range.range;
 
 import javafx.scene.paint.Color;
 
@@ -59,11 +59,21 @@ public class Game {
         return gameBoard[columnNumber];
     }
 
-    public GamePiece[] getGameBoardRow(int rowNumber) {
-        return Stream.of(gameBoard)
-                .flatMap(Stream::of)
-                .filter(gamePiece -> gamePiece.getRow() == rowNumber)
-                .toArray(GamePiece[]::new);
+    public GamePiece[] getGameBoardRow(int rowIndex) {
+        GamePiece[] row = new GamePiece[gameBoard.length];
+        for (int i : range(gameBoard.length)) {
+            row[i] = gameBoard[i][rowIndex];
+        }
+
+        return row;
+    }
+
+    public int getColumnCount() {
+        return gameBoard.length;
+    }
+
+    public int getRowCount() {
+        return gameBoard[0].length;
     }
 
     public GamePiece getGamePiece(int columnIndex, int rowIndex) {
