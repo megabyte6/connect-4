@@ -28,31 +28,25 @@ public class GameController {
     private Pane markerContainer;
 
     private GamePiece marker;
-    private int markerBindingIndex = game.getColumnCount() / 2;
+    private int markerPositionIndex = game.getColumnCount() / 2;
     private final DoubleBinding[] markerBindings = new DoubleBinding[game.getColumnCount()];
     private final Line[] columnSeparators = new Line[game.getColumnCount() - 1];
 
     @FXML
     private Pane gameBoard;
-    private Dimension2D gameBoardContainerDimensions;
 
     @FXML
     private void initialize() {
         // Initialize gameBoard width and height.
         StackPane gameBoardContainer = (StackPane) gameBoard.getParent();
-        // gameBoardContainer.setStyle("-fx-background-color: ređ");
-        gameBoardContainerDimensions = new Dimension2D(
-                gameBoardContainer.getWidth(), gameBoardContainer.getHeight());
 
         gameBoardContainer.widthProperty().addListener((observable, oldValue, newValue) -> {
-            gameBoardContainerDimensions = new Dimension2D(
-                    newValue.doubleValue(), gameBoardContainerDimensions.getHeight());
-            handleWindowSizeChanged();
+            handleWindowSizeChanged(new Dimension2D(
+                    newValue.doubleValue(), gameBoardContainer.getHeight()));
         });
         gameBoardContainer.heightProperty().addListener((observable, oldValue, newValue) -> {
-            gameBoardContainerDimensions = new Dimension2D(
-                    gameBoardContainerDimensions.getWidth(), newValue.doubleValue());
-            handleWindowSizeChanged();
+            handleWindowSizeChanged(new Dimension2D(
+                    gameBoardContainer.getWidth(), newValue.doubleValue()));
         });
 
         // Draw horizontal grid lines.
@@ -70,7 +64,7 @@ public class GameController {
         }
         // Draw vertical grid lines.
         Line[] verticalLines = new Line[game.getColumnCount()];
-        for (int i : range(game.getColumnCount() + 1)) {
+        for (int i : range(game.getColumnCount())) {
             double multiplier = ((double) i) / game.getColumnCount();
             DoubleBinding x = gameBoard.widthProperty().multiply(multiplier);
 
@@ -139,7 +133,7 @@ public class GameController {
 
         // Initialize marker.
         marker = new GamePiece();
-        marker.layoutXProperty().bind(markerBindings[markerBindingIndex]);
+        marker.layoutXProperty().bind(markerBindings[markerPositionIndex]);
         marker.layoutYProperty().bind(markerContainer.heightProperty().divide(2));
         marker.radiusProperty().bind(radiusBinding);
         marker.setFill(game.getCurrentPlayer().getColor());
@@ -147,42 +141,52 @@ public class GameController {
         markerContainer.getChildren().add(marker);
 
         // Set up key listeners.
-        root.setOnMouseMoved(event -> updateMarkerPosition(event.getSceneX()));
+        markerContainer.setOnMouseMoved(event -> updateMarkerPosition(event.getSceneX()));
+        gameBoard.setOnMouseMoved(event -> updateMarkerPosition(event.getSceneX()));
     }
 
+    // TODO : Check if this can be optimized.
     private void updateMarkerPosition(double mouseXPosition) {
-        double absoluteMarkerX = marker.localToScene(marker.getBoundsInLocal()).getCenterX();
-    }
+        int mouseColumn = -1;
 
-    private void moveMarkerLeft() {
-        if (markerBindingIndex == 0)
-            return;
-        markerBindingIndex--;
-        updateMarkerBindings();
-    }
+        for (int i : range(columnSeparators.length)) {
+            Line line = columnSeparators[i];
+            double linePosition = line.localToScene(line.getBoundsInLocal()).getCenterX();
 
-    private void moveMarkerRight() {
-        if (markerBindingIndex == markerBindings.length - 1)
+            if (mouseXPosition < linePosition) {
+                mouseColumn = i;
+                break;
+            }
+        }
+
+        // If mouseColumn is still -1, the mouse must be in the last column.
+        if (mouseColumn == -1)
+            mouseColumn = game.getColumnCount() - 1;
+
+        // If the marker is already there, don't move it.
+        if (mouseColumn == markerPositionIndex)
             return;
-        markerBindingIndex++;
-        updateMarkerBindings();
+
+        moveMarkerToIndex(mouseColumn);
     }
 
     private void moveMarkerToIndex(int index) {
-        markerBindingIndex = index;
+        if (index < 0 || index >= markerBindings.length)
+            return;
+        markerPositionIndex = index;
         updateMarkerBindings();
     }
 
     private void updateMarkerBindings() {
-        marker.layoutXProperty().bind(markerBindings[markerBindingIndex]);
+        marker.layoutXProperty().bind(markerBindings[markerPositionIndex]);
     }
 
     // Update gameBoard size because the GridPane doesn't resize automatically
     // when circles are added.
-    private void handleWindowSizeChanged() {
+    private void handleWindowSizeChanged(Dimension2D containerDimensions) {
         final double size = Math.min(
-                gameBoardContainerDimensions.getWidth() / game.getColumnCount(),
-                gameBoardContainerDimensions.getHeight() / game.getRowCount());
+                containerDimensions.getWidth() / game.getColumnCount(),
+                containerDimensions.getHeight() / game.getRowCount());
         gameBoard.setMaxSize(size * game.getColumnCount(), size * game.getRowCount());
     }
 
