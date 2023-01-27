@@ -154,15 +154,17 @@ public class GameController {
 
     private boolean checkForTie() {
         // Check if the board is filled up.
-        return Stream.of(game.getGameBoard())
+        return !Stream.of(game.getGameBoard())
                 .flatMap(Stream::of)
-                .anyMatch(gamePiece -> !gamePiece.getOwner().equals(Player.NONE));
+                .anyMatch(gamePiece -> gamePiece.getOwner().equals(Player.NONE));
     }
 
     private void gameWon() {
+        game.gameOver();
     }
 
-    private void gameLost() {
+    private void gameTie() {
+        game.gameOver();
     }
 
     // TODO : Check if this can be optimized.
@@ -205,7 +207,7 @@ public class GameController {
     }
 
     private void placePiece() {
-        if (!game.getActive()) {
+        if (!game.getActive() && !game.isGameOver()) {
             SceneManager.popup("Please return to the current move.");
             return;
         }
@@ -225,7 +227,7 @@ public class GameController {
             return;
         }
         if (checkForTie()) {
-            gameLost();
+            gameTie();
             return;
         }
 
