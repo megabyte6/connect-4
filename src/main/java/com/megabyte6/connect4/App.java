@@ -4,6 +4,7 @@ import com.megabyte6.connect4.util.SceneManager;
 
 import javafx.application.Application;
 import javafx.concurrent.Task;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -19,7 +20,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         SceneManager.init(primaryStage, "Start", BACKGROUND_COLOR);
 
-        // primaryStage.getIcons().add(new Image("icon.png"));
+        primaryStage.getIcons().add(new Image("icon.png"));
         primaryStage.setTitle("Connect 4");
         primaryStage.show();
     }
