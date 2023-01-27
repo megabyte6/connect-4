@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 
 public class Game {
 
+    private boolean active = true;
+
     private final Player player1;
     private final Player player2;
 
@@ -50,6 +52,14 @@ public class Game {
         return -1;
     }
 
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public Player getPlayer1() {
         return player1;
     }
@@ -63,7 +73,7 @@ public class Game {
     }
 
     public void setSelectedColumn(int index) {
-        if (index < 0 || index >= gameBoard.length)
+        if (!active || index < 0 || index >= gameBoard.length)
             return;
         selectedColumn = index;
     }
@@ -107,13 +117,15 @@ public class Game {
 
     public void addMoveToHistory(Player player, int column, int row) {
         moveHistory.add(Tuple.of(player, column, row));
-        historyPointer++;
+        historyPointer = moveHistory.size() - 1;
     }
 
     public void moveHistoryPointerBack() {
         // Check if the user is already at the beginning.
         if (historyPointer == -1)
             return;
+
+        active = false;
 
         var selectedAction = moveHistory.get(historyPointer);
         GamePiece selectedGamePiece = getGamePiece(selectedAction.b(), selectedAction.c());
@@ -133,6 +145,9 @@ public class Game {
         var selectedAction = moveHistory.get(historyPointer);
         GamePiece selectedGamePiece = getGamePiece(selectedAction.b(), selectedAction.c());
         selectedGamePiece.setOwner(selectedAction.a());
+
+        if (historyPointerIsAtLatestMove())
+            active = true;
     }
 
     public boolean historyPointerIsAtLatestMove() {

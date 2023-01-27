@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
+import com.megabyte6.connect4.util.SceneManager;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
@@ -146,8 +147,15 @@ public class GameController {
         root.setOnMouseClicked(event -> placePiece());
     }
 
+    private boolean checkForWin() {
+        return false;
+    }
+
     // TODO : Check if this can be optimized.
     private void updateMarkerPosition(double mouseXPosition) {
+        if (!game.getActive())
+            return;
+
         int mouseColumn = -1;
 
         for (int i : range(columnSeparators.length)) {
@@ -183,6 +191,11 @@ public class GameController {
     }
 
     private void placePiece() {
+        if (!game.getActive()) {
+            SceneManager.popup("Please return to the current move.");
+            return;
+        }
+
         final int column = game.getSelectedColumn();
         final int row = game.findNextFreeRow(column);
 
@@ -193,6 +206,7 @@ public class GameController {
         GamePiece selectedPiece = game.getGamePiece(column, row);
         selectedPiece.setOwner(game.getCurrentPlayer());
 
+        game.addMoveToHistory(game.getCurrentPlayer(), column, row);
         game.swapTurns();
         marker.setOwner(game.getCurrentPlayer());
     }
