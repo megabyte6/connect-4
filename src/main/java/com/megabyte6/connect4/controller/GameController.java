@@ -29,7 +29,6 @@ public class GameController {
     private Pane markerContainer;
 
     private GamePiece marker;
-    private int markerPositionIndex = game.getColumnCount() / 2;
     private final DoubleBinding[] markerBindings = new DoubleBinding[game.getColumnCount()];
     private final Line[] columnSeparators = new Line[game.getColumnCount() - 1];
 
@@ -134,7 +133,7 @@ public class GameController {
 
         // Initialize marker.
         marker = new GamePiece();
-        marker.layoutXProperty().bind(markerBindings[markerPositionIndex]);
+        marker.layoutXProperty().bind(markerBindings[game.getSelectedColumn()]);
         marker.layoutYProperty().bind(markerContainer.heightProperty().divide(2));
         marker.radiusProperty().bind(radiusBinding);
         marker.setFill(game.getCurrentPlayer().getColor());
@@ -144,6 +143,7 @@ public class GameController {
         // Set up key listeners.
         markerContainer.setOnMouseMoved(event -> updateMarkerPosition(event.getSceneX()));
         gameBoard.setOnMouseMoved(event -> updateMarkerPosition(event.getSceneX()));
+        root.setOnMouseClicked(event -> placePiece());
     }
 
     // TODO : Check if this can be optimized.
@@ -165,7 +165,7 @@ public class GameController {
             mouseColumn = game.getColumnCount() - 1;
 
         // If the marker is already there, don't move it.
-        if (mouseColumn == markerPositionIndex)
+        if (mouseColumn == game.getSelectedColumn())
             return;
 
         moveMarkerToIndex(mouseColumn);
@@ -174,12 +174,27 @@ public class GameController {
     private void moveMarkerToIndex(int index) {
         if (index < 0 || index >= markerBindings.length)
             return;
-        markerPositionIndex = index;
+        game.setSelectedColumn(index);
         updateMarkerBindings();
     }
 
     private void updateMarkerBindings() {
-        marker.layoutXProperty().bind(markerBindings[markerPositionIndex]);
+        marker.layoutXProperty().bind(markerBindings[game.getSelectedColumn()]);
+    }
+
+    private void placePiece() {
+        final int column = game.getSelectedColumn();
+        final int row = game.findNextFreeRow(column);
+
+        // Column is full.
+        if (row == -1)
+            return;
+
+        GamePiece selectedPiece = game.getGamePiece(column, row);
+        selectedPiece.setOwner(game.getCurrentPlayer());
+
+        game.swapTurns();
+        marker.setOwner(game.getCurrentPlayer());
     }
 
     // Update gameBoard size because the GridPane doesn't resize automatically

@@ -17,10 +17,10 @@ public class Game {
 
     private Player currentPlayer;
 
-    private int selectedColumn = 3;
-
     // [column][row]
     private final GamePiece[][] gameBoard = new GamePiece[7][6];
+
+    private int selectedColumn = 3;
 
     // Player, Column, Row
     private LinkedList<Triplet<Player, Integer, Integer>> moveHistory = new LinkedList<>();
@@ -37,6 +37,17 @@ public class Game {
         currentPlayer = currentPlayer == player1
                 ? player2
                 : player1;
+    }
+
+    public int findNextFreeRow(int columnIndex) {
+        final GamePiece[] column = getGameBoardColumn(columnIndex);
+
+        for (int i : range(column.length - 1, -1)) {
+            if (column[i].getOwner().equals(Player.NONE))
+                return i;
+        }
+
+        return -1;
     }
 
     public Player getPlayer1() {
