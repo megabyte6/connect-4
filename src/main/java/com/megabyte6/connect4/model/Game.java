@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 public class Game {
 
     private boolean active = true;
+    private boolean gameOver = false;
 
     private final Player player1;
     private final Player player2;
@@ -58,6 +59,15 @@ public class Game {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void gameOver() {
+        gameOver = true;
+        active = false;
     }
 
     public Player getPlayer1() {
