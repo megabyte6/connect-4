@@ -28,17 +28,17 @@
             <Separator prefWidth="200.0" />
             <HBox alignment="CENTER" prefHeight="30.0" spacing="15.0">
                <children>
-                  <Button mnemonicParsing="false" text="🡄" HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" onAction="#handleBackButton" text="🡄" HBox.hgrow="ALWAYS">
                      <tooltip>
                         <Tooltip text="Go back" />
                      </tooltip>
                   </Button>
-                  <Button mnemonicParsing="false" text="Current Move">
+                  <Button mnemonicParsing="false" onAction="#handleCurrentMoveButton" text="Current Move">
                      <tooltip>
                         <Tooltip text="Return to the current move" />
                      </tooltip>
                   </Button>
-                  <Button mnemonicParsing="false" text="🡆" HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" onAction="#handleForwardButton" text="🡆" HBox.hgrow="ALWAYS">
                      <tooltip>
                         <Tooltip text="Go forward" />
                      </tooltip>

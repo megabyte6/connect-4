@@ -2,6 +2,12 @@ package com.megabyte6.connect4.model;
 
 import static com.megabyte6.connect4.util.Range.range;
 
+import java.util.LinkedList;
+
+import com.megabyte6.connect4.App;
+import com.megabyte6.connect4.util.tuple.Triplet;
+import com.megabyte6.connect4.util.tuple.Tuple;
+
 import javafx.scene.paint.Color;
 
 public class Game {
@@ -15,6 +21,10 @@ public class Game {
 
     // [column][row]
     private final GamePiece[][] gameBoard = new GamePiece[7][6];
+
+    // Player, Column, Row
+    private LinkedList<Triplet<Player, Integer, Integer>> moveHistory = new LinkedList<>();
+    private int historyPointer = -1;
 
     public Game(String player1Name, String player2Name) {
         player1 = new Player(player2Name, Color.YELLOW);
@@ -82,6 +92,40 @@ public class Game {
 
     public void setGamePiece(GamePiece gamePiece, int columnIndex, int rowIndex) {
         gameBoard[columnIndex][rowIndex] = gamePiece;
+    }
+
+    public void addMoveToHistory(Player player, int column, int row) {
+        moveHistory.add(Tuple.of(player, column, row));
+        historyPointer++;
+    }
+
+    public void moveHistoryPointerBack() {
+        // Check if the user is already at the beginning.
+        if (historyPointer == -1)
+            return;
+
+        var selectedAction = moveHistory.get(historyPointer);
+        GamePiece selectedGamePiece = getGamePiece(selectedAction.b(), selectedAction.c());
+        selectedGamePiece.setOwner(Player.NONE);
+        selectedGamePiece.setFill(App.BACKGROUND_COLOR);
+
+        historyPointer--;
+    }
+
+    public void moveHistoryPointerForward() {
+        // Check if the user is already at the end.
+        if (historyPointerIsAtLatestMove())
+            return;
+
+        historyPointer++;
+
+        var selectedAction = moveHistory.get(historyPointer);
+        GamePiece selectedGamePiece = getGamePiece(selectedAction.b(), selectedAction.c());
+        selectedGamePiece.setOwner(selectedAction.a());
+    }
+
+    public boolean historyPointerIsAtLatestMove() {
+        return historyPointer == moveHistory.size() - 1;
     }
 
 }

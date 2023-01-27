@@ -9,6 +9,7 @@ import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 
 import javafx.beans.binding.DoubleBinding;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
 import javafx.scene.layout.AnchorPane;
@@ -188,6 +189,23 @@ public class GameController {
                 containerDimensions.getWidth() / game.getColumnCount(),
                 containerDimensions.getHeight() / game.getRowCount());
         gameBoard.setMaxSize(size * game.getColumnCount(), size * game.getRowCount());
+    }
+
+    @FXML
+    private void handleBackButton(ActionEvent event) {
+        game.moveHistoryPointerBack();
+    }
+
+    @FXML
+    private void handleForwardButton(ActionEvent event) {
+        game.moveHistoryPointerForward();
+    }
+
+    @FXML
+    private void handleCurrentMoveButton(ActionEvent event) {
+        while (!game.historyPointerIsAtLatestMove()) {
+            game.moveHistoryPointerForward();
+        }
     }
 
 }
