@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
+import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.SceneManager;
 
 import javafx.beans.binding.DoubleBinding;
@@ -151,6 +152,19 @@ public class GameController {
         return false;
     }
 
+    private boolean checkForTie() {
+        // Check if the board is filled up.
+        return Stream.of(game.getGameBoard())
+                .flatMap(Stream::of)
+                .anyMatch(gamePiece -> !gamePiece.getOwner().equals(Player.NONE));
+    }
+
+    private void gameWon() {
+    }
+
+    private void gameLost() {
+    }
+
     // TODO : Check if this can be optimized.
     private void updateMarkerPosition(double mouseXPosition) {
         if (!game.getActive())
@@ -205,6 +219,15 @@ public class GameController {
 
         GamePiece selectedPiece = game.getGamePiece(column, row);
         selectedPiece.setOwner(game.getCurrentPlayer());
+
+        if (checkForWin()) {
+            gameWon();
+            return;
+        }
+        if (checkForTie()) {
+            gameLost();
+            return;
+        }
 
         game.addMoveToHistory(game.getCurrentPlayer(), column, row);
         game.swapTurns();
