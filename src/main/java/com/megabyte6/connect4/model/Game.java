@@ -164,4 +164,21 @@ public class Game {
         return historyPointer == moveHistory.size() - 1;
     }
 
+    /**
+     * @param index Index of the move.
+     * @return A Triplet of the Player who made the move, the column of the
+     *         location of the move, and the row of the location of the move.
+     */
+    public Triplet<Player, Integer, Integer> getMoveAtIndex(int index) {
+        return moveHistory.get(index);
+    }
+
+    /**
+     * @return A Triplet of the Player who made the move, the column of the
+     *         location of the move, and the row of the location of the move.
+     */
+    public Triplet<Player, Integer, Integer> getLastMove() {
+        return getMoveAtIndex(historyPointer - 1);
+    }
+
 }
