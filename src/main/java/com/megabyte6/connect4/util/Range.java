@@ -29,11 +29,9 @@ public class Range {
 
         int[] range = new int[Math.abs(to - from)];
         for (int i = 0; i < range.length; i++) {
-            if (from > to) {
-                range[i] = to - i;
-            } else {
-                range[i] = from + i;
-            }
+            range[i] = from < to
+                    ? from + i
+                    : from - i;
         }
 
         return range;
