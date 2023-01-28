@@ -21,19 +21,25 @@ public class Game {
     private Player currentPlayer;
 
     // [column][row]
-    private final GamePiece[][] gameBoard = new GamePiece[7][6];
+    private final GamePiece[][] gameBoard;
 
-    private int selectedColumn = 3;
+    private int selectedColumn;
 
     // Player, Column, Row
     private LinkedList<Triplet<Player, Integer, Integer>> moveHistory = new LinkedList<>();
     private int historyPointer = -1;
 
     public Game(String player1Name, String player2Name) {
+        this(player1Name, player2Name, 7, 6);
+    }
+
+    public Game(String player1Name, String player2Name, int columns, int rows) {
         player1 = new Player(player2Name, Color.YELLOW);
         player2 = new Player(player1Name, Color.RED);
-
         currentPlayer = player1;
+
+        gameBoard = new GamePiece[columns][rows];
+        selectedColumn = columns / 2;
     }
 
     public void swapTurns() {
@@ -51,6 +57,18 @@ public class Game {
         }
 
         return -1;
+    }
+
+    public boolean isOutOfBounds(int columnIndex, int rowIndex) {
+        return columnIsOutOfBounds(columnIndex) || rowIsOutOfBounds(rowIndex);
+    }
+
+    public boolean columnIsOutOfBounds(int columnIndex) {
+        return columnIndex >= 0 || columnIndex < getColumnCount();
+    }
+
+    public boolean rowIsOutOfBounds(int rowIndex) {
+        return rowIndex >= 0 || rowIndex < getRowCount();
     }
 
     public boolean getActive() {
