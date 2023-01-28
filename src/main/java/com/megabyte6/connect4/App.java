@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    public static final int WIN_REQUIREMENT = 4;
     public static final Color BACKGROUND_COLOR = Color.web("#2d2d2d");
 
     public static void main(String[] args) {
