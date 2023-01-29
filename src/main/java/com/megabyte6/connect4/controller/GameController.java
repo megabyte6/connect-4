@@ -8,7 +8,9 @@ import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
+import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
+import com.megabyte6.connect4.util.Walker;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
@@ -23,6 +25,7 @@ import javafx.scene.shape.Line;
 public class GameController {
 
     private Game game = new Game("John", "James");
+    private Position[] winningPositions = null;
 
     @FXML
     private AnchorPane root;
@@ -52,7 +55,7 @@ public class GameController {
         });
 
         // Draw horizontal grid lines.
-        for (int i : range(game.getRowCount() + 1)) {
+        for (var i : range(game.getRowCount() + 1)) {
             double multiplier = ((double) i) / game.getRowCount();
             DoubleBinding y = gameBoard.heightProperty().multiply(multiplier);
 
@@ -66,7 +69,7 @@ public class GameController {
         }
         // Draw vertical grid lines.
         Line[] verticalLines = new Line[game.getColumnCount()];
-        for (int i : range(game.getColumnCount())) {
+        for (var i : range(game.getColumnCount())) {
             double multiplier = ((double) i) / game.getColumnCount();
             DoubleBinding x = gameBoard.widthProperty().multiply(multiplier);
 
@@ -82,7 +85,7 @@ public class GameController {
         }
 
         // Populate columnSeparators.
-        for (int i : range(columnSeparators.length)) {
+        for (var i : range(columnSeparators.length)) {
             columnSeparators[i] = verticalLines[i + 1];
         }
 
@@ -126,7 +129,7 @@ public class GameController {
 
         // Define marker locations
         DoubleBinding offset = cellSizeBinding.divide(2);
-        for (int column : range(game.getColumnCount())) {
+        for (var column : range(game.getColumnCount())) {
             double multiplier = ((double) column) / game.getColumnCount();
 
             markerBindings[column] = markerContainer.widthProperty()
@@ -143,20 +146,31 @@ public class GameController {
         markerContainer.getChildren().add(marker);
 
         // Set up key listeners.
-        markerContainer.setOnMouseMoved(event -> updateMarkerPosition(event.getSceneX()));
-        gameBoard.setOnMouseMoved(event -> updateMarkerPosition(event.getSceneX()));
+        markerContainer.setOnMouseMoved(event -> updateMarkerPosition(event.getX()));
+        gameBoard.setOnMouseMoved(event -> updateMarkerPosition(event.getX()));
         root.setOnMouseClicked(event -> placePiece());
     }
 
     private boolean checkForWin() {
-        return false;
+        var lastMove = game.getLastMove();
+        if (lastMove == null)
+            return false;
+        Player player = lastMove.a();
+        int column = lastMove.b();
+        int row = lastMove.c();
+
+        Walker walker = new Walker(game, player, new Position(column, row));
+        Position[] positions = walker.findWinPosition();
+
+        if (positions == null)
+            return false;
+
+        winningPositions = positions;
+        return true;
     }
 
     private boolean checkForTie() {
-        // Check if the board is filled up.
-        return !Stream.of(game.getGameBoard())
-                .flatMap(Stream::of)
-                .anyMatch(gamePiece -> gamePiece.getOwner().equals(Player.NONE));
+        return game.getColumnCount() * game.getRowCount() == game.getMoveCount();
     }
 
     private void gameWon() {
@@ -167,26 +181,12 @@ public class GameController {
         game.gameOver();
     }
 
-    // TODO : Check if this can be optimized.
-    private void updateMarkerPosition(double mouseXPosition) {
+    private void updateMarkerPosition(double mouseXPos) {
         if (!game.getActive())
             return;
 
-        int mouseColumn = -1;
-
-        for (int i : range(columnSeparators.length)) {
-            Line line = columnSeparators[i];
-            double linePosition = line.localToScene(line.getBoundsInLocal()).getCenterX();
-
-            if (mouseXPosition < linePosition) {
-                mouseColumn = i;
-                break;
-            }
-        }
-
-        // If mouseColumn is still -1, the mouse must be in the last column.
-        if (mouseColumn == -1)
-            mouseColumn = game.getColumnCount() - 1;
+        double columnWidth = gameBoard.getMaxWidth() / game.getColumnCount();
+        int mouseColumn = (int) Math.floor(mouseXPos / columnWidth);
 
         // If the marker is already there, don't move it.
         if (mouseColumn == game.getSelectedColumn())
@@ -211,6 +211,8 @@ public class GameController {
             SceneManager.popup("Please return to the current move.");
             return;
         }
+        if (game.isGameOver())
+            return;
 
         final int column = game.getSelectedColumn();
         final int row = game.findNextFreeRow(column);
@@ -221,6 +223,7 @@ public class GameController {
 
         GamePiece selectedPiece = game.getGamePiece(column, row);
         selectedPiece.setOwner(game.getCurrentPlayer());
+        game.addMoveToHistory(game.getCurrentPlayer(), column, row);
 
         if (checkForWin()) {
             gameWon();
@@ -231,7 +234,6 @@ public class GameController {
             return;
         }
 
-        game.addMoveToHistory(game.getCurrentPlayer(), column, row);
         game.swapTurns();
         marker.setOwner(game.getCurrentPlayer());
     }
