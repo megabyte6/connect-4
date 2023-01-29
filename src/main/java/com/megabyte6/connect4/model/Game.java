@@ -51,7 +51,7 @@ public class Game {
     public int findNextFreeRow(int columnIndex) {
         final GamePiece[] column = getGameBoardColumn(columnIndex);
 
-        for (int i : range(column.length - 1, -1)) {
+        for (var i : range(column.length - 1, -1)) {
             if (column[i].getOwner().equals(Player.NONE))
                 return i;
         }
@@ -64,11 +64,11 @@ public class Game {
     }
 
     public boolean columnIsOutOfBounds(int columnIndex) {
-        return columnIndex >= 0 || columnIndex < getColumnCount();
+        return columnIndex < 0 || columnIndex >= getColumnCount();
     }
 
     public boolean rowIsOutOfBounds(int rowIndex) {
-        return rowIndex >= 0 || rowIndex < getRowCount();
+        return rowIndex < 0 || rowIndex >= getRowCount();
     }
 
     public boolean getActive() {
@@ -120,7 +120,7 @@ public class Game {
 
     public GamePiece[] getGameBoardRow(int rowIndex) {
         GamePiece[] row = new GamePiece[gameBoard.length];
-        for (int i : range(gameBoard.length)) {
+        for (var i : range(gameBoard.length)) {
             row[i] = gameBoard[i][rowIndex];
         }
 
@@ -145,7 +145,11 @@ public class Game {
 
     public void addMoveToHistory(Player player, int column, int row) {
         moveHistory.add(Tuple.of(player, column, row));
-        historyPointer = moveHistory.size() - 1;
+        historyPointer = getMoveCount() - 1;
+    }
+
+    public int getMoveCount() {
+        return moveHistory.size();
     }
 
     public void moveHistoryPointerBack() {
@@ -196,7 +200,9 @@ public class Game {
      *         location of the move, and the row of the location of the move.
      */
     public Triplet<Player, Integer, Integer> getLastMove() {
-        return getMoveAtIndex(historyPointer - 1);
+        if (historyPointer <= 0)
+            return null;
+        return getMoveAtIndex(historyPointer);
     }
 
 }
