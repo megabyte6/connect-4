@@ -2,7 +2,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     // Apply javafxplugin for JavaFX support.
-    id 'org.openjfx.javafxplugin' version '0.0.11'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
     // Apply jlink for building the app.
     id 'org.beryx.jlink' version '2.25.0'
 }
@@ -43,15 +43,15 @@ application {
 
 javafx {
     version = javafxVersion
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 jlink {
     options = [
-        '--strip-debug',
-        '--compress', '2',
-        '--no-header-files',
-        '--no-man-pages'
+            '--strip-debug',
+            '--compress', '2',
+            '--no-header-files',
+            '--no-man-pages'
     ]
     launcher {
         noConsole = true
@@ -122,12 +122,12 @@ jlink {
 
         if (os.windows) {
             installerOptions = [
-                '--win-dir-chooser',
-                '--win-menu',
-                '--win-menu-group', 'Connect 4',
-                '--win-per-user-install',
-                '--win-shortcut',
-                '--win-shortcut-prompt'
+                    '--win-dir-chooser',
+                    '--win-menu',
+                    '--win-menu-group', 'Connect 4',
+                    '--win-per-user-install',
+                    '--win-shortcut',
+                    '--win-shortcut-prompt'
             ]
         }
     }
