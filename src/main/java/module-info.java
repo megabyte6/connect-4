@@ -9,4 +9,5 @@ module connect_four {
     exports com.megabyte6.connect4.controller;
     exports com.megabyte6.connect4.model;
     exports com.megabyte6.connect4.util;
+    exports com.megabyte6.connect4.util.tuple;
 }

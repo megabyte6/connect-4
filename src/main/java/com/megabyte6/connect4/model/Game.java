@@ -26,7 +26,7 @@ public class Game {
     private int selectedColumn;
 
     // Player, Column, Row
-    private LinkedList<Triplet<Player, Integer, Integer>> moveHistory = new LinkedList<>();
+    private final LinkedList<Triplet<Player, Integer, Integer>> moveHistory = new LinkedList<>();
     private int historyPointer = -1;
 
     public Game(String player1Name, String player2Name) {
@@ -189,7 +189,7 @@ public class Game {
     /**
      * @param index Index of the move.
      * @return A Triplet of the Player who made the move, the column of the
-     *         location of the move, and the row of the location of the move.
+     * location of the move, and the row of the location of the move.
      */
     public Triplet<Player, Integer, Integer> getMoveAtIndex(int index) {
         return moveHistory.get(index);
@@ -197,7 +197,7 @@ public class Game {
 
     /**
      * @return A Triplet of the Player who made the move, the column of the
-     *         location of the move, and the row of the location of the move.
+     * location of the move, and the row of the location of the move.
      */
     public Triplet<Player, Integer, Integer> getLastMove() {
         if (historyPointer <= 0)

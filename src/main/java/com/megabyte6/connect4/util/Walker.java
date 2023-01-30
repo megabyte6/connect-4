@@ -35,7 +35,7 @@ public class Walker {
 
     /**
      * @return {@code null} if there was no win or an array of Positions if
-     *         there was.
+     * there was.
      */
     public Position[] findWinPosition() {
         final LinkedList<Pair<Direction, Position>> queue = new LinkedList<>();
@@ -81,38 +81,38 @@ public class Walker {
                 continue;
 
             switch (direction) {
-                case UP:
+                case UP -> {
                     queue.add(of(direction, new Position(pos.column(), pos.row() - 1)));
                     vertical.add(pos);
-                    break;
-                case UPPER_RIGHT:
+                }
+                case UPPER_RIGHT -> {
                     queue.add(of(direction, new Position(pos.column() + 1, pos.row() - 1)));
                     ascendingDiagonal.add(pos);
-                    break;
-                case RIGHT:
+                }
+                case RIGHT -> {
                     queue.add(of(direction, new Position(pos.column() + 1, pos.row())));
                     horizontal.add(pos);
-                    break;
-                case LOWER_RIGHT:
+                }
+                case LOWER_RIGHT -> {
                     queue.add(of(direction, new Position(pos.column() + 1, pos.row() + 1)));
                     descendingDiagonal.add(pos);
-                    break;
-                case DOWN:
+                }
+                case DOWN -> {
                     queue.add(of(direction, new Position(pos.column(), pos.row() + 1)));
                     vertical.add(pos);
-                    break;
-                case LOWER_LEFT:
+                }
+                case LOWER_LEFT -> {
                     queue.add(of(direction, new Position(pos.column() - 1, pos.row() + 1)));
                     ascendingDiagonal.add(pos);
-                    break;
-                case LEFT:
+                }
+                case LEFT -> {
                     queue.add(of(direction, new Position(pos.column() - 1, pos.row())));
                     horizontal.add(pos);
-                    break;
-                case UPPER_LEFT:
+                }
+                case UPPER_LEFT -> {
                     queue.add(of(direction, new Position(pos.column() - 1, pos.row() - 1)));
                     descendingDiagonal.add(pos);
-                    break;
+                }
             }
 
             if (horizontal.size() == App.WIN_REQUIREMENT)

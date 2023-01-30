@@ -5,7 +5,6 @@ import javafx.scene.shape.Circle;
 public class GamePiece extends Circle {
 
     private Player owner;
-    private int x, y;
 
     public GamePiece() {
         this(0, 0, 5);
@@ -17,8 +16,8 @@ public class GamePiece extends Circle {
 
     public GamePiece(Player owner, int x, int y, double radius) {
         this.owner = owner;
-        this.x = x;
-        this.y = y;
+        setX(x);
+        setY(y);
         setRadius(radius);
 
         setFill(owner.getColor());
@@ -67,8 +66,8 @@ public class GamePiece extends Circle {
     public String toString() {
         return "GamePiece[" +
                 "owner=" + owner + ", " +
-                "column=" + x + ", " +
-                "row=" + y + ", " +
+                "column=" + getX() + ", " +
+                "row=" + getY() + ", " +
                 "x=" + getCenterX() + ", " +
                 "y=" + getCenterY() + ", " +
                 "radius=" + getRadius() +

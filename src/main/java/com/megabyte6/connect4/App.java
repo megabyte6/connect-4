@@ -18,7 +18,7 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         SceneManager.init(primaryStage, "Start", BACKGROUND_COLOR);
 
         primaryStage.getIcons().add(new Image("icon.png"));
@@ -30,9 +30,9 @@ public class App extends Application {
         if (millis < 0)
             throw new IllegalArgumentException("Delay time cannot be negative.");
 
-        Task<Void> sleep = new Task<Void>() {
+        Task<Void> sleep = new Task<>() {
             @Override
-            protected Void call() throws Exception {
+            protected Void call() {
                 try {
                     Thread.sleep(millis);
                 } catch (InterruptedException e) {

@@ -1,9 +1,5 @@
 package com.megabyte6.connect4.controller;
 
-import static com.megabyte6.connect4.util.Range.range;
-
-import java.util.stream.Stream;
-
 import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
@@ -11,9 +7,7 @@ import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
 import com.megabyte6.connect4.util.Walker;
-
 import javafx.beans.binding.DoubleBinding;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
 import javafx.scene.layout.AnchorPane;
@@ -22,9 +16,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
+import java.util.Objects;
+import java.util.stream.Stream;
+
+import static com.megabyte6.connect4.util.Range.range;
+
 public class GameController {
 
-    private Game game = new Game("John", "James");
+    private final Game game = new Game("John", "James");
     private Position[] winningPositions = null;
 
     @FXML
@@ -35,7 +34,6 @@ public class GameController {
 
     private GamePiece marker;
     private final DoubleBinding[] markerBindings = new DoubleBinding[game.getColumnCount()];
-    private final Line[] columnSeparators = new Line[game.getColumnCount() - 1];
 
     @FXML
     private Pane gameBoard;
@@ -45,14 +43,10 @@ public class GameController {
         // Initialize gameBoard width and height.
         StackPane gameBoardContainer = (StackPane) gameBoard.getParent();
 
-        gameBoardContainer.widthProperty().addListener((observable, oldValue, newValue) -> {
-            handleWindowSizeChanged(new Dimension2D(
-                    newValue.doubleValue(), gameBoardContainer.getHeight()));
-        });
-        gameBoardContainer.heightProperty().addListener((observable, oldValue, newValue) -> {
-            handleWindowSizeChanged(new Dimension2D(
-                    gameBoardContainer.getWidth(), newValue.doubleValue()));
-        });
+        gameBoardContainer.widthProperty().addListener((observable, oldValue, newValue) ->
+                handleWindowSizeChanged(new Dimension2D(newValue.doubleValue(), gameBoardContainer.getHeight())));
+        gameBoardContainer.heightProperty().addListener((observable, oldValue, newValue) ->
+                handleWindowSizeChanged(new Dimension2D(gameBoardContainer.getWidth(), newValue.doubleValue())));
 
         // Draw horizontal grid lines.
         for (var i : range(game.getRowCount() + 1)) {
@@ -68,7 +62,6 @@ public class GameController {
             gameBoard.getChildren().add(line);
         }
         // Draw vertical grid lines.
-        Line[] verticalLines = new Line[game.getColumnCount()];
         for (var i : range(game.getColumnCount())) {
             double multiplier = ((double) i) / game.getColumnCount();
             DoubleBinding x = gameBoard.widthProperty().multiply(multiplier);
@@ -80,27 +73,20 @@ public class GameController {
             line.endYProperty().bind(gameBoard.heightProperty());
 
             gameBoard.getChildren().add(line);
-
-            verticalLines[i] = line;
-        }
-
-        // Populate columnSeparators.
-        for (var i : range(columnSeparators.length)) {
-            columnSeparators[i] = verticalLines[i + 1];
         }
 
         // Create GamePieces.
         DoubleBinding cellSizeBinding = gameBoard.heightProperty().divide(game.getRowCount());
         final int border = 5;
         DoubleBinding radiusBinding = cellSizeBinding.divide(2).subtract(border);
-        for (double col : range(game.getColumnCount())) {
+        for (int col : range(game.getColumnCount())) {
             double xMultiplier = ((double) col) / game.getColumnCount();
             DoubleBinding xOffset = cellSizeBinding.divide(2);
 
             DoubleBinding xBinding = gameBoard.widthProperty()
                     .multiply(xMultiplier).add(xOffset);
 
-            for (double row : range(game.getRowCount())) {
+            for (int row : range(game.getRowCount())) {
                 double yMultiplier = ((double) row) / game.getRowCount();
                 DoubleBinding yOffset = cellSizeBinding.divide(2);
 
@@ -114,14 +100,14 @@ public class GameController {
                 blankPiece.setFill(App.BACKGROUND_COLOR);
                 blankPiece.setStroke(Color.WHITE);
 
-                game.setGamePiece(blankPiece, (int) col, (int) row);
+                game.setGamePiece(blankPiece, col, row);
             }
         }
 
         // Draw GamePieces.
         Stream.of(game.getGameBoard())
                 .flatMap(Stream::of)
-                .filter(gamePiece -> gamePiece != null)
+                .filter(Objects::nonNull)
                 .forEach(gamePiece -> gameBoard.getChildren().add(gamePiece));
 
         // Initialize marker container.
@@ -248,17 +234,17 @@ public class GameController {
     }
 
     @FXML
-    private void handleBackButton(ActionEvent event) {
+    private void handleBackButton() {
         game.moveHistoryPointerBack();
     }
 
     @FXML
-    private void handleForwardButton(ActionEvent event) {
+    private void handleForwardButton() {
         game.moveHistoryPointerForward();
     }
 
     @FXML
-    private void handleCurrentMoveButton(ActionEvent event) {
+    private void handleCurrentMoveButton() {
         while (!game.historyPointerIsAtLatestMove()) {
             game.moveHistoryPointerForward();
         }
