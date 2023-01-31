@@ -39,6 +39,10 @@ public class TextInputController implements Controller {
         promptLabel.setText(promptText);
     }
 
+    public void setDefaultText(String text) {
+        textField.setText(text);
+    }
+
     public void setOnOK(Consumer<String> runAfter) {
         onOK = runAfter;
     }
