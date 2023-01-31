@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <AnchorPane fx:id="root" prefHeight="600.0" prefWidth="500.0" stylesheets="@../css/style-dark.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.megabyte6.connect4.controller.GameController">
@@ -24,11 +25,19 @@
                 <Separator prefWidth="200.0"/>
                 <HBox alignment="CENTER" prefHeight="30.0">
                     <children>
-                        <VBox>
+                        <VBox spacing="10.0">
                             <children>
-                                <HBox alignment="CENTER">
+                                <HBox alignment="CENTER" spacing="10.0">
                                     <children>
-                                        <Label text="Label"/>
+                                        <Label fx:id="player1Score" text="Label"/>
+                                        <Separator orientation="VERTICAL" prefHeight="200.0"/>
+                                        <Label fx:id="currentTurn" text="Label">
+                                            <font>
+                                                <Font size="14.0"/>
+                                            </font>
+                                        </Label>
+                                        <Separator orientation="VERTICAL" prefHeight="200.0"/>
+                                        <Label fx:id="player2Score" text="Label"/>
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER" spacing="15.0">
@@ -64,7 +73,7 @@
         </VBox>
         <Button mnemonicParsing="false" onAction="#handleReturnToStartScreen" text="🏠" AnchorPane.bottomAnchor="20.0"
                 AnchorPane.leftAnchor="20.0"/>
-        <Button mnemonicParsing="false" onAction="#handleRestartGame" text="⭮" AnchorPane.bottomAnchor="20.0"
+        <Button mnemonicParsing="false" onAction="#handleNewGame" text="⭮" AnchorPane.bottomAnchor="20.0"
                 AnchorPane.rightAnchor="20.0"/>
     </children>
 </AnchorPane>

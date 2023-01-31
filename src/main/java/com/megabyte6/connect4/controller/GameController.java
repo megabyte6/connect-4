@@ -13,6 +13,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -27,7 +28,8 @@ import static com.megabyte6.connect4.util.Range.range;
 
 public class GameController implements Controller {
 
-    private final Game game = new Game("John", "James");
+    private final Game game = new Game(App.getPlayer1(), App.getPlayer2());
+    private Player winner = Player.NONE;
     private Position[] winningPositions = null;
 
     @FXML
@@ -40,6 +42,13 @@ public class GameController implements Controller {
 
     @FXML
     private Pane gameBoard;
+
+    @FXML
+    private Label player1Score;
+    @FXML
+    private Label currentTurn;
+    @FXML
+    private Label player2Score;
 
     @FXML
     private void initialize() {
@@ -134,10 +143,26 @@ public class GameController implements Controller {
 
         markerContainer.getChildren().add(marker);
 
+        // Initialize labels.
+        updatePlayerScoreLabels();
+        updateCurrentTurnLabel();
+
         // Set up key listeners.
         markerContainer.setOnMouseMoved(event -> updateMarkerPosition(event.getX()));
+
         gameBoard.setOnMouseMoved(event -> updateMarkerPosition(event.getX()));
+
         root.setOnMouseClicked(event -> placePiece());
+
+        root.setOnKeyPressed(event -> {
+            if (event.isShortcutDown())
+                switch (event.getCode()) {
+                    case Q -> handleReturnToStartScreen();
+                    case N -> handleNewGame();
+                }
+        });
+
+        root.requestFocus();
     }
 
     private boolean checkForWin() {
@@ -154,6 +179,7 @@ public class GameController implements Controller {
         if (positions == null)
             return false;
 
+        winner = player;
         winningPositions = positions;
         return true;
     }
@@ -164,6 +190,7 @@ public class GameController implements Controller {
 
     private void gameWon() {
         game.gameOver();
+        winner.incrementScore();
     }
 
     private void gameTie() {
@@ -225,6 +252,17 @@ public class GameController implements Controller {
 
         game.swapTurns();
         marker.setOwner(game.getCurrentPlayer());
+
+        updateCurrentTurnLabel();
+    }
+
+    private void updatePlayerScoreLabels() {
+        player1Score.setText(App.getPlayer1().getName() + ": " + App.getPlayer1().getScore());
+        player2Score.setText(App.getPlayer2().getName() + ": " + App.getPlayer2().getScore());
+    }
+
+    public void updateCurrentTurnLabel() {
+        currentTurn.setText("It's " + game.getCurrentPlayer().getName() + "'s turn");
     }
 
     // Update gameBoard size because the GridPane doesn't resize automatically
@@ -271,7 +309,7 @@ public class GameController implements Controller {
     }
 
     @FXML
-    private void handleRestartGame() {
+    private void handleNewGame() {
         setDisable(true);
 
         Pair<Node, Controller> loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
