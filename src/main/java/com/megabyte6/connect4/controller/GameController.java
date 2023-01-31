@@ -257,7 +257,17 @@ public class GameController implements Controller {
 
     @FXML
     private void handleReturnToStartScreen() {
-        SceneManager.switchScenes("Start", Duration.millis(400));
+        setDisable(true);
+
+        Pair<Node, Controller> loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
+        Node root = loadedData.a();
+        ConfirmController controller = (ConfirmController) loadedData.b();
+
+        controller.setText("Are you sure you want to leave the game?");
+        controller.setOnOk(() -> SceneManager.switchScenes("Start", Duration.millis(400)));
+        controller.setOnCancel(() -> setDisable(false));
+
+        SceneManager.addScene(root);
     }
 
     @FXML
@@ -273,7 +283,6 @@ public class GameController implements Controller {
         controller.setOnCancel(() -> setDisable(false));
 
         SceneManager.addScene(root);
-
     }
 
     @Override
