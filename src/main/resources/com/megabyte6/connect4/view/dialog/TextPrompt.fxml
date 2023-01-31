@@ -8,8 +8,8 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0"
             prefWidth="250.0" style="-fx-background-radius: 10;"
-            stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
-            fx:controller="com.megabyte6.connect4.controller.TextInputController">
+            stylesheets="@../../css/style-dark.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            fx:controller="com.megabyte6.connect4.controller.dialog.TextPromptController">
     <children>
         <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

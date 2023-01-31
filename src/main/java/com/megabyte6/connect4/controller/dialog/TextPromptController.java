@@ -1,6 +1,7 @@
-package com.megabyte6.connect4.controller;
+package com.megabyte6.connect4.controller.dialog;
 
 import com.megabyte6.connect4.App;
+import com.megabyte6.connect4.controller.Controller;
 import com.megabyte6.connect4.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.function.Consumer;
 
-public class TextInputController implements Controller {
+public class TextPromptController implements Controller {
 
     private Consumer<String> onOK = (text) -> {
     };
