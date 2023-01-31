@@ -24,7 +24,8 @@ public class StartController implements Controller {
 
     private void getPlayer1Name() {
         playerNameInputPopup(
-                "Enter the first player's name",
+                "What's Player 1's name?",
+                App.getPlayer1().getName(),
                 (text) -> {
                     String name = text.isEmpty() || text.isBlank() ? "Player 1" : text;
                     App.setPlayer1(new Player(name));
@@ -36,7 +37,8 @@ public class StartController implements Controller {
 
     private void getPlayer2Name() {
         playerNameInputPopup(
-                "Enter the second player's name",
+                "What's Player 2's name",
+                App.getPlayer2().getName(),
                 (text) -> {
                     String name = text.isEmpty() || text.isBlank() ? "Player 2" : text;
                     App.setPlayer2(new Player(name));
@@ -46,12 +48,13 @@ public class StartController implements Controller {
         );
     }
 
-    private void playerNameInputPopup(String promptText, Consumer<String> onOk, Runnable onCancel) {
+    private void playerNameInputPopup(String promptText, String defaultText, Consumer<String> onOk, Runnable onCancel) {
         Pair<Node, Controller> loadedData = SceneManager.loadFXMLAndController("TextInput");
         Node root = loadedData.a();
         TextInputController controller = (TextInputController) loadedData.b();
 
         controller.setPromptText(promptText);
+        controller.setDefaultText(defaultText);
         controller.setOnOK(onOk);
         controller.setOnCancel(onCancel);
 
