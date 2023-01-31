@@ -1,11 +1,8 @@
 package com.megabyte6.connect4.util;
 
-import static javafx.util.Duration.millis;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
+import com.megabyte6.connect4.controller.Controller;
+import com.megabyte6.connect4.util.tuple.Pair;
+import com.megabyte6.connect4.util.tuple.Tuple;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -22,6 +19,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import static javafx.util.Duration.millis;
 
 public class SceneManager {
 
@@ -51,23 +54,29 @@ public class SceneManager {
         SceneManager.stage.setScene(SceneManager.getScene());
     }
 
-    private static Node loadFXML(String fxmlName) {
-        if (fxmlName == null)
+    public static Node loadFXML(String fxmlFileName) {
+        return loadFXMLAndController(fxmlFileName).a();
+    }
+
+    public static Pair<Node, Controller> loadFXMLAndController(String fxmlFileName) {
+        if (fxmlFileName == null)
             return null;
 
-        final String path = RESOURCE_PATH + fxmlName + ".fxml";
+        final String path = RESOURCE_PATH + fxmlFileName + ".fxml";
         final Node root;
+        final Controller controller;
 
         try {
             final FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource(path));
             root = fxmlLoader.load();
+            controller = fxmlLoader.getController();
         } catch (IOException e) {
             System.err.println("ERROR: Cannot read file '" + path + "'");
             e.printStackTrace();
             return null;
         }
 
-        return root;
+        return Tuple.of(root, controller);
     }
 
     public static void switchScenes(String fxmlName, Duration totalTransitionDuration) {
@@ -198,7 +207,7 @@ public class SceneManager {
         return SceneManager.sceneStack.getChildren().addAll(index, List.of(nodes));
     }
 
-    public static boolean removeScene(Object o) {
+    public static <T> boolean removeScene(T o) {
         if (o == null)
             return false;
         return SceneManager.sceneStack.getChildren().remove(o);
@@ -208,6 +217,10 @@ public class SceneManager {
         if (index < 0 || index >= SceneManager.sceneStack.getChildren().size())
             return null;
         return SceneManager.sceneStack.getChildren().remove(index);
+    }
+
+    public static Node removeTopScene() {
+        return removeScene(SceneManager.sceneStack.getChildren().size() - 1);
     }
 
     public static Stage getStage() {
