@@ -34,9 +34,13 @@ public class Game {
     }
 
     public Game(String player1Name, String player2Name, int columns, int rows) {
-        player1 = new Player(player2Name, Color.YELLOW);
-        player2 = new Player(player1Name, Color.RED);
-        currentPlayer = player1;
+        this(new Player(player1Name, Color.YELLOW), new Player(player2Name, Color.RED), columns, rows);
+    }
+
+    public Game(Player player1, Player player2, int columns, int rows) {
+        this.player1 = player1;
+        this.player2 = player2;
+        currentPlayer = this.player1;
 
         gameBoard = new GamePiece[columns][rows];
         selectedColumn = columns / 2;
