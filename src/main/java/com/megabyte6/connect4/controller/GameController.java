@@ -1,15 +1,18 @@
 package com.megabyte6.connect4.controller;
 
 import com.megabyte6.connect4.App;
+import com.megabyte6.connect4.controller.dialog.ConfirmController;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
 import com.megabyte6.connect4.util.Walker;
+import com.megabyte6.connect4.util.tuple.Pair;
 import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -259,7 +262,18 @@ public class GameController implements Controller {
 
     @FXML
     private void handleRestartGame() {
-        SceneManager.switchScenes("Game", Duration.millis(400));
+        setDisable(true);
+
+        Pair<Node, Controller> loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
+        Node root = loadedData.a();
+        ConfirmController controller = (ConfirmController) loadedData.b();
+
+        controller.setText("Are you sure you want to reset the game?");
+        controller.setOnOk(() -> SceneManager.switchScenes("Game", Duration.millis(400)));
+        controller.setOnCancel(() -> setDisable(false));
+
+        SceneManager.addScene(root);
+
     }
 
     @Override
