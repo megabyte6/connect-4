@@ -4,3 +4,6 @@ build
 
 # VSCode
 bin
+
+# IntelliJ Idea
+.idea
