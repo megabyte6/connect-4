@@ -1,14 +1,12 @@
 package com.megabyte6.connect4.model;
 
-import static com.megabyte6.connect4.util.Range.range;
-
-import java.util.LinkedList;
-
 import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.util.tuple.Triplet;
 import com.megabyte6.connect4.util.tuple.Tuple;
 
-import javafx.scene.paint.Color;
+import java.util.LinkedList;
+
+import static com.megabyte6.connect4.util.Range.range;
 
 public class Game {
 
@@ -29,12 +27,8 @@ public class Game {
     private final LinkedList<Triplet<Player, Integer, Integer>> moveHistory = new LinkedList<>();
     private int historyPointer = -1;
 
-    public Game(String player1Name, String player2Name) {
-        this(player1Name, player2Name, 7, 6);
-    }
-
-    public Game(String player1Name, String player2Name, int columns, int rows) {
-        this(new Player(player1Name, Color.YELLOW), new Player(player2Name, Color.RED), columns, rows);
+    public Game(Player player1, Player player2) {
+        this(player1, player2, 7, 6);
     }
 
     public Game(Player player1, Player player2, int columns, int rows) {
