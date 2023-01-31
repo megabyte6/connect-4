@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -249,6 +250,16 @@ public class GameController implements Controller {
         while (!game.historyPointerIsAtLatestMove()) {
             game.moveHistoryPointerForward();
         }
+    }
+
+    @FXML
+    private void handleReturnToStartScreen() {
+        SceneManager.switchScenes("Start", Duration.millis(400));
+    }
+
+    @FXML
+    private void handleRestartGame() {
+        SceneManager.switchScenes("Game", Duration.millis(400));
     }
 
     @Override
