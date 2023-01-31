@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 
 import static com.megabyte6.connect4.util.Range.range;
 
-public class GameController {
+public class GameController implements Controller {
 
     private final Game game = new Game("John", "James");
     private Position[] winningPositions = null;
@@ -31,7 +31,6 @@ public class GameController {
 
     @FXML
     private Pane markerContainer;
-
     private GamePiece marker;
     private final DoubleBinding[] markerBindings = new DoubleBinding[game.getColumnCount()];
 
@@ -227,6 +226,8 @@ public class GameController {
     // Update gameBoard size because the GridPane doesn't resize automatically
     // when circles are added.
     private void handleWindowSizeChanged(Dimension2D containerDimensions) {
+        if (containerDimensions == null)
+            return;
         final double size = Math.min(
                 containerDimensions.getWidth() / game.getColumnCount(),
                 containerDimensions.getHeight() / game.getRowCount());
@@ -250,4 +251,9 @@ public class GameController {
         }
     }
 
+    @Override
+    public void setDisable(boolean disabled) {
+        root.setDisable(disabled);
+        root.setOpacity(disabled ? App.DISABLED_OPACITY : 1);
+    }
 }
