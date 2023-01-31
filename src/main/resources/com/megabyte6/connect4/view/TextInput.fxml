@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0"
+            prefWidth="250.0" style="-fx-background-radius: 10;"
+            stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            fx:controller="com.megabyte6.connect4.controller.TextInputController">
+    <children>
+        <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+                    <children>
+                        <Label fx:id="promptLabel" text="Prompt">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                        </Label>
+                        <TextField fx:id="textField" style="-fx-background-color: #3d3d3d; -fx-text-fill: #ffffff;"/>
+                        <HBox alignment="CENTER" spacing="15.0">
+                            <children>
+                                <Button defaultButton="true" mnemonicParsing="false" onAction="#handleOkButton"
+                                        text="OK"/>
+                                <Button cancelButton="true" mnemonicParsing="false" onAction="#handleCancelButton"
+                                        text="Cancel"/>
+                            </children>
+                        </HBox>
+                    </children>
+                    <StackPane.margin>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                    </StackPane.margin>
+                </VBox>
+            </children>
+        </StackPane>
+    </children>
+</AnchorPane>
