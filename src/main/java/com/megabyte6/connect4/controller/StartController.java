@@ -8,6 +8,7 @@ import com.megabyte6.connect4.util.tuple.Pair;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.function.Consumer;
@@ -29,7 +30,7 @@ public class StartController implements Controller {
                 App.getPlayer1().getName(),
                 (text) -> {
                     String name = text.isEmpty() || text.isBlank() ? "Player 1" : text;
-                    App.setPlayer1(new Player(name));
+                    App.setPlayer1(new Player(name, Color.YELLOW));
                     getPlayer2Name();
                 },
                 () -> setDisable(false)
@@ -42,7 +43,7 @@ public class StartController implements Controller {
                 App.getPlayer2().getName(),
                 (text) -> {
                     String name = text.isEmpty() || text.isBlank() ? "Player 2" : text;
-                    App.setPlayer2(new Player(name));
+                    App.setPlayer2(new Player(name, Color.RED));
                     SceneManager.switchScenes("Game", Duration.millis(400));
                 },
                 () -> setDisable(false)

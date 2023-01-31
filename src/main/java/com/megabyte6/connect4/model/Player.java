@@ -4,21 +4,23 @@ import javafx.scene.paint.Color;
 
 public class Player {
 
-    public static final Player NONE = new Player("", Color.WHITE);
+    public static final Player NONE = new Player("", 0, Color.WHITE);
 
     private String name;
+    private int score;
     private Color color;
 
     public Player() {
-        this("John Doe", Color.WHITE);
-    }
-
-    public Player(String name) {
-        this(name, Color.WHITE);
+        this("John Doe", 0, Color.WHITE);
     }
 
     public Player(String name, Color color) {
+        this(name, 0, color);
+    }
+
+    public Player(String name, int score, Color color) {
         this.name = name;
+        this.score = score;
         this.color = color;
     }
 
@@ -28,6 +30,14 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementScore() {
+        score++;
     }
 
     public Color getColor() {
