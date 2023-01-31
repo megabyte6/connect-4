@@ -56,7 +56,7 @@ public class StartController implements Controller {
 
         controller.setPromptText(promptText);
         controller.setDefaultText(defaultText);
-        controller.setOnOK(onOk);
+        controller.setOnOk(onOk);
         controller.setOnCancel(onCancel);
 
         SceneManager.addScene(root);

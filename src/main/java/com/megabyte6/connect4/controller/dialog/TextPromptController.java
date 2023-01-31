@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 public class TextPromptController implements Controller {
 
-    private Consumer<String> onOK = (text) -> {
+    private Consumer<String> onOk = (text) -> {
     };
     private Runnable onCancel = () -> {
     };
@@ -30,7 +30,7 @@ public class TextPromptController implements Controller {
     public void initialize() {
         textField.setOnAction((event) -> {
             SceneManager.removeTopScene();
-            onOK.accept(textField.getText());
+            onOk.accept(textField.getText());
         });
 
         textField.requestFocus();
@@ -44,18 +44,18 @@ public class TextPromptController implements Controller {
         textField.setText(text);
     }
 
-    public void setOnOK(Consumer<String> runAfter) {
-        onOK = runAfter;
+    public void setOnOk(Consumer<String> run) {
+        onOk = run;
     }
 
-    public void setOnCancel(Runnable runAfter) {
-        onCancel = runAfter;
+    public void setOnCancel(Runnable run) {
+        onCancel = run;
     }
 
     @FXML
     private void handleOkButton() {
         SceneManager.removeTopScene();
-        onOK.accept(textField.getText());
+        onOk.accept(textField.getText());
     }
 
     @FXML
