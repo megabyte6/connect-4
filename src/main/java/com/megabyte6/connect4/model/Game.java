@@ -49,7 +49,7 @@ public class Game {
     public int findNextFreeRow(int columnIndex) {
         final GamePiece[] column = getGameBoardColumn(columnIndex);
 
-        for (var i : range(column.length - 1, -1)) {
+        for (int i : range(column.length - 1, -1)) {
             if (column[i].getOwner().equals(Player.NONE))
                 return i;
         }
@@ -118,7 +118,7 @@ public class Game {
 
     public GamePiece[] getGameBoardRow(int rowIndex) {
         GamePiece[] row = new GamePiece[gameBoard.length];
-        for (var i : range(gameBoard.length)) {
+        for (int i : range(gameBoard.length)) {
             row[i] = gameBoard[i][rowIndex];
         }
 

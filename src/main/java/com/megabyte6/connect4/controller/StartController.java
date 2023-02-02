@@ -4,7 +4,6 @@ import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.controller.dialog.TextPromptController;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.SceneManager;
-import com.megabyte6.connect4.util.tuple.Pair;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -51,9 +50,9 @@ public class StartController implements Controller {
     }
 
     private void playerNameInputPopup(String promptText, String defaultText, Consumer<String> onOk, Runnable onCancel) {
-        Pair<Node, Controller> loadedData = SceneManager.loadFXMLAndController("dialog/TextPrompt");
-        Node root = loadedData.a();
-        TextPromptController controller = (TextPromptController) loadedData.b();
+        final var loadedData = SceneManager.loadFXMLAndController("dialog/TextPrompt");
+        final Node root = loadedData.a();
+        final TextPromptController controller = (TextPromptController) loadedData.b();
 
         controller.setPromptText(promptText);
         controller.setDefaultText(defaultText);

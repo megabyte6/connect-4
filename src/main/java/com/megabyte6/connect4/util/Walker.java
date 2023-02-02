@@ -1,14 +1,15 @@
 package com.megabyte6.connect4.util;
 
-import static com.megabyte6.connect4.util.tuple.Tuple.of;
+import com.megabyte6.connect4.App;
+import com.megabyte6.connect4.model.Game;
+import com.megabyte6.connect4.model.GamePiece;
+import com.megabyte6.connect4.model.Player;
+import com.megabyte6.connect4.util.tuple.Pair;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import com.megabyte6.connect4.App;
-import com.megabyte6.connect4.model.Game;
-import com.megabyte6.connect4.model.Player;
-import com.megabyte6.connect4.util.tuple.Pair;
+import static com.megabyte6.connect4.util.tuple.Tuple.of;
 
 public class Walker {
 
@@ -68,15 +69,15 @@ public class Walker {
 
         while (queue.size() > 0) {
             final var queueElement = queue.get(0);
-            final var direction = queueElement.a();
-            final var pos = queueElement.b();
+            final Direction direction = queueElement.a();
+            final Position pos = queueElement.b();
 
             queue.remove(0);
 
             if (game.isOutOfBounds(pos.column(), pos.row()))
                 continue;
 
-            final var gamePiece = game.getGamePiece(pos.column(), pos.row());
+            final GamePiece gamePiece = game.getGamePiece(pos.column(), pos.row());
             if (!gamePiece.getOwner().equals(player))
                 continue;
 

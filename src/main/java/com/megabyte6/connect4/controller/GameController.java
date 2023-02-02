@@ -8,7 +8,6 @@ import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
 import com.megabyte6.connect4.util.Walker;
-import com.megabyte6.connect4.util.tuple.Pair;
 import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Dimension2D;
@@ -29,7 +28,6 @@ import static com.megabyte6.connect4.util.Range.range;
 public class GameController implements Controller {
 
     private final Game game = new Game(App.getPlayer1(), App.getPlayer2());
-    private Player winner = Player.NONE;
     private Position[] winningPositions = null;
 
     @FXML
@@ -53,7 +51,7 @@ public class GameController implements Controller {
     @FXML
     private void initialize() {
         // Initialize gameBoard width and height.
-        StackPane gameBoardContainer = (StackPane) gameBoard.getParent();
+        final StackPane gameBoardContainer = (StackPane) gameBoard.getParent();
 
         gameBoardContainer.widthProperty().addListener((observable, oldValue, newValue) ->
                 handleWindowSizeChanged(new Dimension2D(newValue.doubleValue(), gameBoardContainer.getHeight())));
@@ -61,11 +59,11 @@ public class GameController implements Controller {
                 handleWindowSizeChanged(new Dimension2D(gameBoardContainer.getWidth(), newValue.doubleValue())));
 
         // Draw horizontal grid lines.
-        for (var i : range(game.getRowCount() + 1)) {
-            double multiplier = ((double) i) / game.getRowCount();
-            DoubleBinding y = gameBoard.heightProperty().multiply(multiplier);
+        for (int i : range(game.getRowCount() + 1)) {
+            final double multiplier = ((double) i) / game.getRowCount();
+            final DoubleBinding y = gameBoard.heightProperty().multiply(multiplier);
 
-            Line line = new Line();
+            final Line line = new Line();
             line.setStroke(Color.WHITE);
             line.startYProperty().bind(y);
             line.endXProperty().bind(gameBoard.widthProperty());
@@ -74,11 +72,11 @@ public class GameController implements Controller {
             gameBoard.getChildren().add(line);
         }
         // Draw vertical grid lines.
-        for (var i : range(game.getColumnCount())) {
-            double multiplier = ((double) i) / game.getColumnCount();
-            DoubleBinding x = gameBoard.widthProperty().multiply(multiplier);
+        for (int i : range(game.getColumnCount())) {
+            final double multiplier = ((double) i) / game.getColumnCount();
+            final DoubleBinding x = gameBoard.widthProperty().multiply(multiplier);
 
-            Line line = new Line();
+            final Line line = new Line();
             line.setStroke(Color.WHITE);
             line.startXProperty().bind(x);
             line.endXProperty().bind(x);
@@ -88,24 +86,24 @@ public class GameController implements Controller {
         }
 
         // Create GamePieces.
-        DoubleBinding cellSizeBinding = gameBoard.heightProperty().divide(game.getRowCount());
+        final DoubleBinding cellSizeBinding = gameBoard.heightProperty().divide(game.getRowCount());
         final int border = 5;
-        DoubleBinding radiusBinding = cellSizeBinding.divide(2).subtract(border);
+        final DoubleBinding radiusBinding = cellSizeBinding.divide(2).subtract(border);
         for (int col : range(game.getColumnCount())) {
-            double xMultiplier = ((double) col) / game.getColumnCount();
-            DoubleBinding xOffset = cellSizeBinding.divide(2);
+            final double xMultiplier = ((double) col) / game.getColumnCount();
+            final DoubleBinding xOffset = cellSizeBinding.divide(2);
 
-            DoubleBinding xBinding = gameBoard.widthProperty()
+            final DoubleBinding xBinding = gameBoard.widthProperty()
                     .multiply(xMultiplier).add(xOffset);
 
             for (int row : range(game.getRowCount())) {
-                double yMultiplier = ((double) row) / game.getRowCount();
-                DoubleBinding yOffset = cellSizeBinding.divide(2);
+                final double yMultiplier = ((double) row) / game.getRowCount();
+                final DoubleBinding yOffset = cellSizeBinding.divide(2);
 
-                DoubleBinding yBinding = gameBoard.heightProperty()
+                final DoubleBinding yBinding = gameBoard.heightProperty()
                         .multiply(yMultiplier).add(yOffset);
 
-                GamePiece blankPiece = new GamePiece();
+                final GamePiece blankPiece = new GamePiece();
                 blankPiece.layoutXProperty().bind(xBinding);
                 blankPiece.layoutYProperty().bind(yBinding);
                 blankPiece.radiusProperty().bind(radiusBinding);
@@ -126,9 +124,9 @@ public class GameController implements Controller {
         markerContainer.maxWidthProperty().bind(gameBoard.widthProperty());
 
         // Define marker locations
-        DoubleBinding offset = cellSizeBinding.divide(2);
-        for (var column : range(game.getColumnCount())) {
-            double multiplier = ((double) column) / game.getColumnCount();
+        final DoubleBinding offset = cellSizeBinding.divide(2);
+        for (int column : range(game.getColumnCount())) {
+            final double multiplier = ((double) column) / game.getColumnCount();
 
             markerBindings[column] = markerContainer.widthProperty()
                     .multiply(multiplier).add(offset);
@@ -166,20 +164,20 @@ public class GameController implements Controller {
     }
 
     private boolean checkForWin() {
-        var lastMove = game.getLastMove();
+        final var lastMove = game.getLastMove();
         if (lastMove == null)
             return false;
-        Player player = lastMove.a();
-        int column = lastMove.b();
-        int row = lastMove.c();
+        final Player player = lastMove.a();
+        final int column = lastMove.b();
+        final int row = lastMove.c();
 
-        Walker walker = new Walker(game, player, new Position(column, row));
-        Position[] positions = walker.findWinPosition();
+        final Walker walker = new Walker(game, player, new Position(column, row));
+        final Position[] positions = walker.findWinPosition();
 
         if (positions == null)
             return false;
 
-        winner = player;
+        App.setWinner(player);
         winningPositions = positions;
         return true;
     }
@@ -190,7 +188,7 @@ public class GameController implements Controller {
 
     private void gameWon() {
         game.gameOver();
-        winner.incrementScore();
+        App.getWinner().incrementScore();
     }
 
     private void gameTie() {
@@ -201,8 +199,8 @@ public class GameController implements Controller {
         if (!game.getActive())
             return;
 
-        double columnWidth = gameBoard.getMaxWidth() / game.getColumnCount();
-        int mouseColumn = (int) Math.floor(mouseXPos / columnWidth);
+        final double columnWidth = gameBoard.getMaxWidth() / game.getColumnCount();
+        final int mouseColumn = (int) Math.floor(mouseXPos / columnWidth);
 
         // If the marker is already there, don't move it.
         if (mouseColumn == game.getSelectedColumn())
@@ -237,7 +235,7 @@ public class GameController implements Controller {
         if (row == -1)
             return;
 
-        GamePiece selectedPiece = game.getGamePiece(column, row);
+        final GamePiece selectedPiece = game.getGamePiece(column, row);
         selectedPiece.setOwner(game.getCurrentPlayer());
         game.addMoveToHistory(game.getCurrentPlayer(), column, row);
 
@@ -297,9 +295,9 @@ public class GameController implements Controller {
     private void handleReturnToStartScreen() {
         setDisable(true);
 
-        Pair<Node, Controller> loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
-        Node root = loadedData.a();
-        ConfirmController controller = (ConfirmController) loadedData.b();
+        final var loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
+        final Node root = loadedData.a();
+        final ConfirmController controller = (ConfirmController) loadedData.b();
 
         controller.setText("Are you sure you want to leave the game?");
         controller.setOnOk(() -> SceneManager.switchScenes("Start", Duration.millis(400)));
@@ -312,9 +310,9 @@ public class GameController implements Controller {
     private void handleNewGame() {
         setDisable(true);
 
-        Pair<Node, Controller> loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
-        Node root = loadedData.a();
-        ConfirmController controller = (ConfirmController) loadedData.b();
+        final var loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
+        final Node root = loadedData.a();
+        final ConfirmController controller = (ConfirmController) loadedData.b();
 
         controller.setText("Are you sure you want to reset the game?");
         controller.setOnOk(() -> SceneManager.switchScenes("Game", Duration.millis(400)));
