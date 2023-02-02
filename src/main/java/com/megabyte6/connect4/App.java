@@ -13,8 +13,10 @@ public class App extends Application {
     public static final int WIN_REQUIREMENT = 4;
     public static final Color BACKGROUND_COLOR = Color.web("#2d2d2d");
     public static final double DISABLED_OPACITY = 0.8;
+
     private static Player player1 = Player.NONE;
     private static Player player2 = Player.NONE;
+    private static Player winner = Player.NONE;
 
     public static void main(String[] args) {
         launch(args);
@@ -58,6 +60,16 @@ public class App extends Application {
 
     public static void setPlayer2(Player player) {
         App.player2 = player;
+    }
+
+    public static Player getWinner() {
+        return App.winner;
+    }
+
+    public static void setWinner(Player player) {
+        if (!player.equals(player1) && !player.equals(player2) && !player.equals(Player.NONE))
+            return;
+        App.winner = player;
     }
 
     @Override
