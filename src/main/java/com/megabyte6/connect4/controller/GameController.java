@@ -206,7 +206,7 @@ public class GameController implements Controller {
     }
 
     private void updateMarkerPosition(double mouseXPos) {
-        if (game.getActive())
+        if (!game.isActive())
             return;
 
         final double columnWidth = gameBoard.getMaxWidth() / game.getColumnCount();
@@ -231,12 +231,12 @@ public class GameController implements Controller {
     }
 
     private void placePiece() {
-        if (game.getActive() && !game.isGameOver()) {
+        if (game.isGameOver())
+            return;
+        if (!game.isActive() && !game.isGameOver()) {
             SceneManager.popup("Please return to the current move.");
             return;
         }
-        if (game.isGameOver())
-            return;
 
         final int column = game.getSelectedColumn();
         final int row = game.findNextFreeRow(column);
@@ -270,7 +270,7 @@ public class GameController implements Controller {
     }
 
     public void updateCurrentTurnLabel() {
-        currentTurn.setText("It's " + game.getCurrentPlayer().getName() + "'s turn");
+        currentTurn.setText(game.getCurrentPlayer().getName() + "'s turn");
     }
 
     // Update gameBoard size because the GridPane doesn't resize automatically
