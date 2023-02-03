@@ -69,7 +69,7 @@ public class Game {
         return rowIndex < 0 || rowIndex >= getRowCount();
     }
 
-    public boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
