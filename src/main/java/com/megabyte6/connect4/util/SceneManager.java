@@ -207,10 +207,10 @@ public class SceneManager {
         return SceneManager.sceneStack.getChildren().addAll(index, List.of(nodes));
     }
 
-    public static <T> boolean removeScene(T o) {
-        if (o == null)
+    public static boolean removeScene(Node node) {
+        if (node == null)
             return false;
-        return SceneManager.sceneStack.getChildren().remove(o);
+        return SceneManager.sceneStack.getChildren().remove(node);
     }
 
     public static Node removeScene(int index) {
