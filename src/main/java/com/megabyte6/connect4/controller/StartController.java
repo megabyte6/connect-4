@@ -29,7 +29,12 @@ public class StartController implements Controller {
                 App.getPlayer1().getName(),
                 (text) -> {
                     String name = text.isEmpty() || text.isBlank() ? "Player 1" : text;
-                    App.setPlayer1(new Player(name, Color.YELLOW));
+                    if (App.getPlayer1().equals(Player.NONE)) {
+                        App.setPlayer1(new Player(name, Color.YELLOW));
+                    } else {
+                        App.getPlayer1().setName(text);
+                    }
+
                     getPlayer2Name();
                 },
                 () -> setDisable(false)
@@ -42,7 +47,12 @@ public class StartController implements Controller {
                 App.getPlayer2().getName(),
                 (text) -> {
                     String name = text.isEmpty() || text.isBlank() ? "Player 2" : text;
-                    App.setPlayer2(new Player(name, Color.RED));
+                    if (App.getPlayer2().equals(Player.NONE)) {
+                        App.setPlayer2(new Player(name, Color.RED));
+                    } else {
+                        App.getPlayer2().setName(text);
+                    }
+
                     SceneManager.switchScenes("Game", Duration.millis(400));
                 },
                 () -> setDisable(false)
