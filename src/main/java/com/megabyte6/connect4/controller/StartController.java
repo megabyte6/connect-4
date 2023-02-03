@@ -72,6 +72,18 @@ public class StartController implements Controller {
         SceneManager.addScene(root);
     }
 
+    @FXML
+    private void handleSettingsButton() {
+        setDisable(true);
+
+        final var loadedData = SceneManager.loadFXMLAndController("Settings");
+        final Node root = loadedData.a();
+        final SettingsController controller = (SettingsController) loadedData.b();
+        controller.setOnClosed(() -> setDisable(false));
+
+        SceneManager.addScene(root);
+    }
+
     @Override
     public void setDisable(boolean disabled) {
         root.setDisable(disabled);

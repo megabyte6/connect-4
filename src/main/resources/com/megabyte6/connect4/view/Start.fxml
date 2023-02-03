@@ -25,5 +25,11 @@
                 </Button>
             </children>
         </VBox>
+        <Button mnemonicParsing="false" onAction="#handleSettingsButton" text="🔧" AnchorPane.rightAnchor="25.0"
+                AnchorPane.topAnchor="25.0">
+            <font>
+                <Font size="13.0"/>
+            </font>
+        </Button>
     </children>
 </AnchorPane>
