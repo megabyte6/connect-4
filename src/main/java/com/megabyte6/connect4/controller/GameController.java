@@ -50,6 +50,8 @@ public class GameController implements Controller {
 
     @FXML
     private void initialize() {
+        App.setWinner(Player.NONE);
+
         // Initialize gameBoard width and height.
         final StackPane gameBoardContainer = (StackPane) gameBoard.getParent();
 
@@ -187,8 +189,16 @@ public class GameController implements Controller {
     }
 
     private void gameWon() {
+        setDisable(true);
         game.gameOver();
         App.getWinner().incrementScore();
+
+        final var loadedData = SceneManager.loadFXMLAndController("GameFinished");
+        final Node root = loadedData.a();
+        final GameFinishedController controller = (GameFinishedController) loadedData.b();
+        controller.setOnClose(() -> setDisable(false));
+
+        SceneManager.addScene(root);
     }
 
     private void gameTie() {
@@ -196,7 +206,7 @@ public class GameController implements Controller {
     }
 
     private void updateMarkerPosition(double mouseXPos) {
-        if (!game.getActive())
+        if (game.getActive())
             return;
 
         final double columnWidth = gameBoard.getMaxWidth() / game.getColumnCount();
@@ -221,7 +231,7 @@ public class GameController implements Controller {
     }
 
     private void placePiece() {
-        if (!game.getActive() && !game.isGameOver()) {
+        if (game.getActive() && !game.isGameOver()) {
             SceneManager.popup("Please return to the current move.");
             return;
         }
