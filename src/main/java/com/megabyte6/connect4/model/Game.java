@@ -73,10 +73,6 @@ public class Game {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public boolean isGameOver() {
         return gameOver;
     }
@@ -84,14 +80,6 @@ public class Game {
     public void gameOver() {
         gameOver = true;
         active = false;
-    }
-
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
     }
 
     public Player getCurrentPlayer() {
@@ -114,15 +102,6 @@ public class Game {
 
     public GamePiece[] getGameBoardColumn(int columnNumber) {
         return gameBoard[columnNumber];
-    }
-
-    public GamePiece[] getGameBoardRow(int rowIndex) {
-        GamePiece[] row = new GamePiece[gameBoard.length];
-        for (int i : range(gameBoard.length)) {
-            row[i] = gameBoard[i][rowIndex];
-        }
-
-        return row;
     }
 
     public int getColumnCount() {
@@ -176,7 +155,7 @@ public class Game {
         GamePiece selectedGamePiece = getGamePiece(selectedAction.b(), selectedAction.c());
         selectedGamePiece.setOwner(selectedAction.a());
 
-        if (historyPointerIsAtLatestMove())
+        if (historyPointerIsAtLatestMove() && !gameOver)
             active = true;
     }
 
