@@ -10,13 +10,16 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    public static final int WIN_REQUIREMENT = 4;
     public static final Color BACKGROUND_COLOR = Color.web("#2d2d2d");
     public static final double DISABLED_OPACITY = 0.8;
 
     private static Player player1 = Player.NONE;
     private static Player player2 = Player.NONE;
     private static Player winner = Player.NONE;
+
+    private static int winRequirement = 4;
+    private static int columnCount = 7;
+    private static int rowCount = 6;
 
     public static void main(String[] args) {
         launch(args);
@@ -70,6 +73,30 @@ public class App extends Application {
         if (!player.equals(player1) && !player.equals(player2) && !player.equals(Player.NONE))
             return;
         App.winner = player;
+    }
+
+    public static int getWinRequirement() {
+        return App.winRequirement;
+    }
+
+    public static void setWinRequirement(int winRequirement) {
+        App.winRequirement = winRequirement;
+    }
+
+    public static int getColumnCount() {
+        return App.columnCount;
+    }
+
+    public static void setColumnCount(int columns) {
+        App.columnCount = columns;
+    }
+
+    public static int getRowCount() {
+        return App.rowCount;
+    }
+
+    public static void setRowCount(int rows) {
+        App.rowCount = rows;
     }
 
     @Override

@@ -116,13 +116,13 @@ public class Walker {
                 }
             }
 
-            if (horizontal.size() == App.WIN_REQUIREMENT)
+            if (horizontal.size() == App.getWinRequirement())
                 return horizontal.toArray(Position[]::new);
-            if (vertical.size() == App.WIN_REQUIREMENT)
+            if (vertical.size() == App.getWinRequirement())
                 return vertical.toArray(Position[]::new);
-            if (ascendingDiagonal.size() == App.WIN_REQUIREMENT)
+            if (ascendingDiagonal.size() == App.getWinRequirement())
                 return ascendingDiagonal.toArray(Position[]::new);
-            if (descendingDiagonal.size() == App.WIN_REQUIREMENT)
+            if (descendingDiagonal.size() == App.getWinRequirement())
                 return descendingDiagonal.toArray(Position[]::new);
         }
 

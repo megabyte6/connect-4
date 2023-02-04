@@ -27,10 +27,6 @@ public class Game {
     private final LinkedList<Triplet<Player, Integer, Integer>> moveHistory = new LinkedList<>();
     private int historyPointer = -1;
 
-    public Game(Player player1, Player player2) {
-        this(player1, player2, 7, 6);
-    }
-
     public Game(Player player1, Player player2, int columns, int rows) {
         this.player1 = player1;
         this.player2 = player2;

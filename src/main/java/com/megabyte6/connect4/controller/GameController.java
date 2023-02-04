@@ -27,7 +27,9 @@ import static com.megabyte6.connect4.util.Range.range;
 
 public class GameController implements Controller {
 
-    private final Game game = new Game(App.getPlayer1(), App.getPlayer2());
+    private final Game game = new Game(
+            App.getPlayer1(), App.getPlayer2(),
+            App.getColumnCount(), App.getRowCount());
     private Position[] winningPositions = null;
 
     @FXML
