@@ -2,12 +2,12 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0"
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0"
             stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.connect4.controller.SettingsController">
     <children>
         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="0.0"
-              AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
+              AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
                     <children>
@@ -16,16 +16,14 @@
                             <children>
                                 <Label text="Columns"/>
                                 <Label text="Rows"/>
-                                <Label text="Goal Length"/>
+                                <Label text="Winning Length"/>
                             </children>
                         </VBox>
                         <VBox spacing="10.0">
                             <children>
-                                <TextField fx:id="columnCount"
-                                           style="-fx-text-fill: white; -fx-background-color: #3d3d3d;"/>
-                                <TextField fx:id="rowCount"
-                                           style="-fx-text-fill: white; -fx-background-color: #3d3d3d;"/>
-                                <ChoiceBox fx:id="goalLength" prefWidth="150.0" style="-fx-background-color: #3d3d3d;"/>
+                                <TextField fx:id="columnCount"/>
+                                <TextField fx:id="rowCount"/>
+                                <ComboBox fx:id="winningLength" prefWidth="150.0"/>
                             </children>
                         </VBox>
                     </children>
@@ -33,13 +31,13 @@
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
                     <children>
                         <Label text="Player 1's team color:"/>
-                        <ColorPicker fx:id="player1Color" style="-fx-background-color: #3d3d3d;"/>
+                        <ColorPicker fx:id="player1Color"/>
                     </children>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
                     <children>
                         <Label text="Player 2's team color:"/>
-                        <ColorPicker fx:id="player2Color" style="-fx-background-color: #3d3d3d;"/>
+                        <ColorPicker fx:id="player2Color"/>
                     </children>
                 </HBox>
             </children>
