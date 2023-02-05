@@ -32,7 +32,7 @@ public class StartController implements Controller {
                     if (App.getPlayer1().equals(Player.NONE)) {
                         App.setPlayer1(new Player(name, Color.YELLOW));
                     } else {
-                        App.getPlayer1().setName(text);
+                        App.getPlayer1().setName(name);
                     }
 
                     getPlayer2Name();
@@ -50,7 +50,7 @@ public class StartController implements Controller {
                     if (App.getPlayer2().equals(Player.NONE)) {
                         App.setPlayer2(new Player(name, Color.RED));
                     } else {
-                        App.getPlayer2().setName(text);
+                        App.getPlayer2().setName(name);
                     }
 
                     SceneManager.switchScenes("Game", Duration.millis(400));
