@@ -13,8 +13,8 @@ public class App extends Application {
     public static final Color BACKGROUND_COLOR = Color.web("#2d2d2d");
     public static final double DISABLED_OPACITY = 0.8;
 
-    private static Player player1 = Player.NONE;
-    private static Player player2 = Player.NONE;
+    private static Player player1 = new Player("", Color.YELLOW);
+    private static Player player2 = new Player("", Color.RED);
     private static Player winner = Player.NONE;
 
     private static int winRequirement = 4;
