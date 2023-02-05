@@ -15,3 +15,35 @@ AnchorPane {
 .button:hover {
     -fx-background-color: #3d3d3d;
 }
+
+.text-field {
+    -fx-background-color: #3d3d3d;
+    -fx-text-fill: white;
+}
+
+.combo-box {
+    -fx-background-color: #3d3d3d;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box .combo-box-popup .list-view, .combo-box .combo-box-popup .list-cell {
+    -fx-background-color: #3d3d3d;
+    -fx-text-fill: white;
+}
+
+.combo-box .combo-box-popup .list-cell:selected {
+    -fx-background-color: teal;
+    -fx-text-fill: white;
+}
+
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-background-color: #4d4d4d;
+    -fx-text-fill: white;
+}
+
+.color-picker {
+    -fx-background-color: #3d3d3d;
+}
