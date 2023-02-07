@@ -1,14 +1,16 @@
 package com.megabyte6.connect4.controller;
 
 import com.megabyte6.connect4.App;
+import com.megabyte6.connect4.controller.dialog.ConfirmController;
 import com.megabyte6.connect4.util.SceneManager;
+import com.megabyte6.connect4.util.Settings;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.AnchorPane;
-
-import static com.megabyte6.connect4.util.Range.range;
 
 public class SettingsController implements Controller {
 
@@ -19,11 +21,11 @@ public class SettingsController implements Controller {
     private AnchorPane root;
 
     @FXML
-    private TextField columnCount;
+    private Spinner<Integer> columnCount;
     @FXML
-    private TextField rowCount;
+    private Spinner<Integer> rowCount;
     @FXML
-    private ComboBox<Integer> winningLength;
+    private Spinner<Integer> winningLength;
 
     @FXML
     private ColorPicker player1Color;
@@ -32,86 +34,74 @@ public class SettingsController implements Controller {
 
     @FXML
     private void initialize() {
-        columnCount.setText(App.getColumnCount() + "");
-        rowCount.setText(App.getRowCount() + "");
+        columnCount.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+        columnCount.editorProperty().get().setAlignment(Pos.CENTER);
+        final SpinnerValueFactory<Integer> columnValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                2,
+                Integer.MAX_VALUE,
+                App.getSettings().getColumnCount());
+        columnCount.setValueFactory(columnValues);
 
-        updateGoalLengthOptions();
+        rowCount.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+        rowCount.editorProperty().get().setAlignment(Pos.CENTER);
+        final SpinnerValueFactory<Integer> rowValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                2,
+                Integer.MAX_VALUE,
+                App.getSettings().getRowCount());
+        rowCount.setValueFactory(rowValues);
+
+        winningLength.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+        winningLength.editorProperty().get().setAlignment(Pos.CENTER);
+        updateMaxWinningLength();
 
         player1Color.setValue(App.getPlayer1().getColor());
         player2Color.setValue(App.getPlayer2().getColor());
 
-        columnCount.setOnKeyTyped(event -> {
-            if (inputValid()) {
-                updateGoalLengthOptions();
-                updateAppSettings();
-            }
+        columnCount.setOnMouseReleased(event -> {
+            updateAppSettings();
+            updateMaxWinningLength();
         });
-        rowCount.setOnKeyTyped(event -> {
-            if (inputValid()) {
-                updateGoalLengthOptions();
-                updateAppSettings();
-            }
+        rowCount.setOnMouseReleased(event -> {
+            updateAppSettings();
+            updateMaxWinningLength();
         });
-        winningLength.setOnAction(event -> {
-            if (inputValid())
-                updateAppSettings();
-        });
-        player1Color.setOnAction(event -> {
-            if (inputValid())
-                updateAppSettings();
-        });
-        player2Color.setOnAction(event -> {
-            if (inputValid())
-                updateAppSettings();
-        });
+        winningLength.setOnMouseReleased(event -> updateAppSettings());
+        player1Color.setOnAction(event -> updateAppSettings());
+        player2Color.setOnAction(event -> updateAppSettings());
     }
 
-    private boolean inputValid() {
-        int selectedColumnCount, selectedRowCount;
+    private void updateMaxWinningLength() {
+        final int maxWinningLength = Math.min(
+                App.getSettings().getColumnCount(),
+                App.getSettings().getRowCount());
+        final SpinnerValueFactory<Integer> winningLengthValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                2,
+                maxWinningLength,
+                App.getSettings().getWinRequirement());
+        winningLength.setValueFactory(winningLengthValues);
 
-        columnCount.setStyle("-fx-text-fill: white;"
-                + "-fx-background-color: #3d3d3d;");
-        try {
-            selectedColumnCount = Integer.parseInt(columnCount.getText());
-        } catch (NumberFormatException e) {
-            columnCount.setStyle(columnCount.getStyle() + "-fx-border-color: red;");
-            return false;
+        if (maxWinningLength < App.getSettings().getWinRequirement()) {
+            winningLength.getValueFactory().setValue(maxWinningLength);
+            updateAppSettings();
         }
-
-        rowCount.setStyle("-fx-text-fill: white;"
-                + "-fx-background-color: #3d3d3d;");
-        try {
-            selectedRowCount = Integer.parseInt(rowCount.getText());
-        } catch (NumberFormatException e) {
-            rowCount.setStyle(rowCount.getStyle() + "-fx-border-color: red;");
-            return false;
-        }
-
-        winningLength.setStyle("-fx-background-color: #3d3d3d;");
-        int selectedGoalLength = winningLength.getSelectionModel().getSelectedIndex() + 1;
-        if (selectedGoalLength > Math.min(selectedColumnCount, selectedRowCount)) {
-            winningLength.setStyle(winningLength.getStyle() + "-fx-border-color: red;");
-            return false;
-        }
-
-        return true;
-    }
-
-    private void updateGoalLengthOptions() {
-        winningLength.getItems().clear();
-        int maxGoalLengthOption = Math.min(App.getColumnCount(), App.getRowCount());
-        for (int i : range(maxGoalLengthOption))
-            winningLength.getItems().add(i + 1);
-
-        winningLength.setValue(App.getWinRequirement());
     }
 
     private void updateAppSettings() {
-        App.setColumnCount(Integer.parseInt(columnCount.getText()));
-        App.setRowCount(Integer.parseInt(rowCount.getText()));
-        App.setWinRequirement(winningLength.getSelectionModel().getSelectedIndex() + 1);
-        App.getPlayer1().setColor(player1Color.getValue());
-        App.getPlayer2().setColor(player2Color.getValue());
+        App.getSettings().setColumnCount(columnCount.getValue());
+        App.getSettings().setRowCount(rowCount.getValue());
+        App.getSettings().setWinRequirement(winningLength.getValue());
+        App.getSettings().setPlayer1Color(player1Color.getValue());
+        App.getSettings().setPlayer2Color(player2Color.getValue());
+    }
+
+    private void resetAllSettings() {
+        App.setSettings(Settings.DEFAULT);
+
+        columnCount.getValueFactory().setValue(App.getSettings().getColumnCount());
+        rowCount.getValueFactory().setValue(App.getSettings().getRowCount());
+        updateMaxWinningLength();
+        player1Color.setValue(App.getSettings().getPlayer1Color());
+        player2Color.setValue(App.getSettings().getPlayer2Color());
     }
 
     public void setOnClosed(Runnable run) {
@@ -120,20 +110,29 @@ public class SettingsController implements Controller {
 
     @FXML
     private void handleCloseButton() {
-        if (!inputValid()) {
-            SceneManager.popup("Fix the fields highlighted in red.");
-            return;
-        }
+        updateAppSettings();
+        App.writeSettings();
 
         SceneManager.removeTopScene();
-
-        App.setColumnCount(Integer.parseInt(columnCount.getText()));
-        App.setRowCount(Integer.parseInt(rowCount.getText()));
-        App.setWinRequirement(winningLength.getSelectionModel().getSelectedItem());
-        App.getPlayer1().setColor(player1Color.getValue());
-        App.getPlayer2().setColor(player2Color.getValue());
-
         runAfter.run();
+    }
+
+    @FXML
+    private void handleResetAllButton() {
+        setDisable(true);
+
+        final var loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
+        final Node root = loadedData.a();
+        final ConfirmController controller = (ConfirmController) loadedData.b();
+
+        controller.setText("Are you sure you want to reset all settings to their defaults?");
+        controller.setOnOk(() -> {
+            resetAllSettings();
+            setDisable(false);
+        });
+        controller.setOnCancel(() -> setDisable(false));
+
+        SceneManager.addScene(root);
     }
 
     @Override
