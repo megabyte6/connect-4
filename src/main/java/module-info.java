@@ -1,6 +1,6 @@
 module connect_four {
     requires javafx.fxml;
-
+    requires com.electronwill.nightconfig.core;
     requires transitive javafx.controls;
 
     opens com.megabyte6.connect4.controller to javafx.fxml;
