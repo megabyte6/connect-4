@@ -29,7 +29,7 @@ public class GameController implements Controller {
 
     private final Game game = new Game(
             App.getPlayer1(), App.getPlayer2(),
-            App.getColumnCount(), App.getRowCount());
+            App.getSettings().getColumnCount(), App.getSettings().getRowCount());
     private Position[] winningPositions = null;
 
     @FXML
