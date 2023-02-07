@@ -29,19 +29,20 @@ AnchorPane {
     -fx-text-fill: #ffffff;
 }
 
-.combo-box .combo-box-popup .list-view, .combo-box .combo-box-popup .list-cell {
-    -fx-background-color: #3d3d3d;
-    -fx-text-fill: white;
+.spinner {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
-.combo-box .combo-box-popup .list-cell:selected {
-    -fx-background-color: teal;
-    -fx-text-fill: white;
-}
-
-.combo-box .combo-box-popup .list-cell:hover {
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-body-color: #4d4d4d;
     -fx-background-color: #4d4d4d;
-    -fx-text-fill: white;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #ffffff;
 }
 
 .color-picker {
