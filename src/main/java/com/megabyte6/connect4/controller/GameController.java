@@ -62,6 +62,11 @@ public class GameController implements Controller {
 
     @FXML
     private void initialize() {
+        // If player 1 won last game, make player 2 the starting player.
+        if (App.getWinner().equals(App.getPlayer1())
+                && game.getCurrentPlayer().equals(App.getPlayer1()))
+            game.swapTurns();
+
         App.setWinner(Player.NONE);
 
         // Initialize gameBoard width and height.
