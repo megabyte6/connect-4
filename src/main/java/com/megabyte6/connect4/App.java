@@ -161,6 +161,8 @@ public class App extends Application {
 
     public static void setSettings(Settings settings) {
         App.settings = settings;
+        player1.setColor(settings.getPlayer1Color());
+        player2.setColor(settings.getPlayer2Color());
     }
 
 }
