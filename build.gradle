@@ -23,6 +23,15 @@ ext {
     // Compile target for jpackage.
     // Options: linux-aarch64, linux-x64, macos-aarch64, macos-x64, win-x64.
     jpackageTargetPlatform = 'win-x64'
+
+    // Links for downloading jdks.
+    jdkLinks = [
+            'linux-aarch64': 'https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_aarch64_linux_hotspot_19.0.2_7.tar.gz',
+            'linux-x64'    : 'https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_linux_hotspot_19.0.2_7.tar.gz',
+            'macos-aarch64': 'https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_aarch64_mac_hotspot_19.0.2_7.tar.gz',
+            'macos-x64'    : 'https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_mac_hotspot_19.0.2_7.tar.gz',
+            'win-x64'      : 'https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_windows_hotspot_19.0.2_7.zip'
+    ]
 }
 
 version = appVersion
@@ -62,54 +71,54 @@ jlink {
     switch (jlinkTargetPlatform) {
         case 'linux-aarch64':
             targetPlatform('linux-aarch64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_aarch64_linux_hotspot_19.0.2_7.tar.gz')
+                jdkHome = jdkDownload(jdkLinks['linux-aarch64'])
                 addExtraModulePath('jmods/linux/aarch64')
             }
             break
         case 'linux-x64':
             targetPlatform('linux-x64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_linux_hotspot_19.0.2_7.tar.gz')
+                jdkHome = jdkDownload(jdkLinks['linux-x64'])
                 addExtraModulePath('jmods/linux/x64')
             }
             break
         case 'macos-aarch64':
             targetPlatform('macos-aarch64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_aarch64_mac_hotspot_19.0.2_7.tar.gz')
+                jdkHome = jdkDownload(jdkLinks['macos-aarch64'])
                 addExtraModulePath('jmods/macos/aarch64')
             }
             break
         case 'macos-x64':
             targetPlatform('macos-x64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_mac_hotspot_19.0.2_7.tar.gz')
+                jdkHome = jdkDownload(jdkLinks['macos-x64'])
                 addExtraModulePath('jmods/macos/x64')
             }
             break
         case 'win-x64':
             targetPlatform('win-x64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_windows_hotspot_19.0.2_7.zip')
+                jdkHome = jdkDownload(jdkLinks['win-x64'])
                 addExtraModulePath('jmods/win/x64')
             }
             break
         default:
             // Run all cases.
             targetPlatform('linux-aarch64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_aarch64_linux_hotspot_19.0.2_7.tar.gz')
+                jdkHome = jdkDownload(jdkLinks['linux-aarch64'])
                 addExtraModulePath('jmods/linux/aarch64')
             }
             targetPlatform('linux-x64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_linux_hotspot_19.0.2_7.tar.gz')
+                jdkHome = jdkDownload(jdkLinks['linux-x64'])
                 addExtraModulePath('jmods/linux/x64')
             }
             targetPlatform('macos-aarch64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_aarch64_mac_hotspot_19.0.2_7.tar.gz')
+                jdkHome = jdkDownload(jdkLinks['macos-aarch64'])
                 addExtraModulePath('jmods/macos/aarch64')
             }
             targetPlatform('macos-x64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_mac_hotspot_19.0.2_7.tar.gz')
+                jdkHome = jdkDownload(jdkLinks['macos-x64'])
                 addExtraModulePath('jmods/macos/x64')
             }
             targetPlatform('win-x64') {
-                jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.2%2B7/OpenJDK19U-jdk_x64_windows_hotspot_19.0.2_7.zip')
+                jdkHome = jdkDownload(jdkLinks['win-x64'])
                 addExtraModulePath('jmods/win/x64')
             }
     }
