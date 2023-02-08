@@ -8,22 +8,32 @@ import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
 import com.megabyte6.connect4.util.Walker;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.megabyte6.connect4.util.Range.range;
+import static javafx.util.Duration.millis;
 
 public class GameController implements Controller {
 
@@ -247,9 +257,12 @@ public class GameController implements Controller {
         if (row == -1)
             return;
 
+        game.addMoveToHistory(game.getCurrentPlayer(), column, row);
+
         final GamePiece selectedPiece = game.getGamePiece(column, row);
         selectedPiece.setOwner(game.getCurrentPlayer());
-        game.addMoveToHistory(game.getCurrentPlayer(), column, row);
+        selectedPiece.setFill(App.BACKGROUND_COLOR);
+        playDroppingAnimation(marker, selectedPiece, game.getCurrentPlayer());
 
         if (checkForWin()) {
             gameWon();
@@ -264,6 +277,56 @@ public class GameController implements Controller {
         marker.setOwner(game.getCurrentPlayer());
 
         updateCurrentTurnLabel();
+    }
+
+    private void playDroppingAnimation(GamePiece origin, GamePiece destination, Player player) {
+        final Bounds initialBounds = origin.localToScene(origin.getBoundsInLocal());
+        final Point2D initialPos = new Point2D(initialBounds.getCenterX(), initialBounds.getCenterY());
+
+        final Bounds finalBounds = destination.localToScene(destination.getBoundsInLocal());
+        final Point2D finalPos = new Point2D(finalBounds.getCenterX(), finalBounds.getCenterY());
+
+        final Circle circle = new Circle();
+        circle.setFill(origin.getFill());
+        circle.setRadius(origin.getRadius());
+        circle.setCenterX(initialPos.getX());
+        root.getChildren().add(circle);
+
+        final DoubleProperty yPos = circle.centerYProperty();
+
+        final List<KeyFrame> keyFrames = new ArrayList<>();
+        final double totalDistance = finalPos.getY() - initialPos.getY();
+        final double initialFallTime = totalDistance / 2;
+        double time = 0;
+        double bounceHeight = totalDistance;
+        double bouncesLeft = 3;
+
+        while (bouncesLeft > 0) {
+            final double deltaTime = bounceHeight / totalDistance * initialFallTime;
+
+            keyFrames.add(new KeyFrame(
+                    millis(time),
+                    new KeyValue(yPos, finalPos.getY() - bounceHeight, Interpolator.EASE_OUT)
+            ));
+            time += deltaTime;
+            keyFrames.add(new KeyFrame(
+                    millis(time),
+                    new KeyValue(yPos, finalPos.getY(), Interpolator.EASE_IN)
+            ));
+            time += deltaTime;
+
+            bounceHeight /= (bouncesLeft + 1);
+            bouncesLeft--;
+        }
+
+        final Timeline timeline = new Timeline();
+        timeline.getKeyFrames().addAll(keyFrames);
+        timeline.setOnFinished(event -> {
+            destination.setFill(player.getColor());
+            root.getChildren().remove(circle);
+        });
+
+        timeline.play();
     }
 
     private void updatePlayerScoreLabels() {
@@ -312,7 +375,7 @@ public class GameController implements Controller {
         final ConfirmController controller = (ConfirmController) loadedData.b();
 
         controller.setText("Are you sure you want to leave the game?");
-        controller.setOnOk(() -> SceneManager.switchScenes("Start", Duration.millis(400)));
+        controller.setOnOk(() -> SceneManager.switchScenes("Start", millis(400)));
         controller.setOnCancel(() -> setDisable(false));
 
         SceneManager.addScene(root);
@@ -327,7 +390,7 @@ public class GameController implements Controller {
         final ConfirmController controller = (ConfirmController) loadedData.b();
 
         controller.setText("Are you sure you want to reset the game?");
-        controller.setOnOk(() -> SceneManager.switchScenes("Game", Duration.millis(400)));
+        controller.setOnOk(() -> SceneManager.switchScenes("Game", millis(400)));
         controller.setOnCancel(() -> setDisable(false));
 
         SceneManager.addScene(root);
