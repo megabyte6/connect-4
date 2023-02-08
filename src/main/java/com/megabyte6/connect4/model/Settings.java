@@ -1,4 +1,4 @@
-package com.megabyte6.connect4.util;
+package com.megabyte6.connect4.model;
 
 import com.megabyte6.connect4.App;
 import javafx.scene.paint.Color;

@@ -2,8 +2,8 @@ package com.megabyte6.connect4.controller;
 
 import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.controller.dialog.ConfirmController;
+import com.megabyte6.connect4.model.Settings;
 import com.megabyte6.connect4.util.SceneManager;
-import com.megabyte6.connect4.util.Settings;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
