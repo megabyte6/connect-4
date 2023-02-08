@@ -79,6 +79,7 @@ public class StartController implements Controller {
 
         controller.setPromptText(promptText);
         controller.setDefaultText(defaultText);
+        controller.selectTextByDefault(true);
         controller.setOnOk(onOk);
         controller.setOnCancel(onCancel);
 

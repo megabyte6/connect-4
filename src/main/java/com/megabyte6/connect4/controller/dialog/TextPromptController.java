@@ -17,6 +17,8 @@ public class TextPromptController implements Controller {
     private Runnable onCancel = () -> {
     };
 
+    private boolean selectText = false;
+
     @FXML
     private AnchorPane root;
 
@@ -42,6 +44,15 @@ public class TextPromptController implements Controller {
 
     public void setDefaultText(String text) {
         textField.setText(text);
+
+        if (selectText)
+            textField.selectAll();
+    }
+
+    public void selectTextByDefault(boolean selectText) {
+        this.selectText = selectText;
+
+        textField.selectAll();
     }
 
     public void setOnOk(Consumer<String> run) {
