@@ -6,6 +6,7 @@ import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -16,6 +17,18 @@ public class StartController implements Controller {
 
     @FXML
     private AnchorPane root;
+
+    @FXML
+    private void initialize() {
+        root.setOnKeyPressed(event -> {
+            if (event.isShortcutDown()) {
+                if (event.getCode() == KeyCode.S)
+                    handleSettingsButton();
+            }
+        });
+
+        root.requestFocus();
+    }
 
     @FXML
     private void startButtonPressed() {
