@@ -37,7 +37,7 @@ public class SettingsController implements Controller {
         columnCount.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
         columnCount.editorProperty().get().setAlignment(Pos.CENTER);
         final SpinnerValueFactory<Integer> columnValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                2,
+                3,
                 Integer.MAX_VALUE,
                 App.getSettings().getColumnCount());
         columnCount.setValueFactory(columnValues);
@@ -45,7 +45,7 @@ public class SettingsController implements Controller {
         rowCount.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
         rowCount.editorProperty().get().setAlignment(Pos.CENTER);
         final SpinnerValueFactory<Integer> rowValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                2,
+                3,
                 Integer.MAX_VALUE,
                 App.getSettings().getRowCount());
         rowCount.setValueFactory(rowValues);
@@ -75,7 +75,7 @@ public class SettingsController implements Controller {
                 App.getSettings().getColumnCount(),
                 App.getSettings().getRowCount());
         final SpinnerValueFactory<Integer> winningLengthValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                2,
+                3,
                 maxWinningLength,
                 App.getSettings().getWinRequirement());
         winningLength.setValueFactory(winningLengthValues);
