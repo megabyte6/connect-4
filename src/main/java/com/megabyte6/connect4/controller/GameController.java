@@ -40,7 +40,6 @@ public class GameController implements Controller {
     private final Game game = new Game(
             App.getPlayer1(), App.getPlayer2(),
             App.getSettings().getColumnCount(), App.getSettings().getRowCount());
-    private Position[] winningPositions = null;
 
     @FXML
     private AnchorPane root;
@@ -72,10 +71,10 @@ public class GameController implements Controller {
         // Initialize gameBoard width and height.
         final StackPane gameBoardContainer = (StackPane) gameBoard.getParent();
 
-        gameBoardContainer.widthProperty().addListener((observable, oldValue, newValue) ->
-                handleWindowSizeChanged(new Dimension2D(newValue.doubleValue(), gameBoardContainer.getHeight())));
-        gameBoardContainer.heightProperty().addListener((observable, oldValue, newValue) ->
-                handleWindowSizeChanged(new Dimension2D(gameBoardContainer.getWidth(), newValue.doubleValue())));
+        gameBoardContainer.widthProperty().addListener((observable, oldValue, newValue) -> handleWindowSizeChanged(
+                new Dimension2D(newValue.doubleValue(), gameBoardContainer.getHeight())));
+        gameBoardContainer.heightProperty().addListener((observable, oldValue, newValue) -> handleWindowSizeChanged(
+                new Dimension2D(gameBoardContainer.getWidth(), newValue.doubleValue())));
 
         // Draw horizontal grid lines.
         for (int i : range(game.getRowCount() + 1)) {
@@ -176,6 +175,8 @@ public class GameController implements Controller {
                 switch (event.getCode()) {
                     case Q -> handleReturnToStartScreen();
                     case N -> handleNewGame();
+                    default -> {
+                    }
                 }
         });
 
@@ -191,13 +192,11 @@ public class GameController implements Controller {
         final int row = lastMove.c();
 
         final Walker walker = new Walker(game, player, new Position(column, row));
-        final Position[] positions = walker.findWinPosition();
 
-        if (positions == null)
+        if (walker.findWinPosition() == null)
             return false;
 
         App.setWinner(player);
-        winningPositions = positions;
         return true;
     }
 
@@ -311,13 +310,11 @@ public class GameController implements Controller {
 
             keyFrames.add(new KeyFrame(
                     millis(time),
-                    new KeyValue(yPos, finalPos.getY() - bounceHeight, Interpolator.EASE_OUT)
-            ));
+                    new KeyValue(yPos, finalPos.getY() - bounceHeight, Interpolator.EASE_OUT)));
             time += deltaTime;
             keyFrames.add(new KeyFrame(
                     millis(time),
-                    new KeyValue(yPos, finalPos.getY(), Interpolator.EASE_IN)
-            ));
+                    new KeyValue(yPos, finalPos.getY(), Interpolator.EASE_IN)));
             time += deltaTime;
 
             bounceHeight /= (bouncesLeft + 1);
