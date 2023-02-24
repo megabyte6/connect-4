@@ -38,8 +38,8 @@ java {
 }
 
 application {
+    mainModule = 'com.megabyte6.connect4'
     mainClass = 'com.megabyte6.connect4.App'
-    mainModule = 'connect_four'
 }
 
 javafx {
