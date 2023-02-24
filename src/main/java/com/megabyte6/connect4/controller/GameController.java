@@ -332,12 +332,18 @@ public class GameController implements Controller {
     }
 
     private void updatePlayerScoreLabels() {
-        player1Score.setText(App.getPlayer1().getName() + ": " + App.getPlayer1().getScore());
-        player2Score.setText(App.getPlayer2().getName() + ": " + App.getPlayer2().getScore());
+        final String player1Plural = App.getPlayer1().getScore() == 1 ? "" : "s";
+        player1Score.setText(App.getPlayer1().getName() + " won " + App.getPlayer1().getScore()
+                + " time" + player1Plural);
+        final String player2Plural = App.getPlayer1().getScore() == 1 ? "" : "s";
+        player2Score.setText(App.getPlayer2().getName() + " won " + App.getPlayer2().getScore()
+                + " time" + player2Plural);
     }
 
     public void updateCurrentTurnLabel() {
-        currentTurn.setText(game.getCurrentPlayer().getName() + "'s turn");
+        final String name = game.getCurrentPlayer().getName();
+        final String pluralPostfix = name.charAt(name.length() - 1) == 's' ? "'" : "'s";
+        currentTurn.setText(name + pluralPostfix + " turn");
     }
 
     // Update gameBoard size because the GridPane doesn't resize automatically
