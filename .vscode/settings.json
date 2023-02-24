@@ -1,0 +1,8 @@
+{
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "default": true
+        }
+    ]
+}
