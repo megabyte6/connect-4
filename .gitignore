@@ -5,5 +5,5 @@ build
 # VSCode
 bin
 
-# IntelliJ Idea
-.idea
+# Project runtime files.
+config.toml
