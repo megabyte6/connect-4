@@ -9,34 +9,18 @@ plugins {
     id 'org.beryx.jlink' version '2.25.0'
 }
 
+version = appVersion
+
 ext {
-    os = org.gradle.internal.os.OperatingSystem.current()
-
-    // Set the version of the app.
-    appVersion = '1.0'
-
-    // Set the version of JavaFX to use.
-    javafxVersion = 19
-
-    // Compile target for jlink.
-    // Options: linux-aarch64, linux-x64, macos-aarch64, macos-x64, win-x64, all.
-    jlinkTargetPlatform = 'win-x64'
-
-    // Compile target for jpackage.
-    // Options: linux-aarch64, linux-x64, macos-aarch64, macos-x64, win-x64.
-    jpackageTargetPlatform = 'win-x64'
-
     // Links for downloading jdks.
     jdkLinks = [
-            'linux-aarch64': 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.6_10.tar.gz',
-            'linux-x64'    : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.6_10.tar.gz',
-            'macos-aarch64': 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.6_10.tar.gz',
-            'macos-x64'    : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_mac_hotspot_17.0.6_10.tar.gz',
-            'win-x64'      : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_windows_hotspot_17.0.6_10.zip'
+        'linux-aarch64': 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.6_10.tar.gz',
+        'linux-x64'    : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.6_10.tar.gz',
+        'macos-aarch64': 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.6_10.tar.gz',
+        'macos-x64'    : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_mac_hotspot_17.0.6_10.tar.gz',
+        'win-x64'      : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_windows_hotspot_17.0.6_10.zip'
     ]
 }
-
-version = appVersion
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -54,7 +38,6 @@ java {
 }
 
 application {
-    // Define the main class for the application.
     mainClass = 'com.megabyte6.connect4.App'
     mainModule = 'connect_four'
 }
@@ -66,10 +49,10 @@ javafx {
 
 jlink {
     options = [
-            '--strip-debug',
-            '--compress', '2',
-            '--no-header-files',
-            '--no-man-pages'
+        '--strip-debug',
+        '--compress', '2',
+        '--no-header-files',
+        '--no-man-pages'
     ]
     launcher {
         noConsole = true
@@ -98,14 +81,14 @@ jlink {
         icon = 'src/main/resources/icon.ico'
         vendor = 'Brayden Chan'
 
-        if (os.windows) {
+        if (System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0) {
             installerOptions = [
-                    '--win-dir-chooser',
-                    '--win-menu',
-                    '--win-menu-group', 'Connect 4',
-                    '--win-per-user-install',
-                    '--win-shortcut',
-                    '--win-shortcut-prompt'
+                '--win-dir-chooser',
+                '--win-menu',
+                '--win-menu-group', 'Connect 4',
+                '--win-per-user-install',
+                '--win-shortcut',
+                '--win-shortcut-prompt'
             ]
         }
     }
