@@ -94,4 +94,10 @@ public class Settings {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Settings [columnCount=" + columnCount + ", rowCount=" + rowCount + ", winRequirement=" + winRequirement
+                + ", player1Color=" + player1Color + ", player2Color=" + player2Color + "]";
+    }
+
 }
