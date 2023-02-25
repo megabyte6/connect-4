@@ -1,5 +1,11 @@
 package com.megabyte6.connect4.controller;
 
+import static com.megabyte6.connect4.util.Range.range;
+import static javafx.util.Duration.millis;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.controller.dialog.ConfirmController;
 import com.megabyte6.connect4.model.Game;
@@ -27,14 +33,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
-
-import static com.megabyte6.connect4.util.Range.range;
-import static javafx.util.Duration.millis;
-
 public class GameController implements Controller {
 
     private final Game game = new Game(
@@ -56,6 +54,8 @@ public class GameController implements Controller {
     private Label player1Score;
     @FXML
     private Label currentTurn;
+    @FXML
+    private Label timerLabel;
     @FXML
     private Label player2Score;
 
@@ -345,6 +345,8 @@ public class GameController implements Controller {
         final String pluralPostfix = name.charAt(name.length() - 1) == 's' ? "'" : "'s";
         currentTurn.setText(name + pluralPostfix + " turn");
     }
+
+    public void setupTimer() {}
 
     // Update gameBoard size because the GridPane doesn't resize automatically
     // when circles are added.
