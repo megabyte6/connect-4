@@ -7,6 +7,8 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.13'
     // Apply jlink for building the app.
     id 'org.beryx.jlink' version '2.25.0'
+    // Apply lombok.
+    id 'io.freefair.lombok' version '6.6.3'
 
     // Current fix for an upstream bug relating to
     // https://github.com/redhat-developer/vscode-java/issues/881

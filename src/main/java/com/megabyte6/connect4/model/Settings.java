@@ -3,9 +3,9 @@ package com.megabyte6.connect4.model;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import com.electronwill.nightconfig.core.file.FileConfig;
-import com.electronwill.nightconfig.core.file.NoFormatFoundException;
 import com.megabyte6.connect4.App;
 import javafx.scene.paint.Color;
+import lombok.Cleanup;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -49,13 +49,8 @@ public class Settings {
         if (Files.isDirectory(path))
             return;
 
-        final FileConfig config;
-        try {
-            config = FileConfig.of(path);
-        } catch (NoFormatFoundException e) {
-            e.printStackTrace();
-            return;
-        }
+        @Cleanup
+        final FileConfig config = FileConfig.of(path);
 
         config.set("columnCount", columnCount);
         config.set("rowCount", rowCount);
@@ -64,7 +59,6 @@ public class Settings {
         config.set("player2Color", player2Color.toString());
 
         config.save();
-        config.close();
     }
 
 }
