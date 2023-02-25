@@ -14,14 +14,7 @@ import static com.megabyte6.connect4.util.tuple.Tuple.of;
 public class Walker {
 
     enum Direction {
-        UP,
-        UPPER_RIGHT,
-        RIGHT,
-        LOWER_RIGHT,
-        DOWN,
-        LOWER_LEFT,
-        LEFT,
-        UPPER_LEFT
+        UP, UPPER_RIGHT, RIGHT, LOWER_RIGHT, DOWN, LOWER_LEFT, LEFT, UPPER_LEFT
     }
 
     private final Game game;
