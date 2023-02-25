@@ -11,6 +11,7 @@ import com.megabyte6.connect4.controller.dialog.ConfirmController;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
+import com.megabyte6.connect4.model.Timer;
 import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
 import com.megabyte6.connect4.util.Walker;
@@ -38,6 +39,8 @@ public class GameController implements Controller {
     private final Game game = new Game(
             App.getPlayer1(), App.getPlayer2(),
             App.getSettings().getColumnCount(), App.getSettings().getRowCount());
+
+    private final Timer timer = new Timer(App.getSettings().getTimerLength());
 
     @FXML
     private AnchorPane root;
@@ -162,6 +165,12 @@ public class GameController implements Controller {
         // Initialize labels.
         updatePlayerScoreLabels();
         updateCurrentTurnLabel();
+        // Initialize timer.
+        if (App.getSettings().isTimerEnabled()) {
+            timer.setOnTimeout(() -> swapTurns());
+            timer.setOnUpdate(() -> timerLabel.setText(timer.getFormattedTime()));
+            App.delay(2000, () -> timer.start());
+        }
 
         // Set up key listeners.
         markerContainer.setOnMouseMoved(event -> updateMarkerPosition(event.getX()));
@@ -277,10 +286,7 @@ public class GameController implements Controller {
             return;
         }
 
-        game.swapTurns();
-        marker.setOwner(game.getCurrentPlayer());
-
-        updateCurrentTurnLabel();
+        swapTurns();
     }
 
     private void playDroppingAnimation(GamePiece origin, GamePiece destination, Player player) {
@@ -329,6 +335,14 @@ public class GameController implements Controller {
         });
 
         timeline.play();
+    }
+
+    private void swapTurns() {
+        game.swapTurns();
+        marker.setOwner(game.getCurrentPlayer());
+
+        updateCurrentTurnLabel();
+        timer.restart();
     }
 
     private void updatePlayerScoreLabels() {

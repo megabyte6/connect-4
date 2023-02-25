@@ -71,6 +71,10 @@ public class Timer {
         active = false;
     }
 
+    public void restart() {
+        setTime(startTime);
+    }
+
     public void reset() {
         active = false;
         setTime(startTime);
