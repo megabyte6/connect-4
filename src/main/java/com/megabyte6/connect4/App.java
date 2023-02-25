@@ -1,5 +1,8 @@
 package com.megabyte6.connect4;
 
+import static java.util.Objects.requireNonNullElse;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.electronwill.nightconfig.core.file.NoFormatFoundException;
 import com.megabyte6.connect4.model.Player;
@@ -10,21 +13,24 @@ import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import static java.util.Objects.requireNonNullElse;
+import lombok.Getter;
+import lombok.Setter;
 
 public class App extends Application {
 
     public static final Color BACKGROUND_COLOR = Color.web("#2d2d2d");
     public static final double DISABLED_OPACITY = 0.8;
 
+    @Getter
+    @Setter
     private static Player player1 = new Player("", Color.YELLOW);
+    @Getter
+    @Setter
     private static Player player2 = new Player("", Color.RED);
+    @Getter
     private static Player winner = Player.NONE;
 
+    @Getter
     private static Settings settings;
     private static final Path settingsPath = Path.of("config.toml");
 
@@ -99,64 +105,17 @@ public class App extends Application {
                 rowCount,
                 winRequirement,
                 Color.valueOf(player1Color),
-                Color.valueOf(player2Color)
-        );
-    }
-
-    private static void writeSettings(Path path, Settings settings) {
-        if (Files.isDirectory(path))
-            return;
-
-        final FileConfig config;
-        try {
-            config = FileConfig.of(path);
-        } catch (NoFormatFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        config.set("columnCount", settings.getColumnCount());
-        config.set("rowCount", settings.getRowCount());
-        config.set("winRequirement", settings.getWinRequirement());
-        config.set("player1Color", settings.getPlayer1Color().toString());
-        config.set("player2Color", settings.getPlayer2Color().toString());
-
-        config.save();
-        config.close();
+                Color.valueOf(player2Color));
     }
 
     public static void writeSettings() {
-        writeSettings(settingsPath, settings);
-    }
-
-    public static Player getPlayer1() {
-        return App.player1;
-    }
-
-    public static void setPlayer1(Player player) {
-        App.player1 = player;
-    }
-
-    public static Player getPlayer2() {
-        return App.player2;
-    }
-
-    public static void setPlayer2(Player player) {
-        App.player2 = player;
-    }
-
-    public static Player getWinner() {
-        return App.winner;
+        settings.save(settingsPath);
     }
 
     public static void setWinner(Player player) {
         if (!player.equals(player1) && !player.equals(player2) && !player.equals(Player.NONE))
             return;
         App.winner = player;
-    }
-
-    public static Settings getSettings() {
-        return App.settings;
     }
 
     public static void setSettings(Settings settings) {
