@@ -1,5 +1,9 @@
 package com.megabyte6.connect4.util;
 
+import static javafx.util.Duration.millis;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import com.megabyte6.connect4.controller.Controller;
 import com.megabyte6.connect4.util.tuple.Pair;
 import com.megabyte6.connect4.util.tuple.Tuple;
@@ -20,12 +24,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import static javafx.util.Duration.millis;
-
 public class SceneManager {
 
     private static final String RESOURCE_PATH = "/com/megabyte6/connect4/view/";
@@ -35,8 +33,7 @@ public class SceneManager {
     private static StackPane sceneStack;
     private static Color backgroundColor;
 
-    private SceneManager() {
-    }
+    private SceneManager() {}
 
     public static void init(Stage stage, String fxmlName) {
         init(stage, fxmlName, Color.WHITE);
