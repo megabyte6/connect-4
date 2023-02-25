@@ -1,8 +1,15 @@
 package com.megabyte6.connect4.model;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import com.electronwill.nightconfig.core.file.FileConfig;
+import com.electronwill.nightconfig.core.file.NoFormatFoundException;
 import com.megabyte6.connect4.App;
 import javafx.scene.paint.Color;
+import lombok.Data;
+import lombok.NonNull;
 
+@Data
 public class Settings {
 
     public static final Settings DEFAULT = new Settings(7, 6, 4, Color.YELLOW, Color.RED);
@@ -12,7 +19,9 @@ public class Settings {
 
     private int winRequirement;
 
+    @NonNull
     private Color player1Color;
+    @NonNull
     private Color player2Color;
 
     public Settings(int columnCount, int rowCount, int winRequirement, Color player1Color, Color player2Color) {
@@ -26,41 +35,9 @@ public class Settings {
         App.getPlayer2().setColor(player2Color);
     }
 
-    public int getColumnCount() {
-        return columnCount;
-    }
-
-    public void setColumnCount(int columnCount) {
-        this.columnCount = columnCount;
-    }
-
-    public int getRowCount() {
-        return rowCount;
-    }
-
-    public void setRowCount(int rowCount) {
-        this.rowCount = rowCount;
-    }
-
-    public int getWinRequirement() {
-        return winRequirement;
-    }
-
-    public void setWinRequirement(int winRequirement) {
-        this.winRequirement = winRequirement;
-    }
-
-    public Color getPlayer1Color() {
-        return player1Color;
-    }
-
     public void setPlayer1Color(Color player1Color) {
         this.player1Color = player1Color;
         App.getPlayer1().setColor(player1Color);
-    }
-
-    public Color getPlayer2Color() {
-        return player2Color;
     }
 
     public void setPlayer2Color(Color player2Color) {
@@ -68,30 +45,26 @@ public class Settings {
         App.getPlayer2().setColor(player2Color);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+    public void save(Path path) {
+        if (Files.isDirectory(path))
+            return;
 
-        Settings settings = (Settings) o;
+        final FileConfig config;
+        try {
+            config = FileConfig.of(path);
+        } catch (NoFormatFoundException e) {
+            e.printStackTrace();
+            return;
+        }
 
-        return columnCount == settings.columnCount
-                && rowCount == settings.rowCount
-                && winRequirement == settings.winRequirement
-                && player1Color.equals(settings.player1Color)
-                && player2Color.equals(settings.player2Color);
-    }
+        config.set("columnCount", columnCount);
+        config.set("rowCount", rowCount);
+        config.set("winRequirement", winRequirement);
+        config.set("player1Color", player1Color.toString());
+        config.set("player2Color", player2Color.toString());
 
-    @Override
-    public int hashCode() {
-        int result = columnCount;
-        result = 31 * result + rowCount;
-        result = 31 * result + winRequirement;
-        result = 31 * result + (player1Color != null ? player1Color.hashCode() : 0);
-        result = 31 * result + (player2Color != null ? player2Color.hashCode() : 0);
-        return result;
+        config.save();
+        config.close();
     }
 
 }
