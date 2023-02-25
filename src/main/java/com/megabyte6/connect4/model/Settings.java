@@ -81,23 +81,16 @@ public class Settings {
         final FileConfig config = FileConfig.of(path);
         config.load();
 
-        final Settings df = Settings.DEFAULT;
-        final int columnCount = requireNonNullElse(config.get("columnCount"), df.getColumnCount());
-        final int rowCount = requireNonNullElse(config.get("rowCount"), df.getRowCount());
-        final int winRequirement = requireNonNullElse(config.get("winRequirement"), df.getWinRequirement());
-        final boolean timerEnabled = requireNonNullElse(config.get("timerEnabled"), df.isTimerEnabled());
-        final int timerLength = requireNonNullElse(config.get("timerLength"), df.getTimerLength());
-        final String player1Color = requireNonNullElse(config.get("player1Color"), df.getPlayer1Color().toString());
-        final String player2Color = requireNonNullElse(config.get("player2Color"), df.getPlayer2Color().toString());
-
         return new Settings(
-                columnCount,
-                rowCount,
-                winRequirement,
-                timerEnabled,
-                timerLength,
-                Color.valueOf(player1Color),
-                Color.valueOf(player2Color));
+                requireNonNullElse(config.get("columnCount"), DEFAULT.getColumnCount()),
+                requireNonNullElse(config.get("rowCount"), DEFAULT.getRowCount()),
+                requireNonNullElse(config.get("winRequirement"), DEFAULT.getWinRequirement()),
+                requireNonNullElse(config.get("timerEnabled"), DEFAULT.isTimerEnabled()),
+                requireNonNullElse(config.get("timerLength"), DEFAULT.getTimerLength()),
+                Color.valueOf(requireNonNullElse(
+                        config.get("player1Color"), DEFAULT.getPlayer1Color().toString())),
+                Color.valueOf(requireNonNullElse(
+                        config.get("player2Color"), DEFAULT.getPlayer2Color().toString())));
     }
 
 }
