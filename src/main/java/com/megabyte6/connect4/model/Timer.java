@@ -2,7 +2,11 @@ package com.megabyte6.connect4.model;
 
 import java.time.Duration;
 import com.megabyte6.connect4.App;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@ToString
+@EqualsAndHashCode
 public class Timer {
 
     private static final Timer instance = new Timer();
@@ -127,36 +131,6 @@ public class Timer {
         if (onUpdate == null)
             return;
         this.onUpdate = onUpdate;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (active ? 1231 : 1237);
-        result = prime * result + (int) (time ^ (time >>> 32));
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Timer other = (Timer) obj;
-        if (active != other.active)
-            return false;
-        if (time != other.time)
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Timer [active=" + active + ", time=" + time + "]";
     }
 
 }
