@@ -1,27 +1,18 @@
 package com.megabyte6.connect4.util;
 
+import static com.megabyte6.connect4.util.tuple.Tuple.of;
+import java.util.LinkedList;
+import java.util.List;
 import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.tuple.Pair;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import static com.megabyte6.connect4.util.tuple.Tuple.of;
-
 public class Walker {
 
     enum Direction {
-        UP,
-        UPPER_RIGHT,
-        RIGHT,
-        LOWER_RIGHT,
-        DOWN,
-        LOWER_LEFT,
-        LEFT,
-        UPPER_LEFT
+        UP, UPPER_RIGHT, RIGHT, LOWER_RIGHT, DOWN, LOWER_LEFT, LEFT, UPPER_LEFT
     }
 
     private final Game game;

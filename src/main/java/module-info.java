@@ -1,6 +1,9 @@
 module com.megabyte6.connect4 {
-    requires javafx.fxml;
+    requires static lombok;
+
     requires com.electronwill.nightconfig.core;
+
+    requires javafx.fxml;
     requires transitive javafx.controls;
 
     opens com.megabyte6.connect4.controller to javafx.fxml;
