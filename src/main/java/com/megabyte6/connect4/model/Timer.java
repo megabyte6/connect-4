@@ -9,11 +9,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class Timer {
 
-    private static final Timer instance = new Timer();
-
-    private long startTime = 0;
-    private long time = 0;
-    private long updateDelay = 1000;
+    private long startTime;
+    private long time;
+    private long updateDelay;
     private boolean active = false;
 
     // Since the timer is just a method call. A call to update should not run
@@ -25,10 +23,14 @@ public class Timer {
     private Runnable onUpdate = () -> {
     };
 
-    private Timer() {}
+    public Timer(long millis) {
+        this(millis, 1000);
+    }
 
-    public static Timer getInstance() {
-        return instance;
+    public Timer(long millis, long updateDelay) {
+        startTime = millis;
+        time = startTime;
+        this.updateDelay = updateDelay;
     }
 
     private void update() {
