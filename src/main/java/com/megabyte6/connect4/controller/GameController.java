@@ -215,6 +215,8 @@ public class GameController implements Controller {
         game.gameOver();
         App.getWinner().incrementScore();
 
+        updatePlayerScoreLabels();
+
         final var loadedData = SceneManager.loadFXMLAndController("GameFinished");
         final Node root = loadedData.a();
         final GameFinishedController controller = (GameFinishedController) loadedData.b();
@@ -274,6 +276,8 @@ public class GameController implements Controller {
         selectedPiece.setFill(App.BACKGROUND_COLOR);
         playDroppingAnimation(marker, selectedPiece, game.getCurrentPlayer());
 
+        swapTurns();
+
         if (checkForWin()) {
             gameWon();
             return;
@@ -282,8 +286,6 @@ public class GameController implements Controller {
             gameTie();
             return;
         }
-
-        swapTurns();
     }
 
     private void playDroppingAnimation(GamePiece origin, GamePiece destination, Player player) {
@@ -359,7 +361,7 @@ public class GameController implements Controller {
         final String player1Plural = App.getPlayer1().getScore() == 1 ? "" : "s";
         player1Score.setText(App.getPlayer1().getName() + " won " + App.getPlayer1().getScore()
                 + " time" + player1Plural);
-        final String player2Plural = App.getPlayer1().getScore() == 1 ? "" : "s";
+        final String player2Plural = App.getPlayer2().getScore() == 1 ? "" : "s";
         player2Score.setText(App.getPlayer2().getName() + " won " + App.getPlayer2().getScore()
                 + " time" + player2Plural);
     }
