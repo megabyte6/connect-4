@@ -76,6 +76,7 @@ public class SettingsController implements Controller {
                 Integer.MAX_VALUE,
                 App.getSettings().getTimerLengthInSeconds());
         timerLength.setValueFactory(timerLengthValues);
+        timerLength.setDisable(!timerEnabled.isSelected());
 
         player1Color.setValue(App.getPlayer1().getColor());
         player2Color.setValue(App.getPlayer2().getColor());
@@ -89,8 +90,10 @@ public class SettingsController implements Controller {
                 Integer.MAX_VALUE,
                 App.getSettings().getNumOfObstacles());
         numOfObstacles.setValueFactory(numOfObstaclesValues);
+        numOfObstacles.setDisable(!obstaclesEnabled.isSelected());
 
         obstacleColor.setValue(App.getSettings().getObstacleColor());
+        obstacleColor.setDisable(!obstaclesEnabled.isSelected());
 
         // Listeners.
         columnCount.setOnMouseReleased(event -> {
@@ -160,17 +163,25 @@ public class SettingsController implements Controller {
         App.setSettings(Settings.DEFAULT);
 
         columnCount.getValueFactory().setValue(App.getSettings().getColumnCount());
+
         rowCount.getValueFactory().setValue(App.getSettings().getRowCount());
+
         updateMaxWinningLength();
+
         timerEnabled.setSelected(App.getSettings().isTimerEnabled());
         timerLength.getValueFactory().setValue(App.getSettings().getTimerLengthInSeconds());
         timerLength.setDisable(!timerEnabled.isSelected());
+
         player1Color.setValue(App.getSettings().getPlayer1Color());
+
         player2Color.setValue(App.getSettings().getPlayer2Color());
+
         obstaclesEnabled.setSelected(App.getSettings().isObstaclesEnabled());
         numOfObstacles.getValueFactory().setValue(App.getSettings().getNumOfObstacles());
+        numOfObstacles.setDisable(!obstaclesEnabled.isSelected());
         updateMaxObstacles();
         obstacleColor.setValue(App.getSettings().getObstacleColor());
+        obstacleColor.setDisable(!obstaclesEnabled.isSelected());
     }
 
     public void setOnClosed(Runnable run) {
