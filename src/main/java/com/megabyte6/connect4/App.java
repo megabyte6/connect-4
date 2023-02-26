@@ -54,7 +54,7 @@ public class App extends Application {
         if (millis < 0)
             throw new IllegalArgumentException("Delay time cannot be negative.");
 
-        Task<Void> sleep = new Task<>() {
+        final Task<Void> sleep = new Task<>() {
             @Override
             protected Void call() {
                 try {
@@ -71,7 +71,7 @@ public class App extends Application {
         };
         sleep.setOnSucceeded(event -> runAfter.run());
 
-        new Thread(sleep);
+        new Thread(sleep).start();;
     }
 
     public static void writeSettings() {
