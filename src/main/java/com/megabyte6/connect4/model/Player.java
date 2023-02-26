@@ -9,6 +9,7 @@ import lombok.Setter;
 public class Player {
 
     public static final Player NONE = new Player("", 0, Color.WHITE);
+    public static final Player OBSTACLE = new Player("Obstacle", 0, Color.BLACK);
 
     private String name;
     @Setter(AccessLevel.NONE)

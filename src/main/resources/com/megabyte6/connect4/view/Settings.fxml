@@ -6,66 +6,76 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.connect4.controller.SettingsController">
-    <children>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <children>
-                        <Label text="Board setup:" />
-                        <VBox alignment="CENTER" spacing="17.0">
-                            <children>
-                                <Label text="Columns" />
-                                <Label text="Rows" />
-                                <Label text="Winning Length" />
-                            </children>
-                        </VBox>
-                        <VBox prefWidth="100.0" spacing="10.0">
-                            <children>
-                                <HBox>
-                                    <children>
-                                        <Spinner fx:id="columnCount" />
-                                    </children>
-                                </HBox>
-                                <HBox>
-                                    <children>
-                                        <Spinner fx:id="rowCount" />
-                                    </children>
-                                </HBox>
-                                <HBox>
-                                    <children>
-                                        <Spinner fx:id="winningLength" />
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-                    </children>
-                </HBox>
-            <HBox alignment="CENTER" spacing="15.0">
+   <children>
+      <GridPane layoutX="44.0" layoutY="41.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Board setup" />
+            <VBox GridPane.columnIndex="1">
                <children>
-                  <CheckBox fx:id="timerEnabled" mnemonicParsing="false" text="Timer" />
+                  <HBox alignment="CENTER_RIGHT" spacing="15.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Columns" />
+                        <Spinner fx:id="columnCount" prefWidth="100.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" spacing="15.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Rows" />
+                        <Spinner fx:id="rowCount" prefWidth="100.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" spacing="15.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label prefWidth="50.0" text="Winning Length" textAlignment="RIGHT" wrapText="true" />
+                        <Spinner fx:id="winningLength" prefWidth="100.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <CheckBox fx:id="timerEnabled" mnemonicParsing="false" text="Timer" GridPane.rowIndex="1" />
+            <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
                   <Spinner fx:id="timerLength" prefWidth="100.0" />
                   <Label text="seconds" />
                </children>
             </HBox>
-                <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <children>
-                        <Label text="Player 1's team color:" />
-                        <ColorPicker fx:id="player1Color" />
-                    </children>
-                </HBox>
-                <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <children>
-                        <Label text="Player 2's team color:" />
-                        <ColorPicker fx:id="player2Color" />
-                    </children>
-                </HBox>
-            </children>
-        </VBox>
-        <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleResetAllButton" text="Reset All" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" />
-        <Button cancelButton="true" layoutX="311.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleCloseButton" text="❌" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" />
-    </children>
+            <Label text="Player 1's team color" GridPane.rowIndex="2" />
+            <ColorPicker fx:id="player1Color" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Player 2's team color" GridPane.rowIndex="3" />
+            <ColorPicker fx:id="player2Color" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <CheckBox fx:id="obstaclesEnabled" mnemonicParsing="false" text="Obstacles" GridPane.rowIndex="4" />
+            <VBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Spinner fx:id="numOfObstacles" prefWidth="100.0" />
+                        <Label text="obstacles" />
+                     </children>
+                  </HBox>
+                  <ColorPicker fx:id="obstacleColor" />
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+      <Button mnemonicParsing="false" onAction="#handleResetAllButton" text="Reset All" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
+      <Button cancelButton="true" mnemonicParsing="false" onAction="#handleCloseButton" text="❌" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
+   </children>
 </AnchorPane>

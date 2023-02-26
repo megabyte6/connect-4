@@ -135,6 +135,22 @@ public class GameController implements Controller {
             }
         }
 
+        // Add obstacles.
+        if (App.getSettings().isObstaclesEnabled()) {
+            for (int i : range(App.getSettings().getNumOfObstacles())) {
+                // Randomly choose a column that isn't full.
+                int column, row;
+                do {
+                    column = (int) (Math.random() * game.getColumnCount());
+                    row = game.findNextFreeRow(column);
+                } while (row == -1);
+
+                final GamePiece selectedPiece = game.getGamePiece(column, row);
+                selectedPiece.setOwner(Player.OBSTACLE);
+                selectedPiece.setFill(App.getSettings().getObstacleColor());
+            }
+        }
+
         // Draw GamePieces.
         Stream.of(game.getGameBoard())
                 .flatMap(Stream::of)
