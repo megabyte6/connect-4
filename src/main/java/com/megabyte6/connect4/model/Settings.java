@@ -13,7 +13,7 @@ import lombok.NonNull;
 @Data
 public class Settings {
 
-    public static final Settings DEFAULT = new Settings(7, 6, 4, false, 0, Color.YELLOW, Color.RED);
+    public static final Settings DEFAULT = new Settings(7, 6, 4, false, 12000, Color.YELLOW, Color.RED);
 
     private int columnCount;
     private int rowCount;
@@ -30,19 +30,29 @@ public class Settings {
 
     public Settings(int columnCount, int rowCount, int winRequirement, boolean timerEnabled, int timerLength,
             Color player1Color, Color player2Color) {
-        this.columnCount = columnCount;
-        this.rowCount = rowCount;
+        this.columnCount = columnCount >= 0 ? columnCount : DEFAULT.columnCount;
+        this.rowCount = rowCount >= 0 ? rowCount : DEFAULT.rowCount;
 
-        this.winRequirement = winRequirement;
+        this.winRequirement = winRequirement >= 0 ? winRequirement : DEFAULT.winRequirement;
 
         this.timerEnabled = timerEnabled;
-        this.timerLength = timerLength;
+        this.timerLength = timerLength >= 0 ? timerLength : DEFAULT.timerLength;
 
         this.player1Color = player1Color;
         this.player2Color = player2Color;
 
         App.getPlayer1().setColor(player1Color);
         App.getPlayer2().setColor(player2Color);
+    }
+
+    public int getTimerLengthInSeconds() {
+        return timerLength / 1000;
+    }
+
+    public void setTimerLengthInSeconds(int timerLength) {
+        if (timerLength < 0)
+            throw new IllegalArgumentException("Timer length cannot be negative.");
+        this.timerLength = timerLength * 1000;
     }
 
     public void setPlayer1Color(Color player1Color) {

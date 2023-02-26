@@ -7,6 +7,7 @@ import com.megabyte6.connect4.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -24,8 +25,14 @@ public class SettingsController implements Controller {
     private Spinner<Integer> columnCount;
     @FXML
     private Spinner<Integer> rowCount;
+
     @FXML
     private Spinner<Integer> winningLength;
+
+    @FXML
+    private CheckBox timerEnabled;
+    @FXML
+    private Spinner<Integer> timerLength;
 
     @FXML
     private ColorPicker player1Color;
@@ -54,9 +61,20 @@ public class SettingsController implements Controller {
         winningLength.editorProperty().get().setAlignment(Pos.CENTER);
         updateMaxWinningLength();
 
+        timerEnabled.setSelected(App.getSettings().isTimerEnabled());
+
+        timerLength.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+        timerLength.editorProperty().get().setAlignment(Pos.CENTER);
+        final SpinnerValueFactory<Integer> timerLengthValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                1,
+                Integer.MAX_VALUE,
+                App.getSettings().getTimerLengthInSeconds());
+        timerLength.setValueFactory(timerLengthValues);
+
         player1Color.setValue(App.getPlayer1().getColor());
         player2Color.setValue(App.getPlayer2().getColor());
 
+        // Listeners.
         columnCount.setOnMouseReleased(event -> {
             updateAppSettings();
             updateMaxWinningLength();
@@ -66,6 +84,11 @@ public class SettingsController implements Controller {
             updateMaxWinningLength();
         });
         winningLength.setOnMouseReleased(event -> updateAppSettings());
+        timerEnabled.setOnAction(event -> {
+            timerLength.setDisable(!timerEnabled.isSelected());
+            updateAppSettings();
+        });
+        timerLength.setOnMouseReleased(event -> updateAppSettings());
         player1Color.setOnAction(event -> updateAppSettings());
         player2Color.setOnAction(event -> updateAppSettings());
     }
@@ -90,6 +113,8 @@ public class SettingsController implements Controller {
         App.getSettings().setColumnCount(columnCount.getValue());
         App.getSettings().setRowCount(rowCount.getValue());
         App.getSettings().setWinRequirement(winningLength.getValue());
+        App.getSettings().setTimerEnabled(timerEnabled.isSelected());
+        App.getSettings().setTimerLengthInSeconds(timerLength.getValue());
         App.getSettings().setPlayer1Color(player1Color.getValue());
         App.getSettings().setPlayer2Color(player2Color.getValue());
     }
@@ -100,6 +125,8 @@ public class SettingsController implements Controller {
         columnCount.getValueFactory().setValue(App.getSettings().getColumnCount());
         rowCount.getValueFactory().setValue(App.getSettings().getRowCount());
         updateMaxWinningLength();
+        timerEnabled.setSelected(App.getSettings().isTimerEnabled());
+        timerLength.getValueFactory().setValue(App.getSettings().getTimerLengthInSeconds());
         player1Color.setValue(App.getSettings().getPlayer1Color());
         player2Color.setValue(App.getSettings().getPlayer2Color());
     }
