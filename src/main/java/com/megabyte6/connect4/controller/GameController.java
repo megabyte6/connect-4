@@ -167,9 +167,11 @@ public class GameController implements Controller {
         updateCurrentTurnLabel();
         // Initialize timer.
         if (App.getSettings().isTimerEnabled()) {
+            timerLabel.setText("Time left: " + timer.getFormattedTime());
+
             timer.setOnTimeout(() -> swapTurns());
-            timer.setOnUpdate(() -> timerLabel.setText(timer.getFormattedTime()));
-            App.delay(2000, () -> timer.start());
+            timer.setOnUpdate(() -> timerLabel.setText("Time left: " + timer.getFormattedTime()));
+            App.delay(500, () -> timer.start());
         }
 
         // Set up key listeners.
@@ -231,7 +233,7 @@ public class GameController implements Controller {
     }
 
     private void updateMarkerPosition(double mouseXPos) {
-        if (!game.isActive())
+        if (game.isPaused())
             return;
 
         final double columnWidth = gameBoard.getMaxWidth() / game.getColumnCount();
@@ -258,7 +260,7 @@ public class GameController implements Controller {
     private void placePiece() {
         if (game.isGameOver())
             return;
-        if (!game.isActive() && !game.isGameOver()) {
+        if (game.isPaused() && !game.isGameOver()) {
             SceneManager.popup("Please return to the current move.");
             return;
         }
@@ -342,7 +344,10 @@ public class GameController implements Controller {
         marker.setOwner(game.getCurrentPlayer());
 
         updateCurrentTurnLabel();
-        timer.restart();
+        if (!game.isPaused() && !game.isGameOver()) {
+            timer.reset();
+            timer.unpause();
+        }
     }
 
     private void updatePlayerScoreLabels() {
@@ -359,8 +364,6 @@ public class GameController implements Controller {
         final String pluralPostfix = name.charAt(name.length() - 1) == 's' ? "'" : "'s";
         currentTurn.setText(name + pluralPostfix + " turn");
     }
-
-    public void setupTimer() {}
 
     // Update gameBoard size because the GridPane doesn't resize automatically
     // when circles are added.
@@ -422,6 +425,14 @@ public class GameController implements Controller {
 
     @Override
     public void setDisable(boolean disabled) {
+        if (disabled) {
+            game.pause();
+            timer.pause();
+        } else {
+            game.unpause();
+            timer.unpause();
+        }
+
         root.setDisable(disabled);
         root.setOpacity(disabled ? App.DISABLED_OPACITY : 1);
     }
