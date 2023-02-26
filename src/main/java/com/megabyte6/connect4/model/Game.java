@@ -10,7 +10,7 @@ import static com.megabyte6.connect4.util.Range.range;
 
 public class Game {
 
-    private boolean paused = true;
+    private boolean paused = false;
     private boolean gameOver = false;
 
     private final Player player1;
