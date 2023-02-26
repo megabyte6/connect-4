@@ -139,7 +139,7 @@ public class GameController implements Controller {
         Stream.of(game.getGameBoard())
                 .flatMap(Stream::of)
                 .filter(Objects::nonNull)
-                .forEach(gamePiece -> gameBoard.getChildren().add(gamePiece));
+                .forEach(gameBoard.getChildren()::add);
 
         // Initialize marker container.
         markerContainer.maxWidthProperty().bind(gameBoard.widthProperty());
