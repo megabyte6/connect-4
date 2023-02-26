@@ -45,7 +45,7 @@ public class Timer {
 
         if (time <= 0) {
             timerInstanceActive = false;
-            pause();
+            stop();
             time = 0;
 
             onTimeout.run();
@@ -58,32 +58,23 @@ public class Timer {
 
     public void start() {
         reset();
-        unpause();
+        resume();
     }
 
-    public void unpause() {
+    public void stop() {
+        active = false;
+    }
+
+    public void resume() {
         active = true;
 
         if (!timerInstanceActive)
             App.delay(updateDelay, () -> update());
     }
 
-    public void pause() {
-        active = false;
-    }
-
     public void reset() {
         active = false;
         setTime(startTime);
-    }
-
-    public void clear() {
-        active = false;
-        setTime(0);
-        setOnTimeout(() -> {
-        });
-        setOnUpdate(() -> {
-        });
     }
 
     public long getStartTime() {
