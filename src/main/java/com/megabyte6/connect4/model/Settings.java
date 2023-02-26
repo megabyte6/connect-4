@@ -13,11 +13,11 @@ import lombok.NonNull;
 @Data
 public class Settings {
 
-    public static final Settings DEFAULT = new Settings(7, 6, 4, false, 10000, Color.YELLOW, Color.RED);
+    public static final Settings DEFAULT =
+            new Settings(7, 6, 4, false, 10000, Color.YELLOW, Color.RED, false, 5, Color.WHITE);
 
     private int columnCount;
     private int rowCount;
-
     private int winRequirement;
 
     private boolean timerEnabled;
@@ -28,11 +28,17 @@ public class Settings {
     @NonNull
     private Color player2Color;
 
-    public Settings(int columnCount, int rowCount, int winRequirement, boolean timerEnabled, int timerLength,
-            Color player1Color, Color player2Color) {
+    private boolean obstaclesEnabled;
+    private int numOfObstacles;
+    @NonNull
+    private Color obstacleColor;
+
+    public Settings(int columnCount, int rowCount, int winRequirement,
+            boolean timerEnabled, int timerLength,
+            Color player1Color, Color player2Color,
+            boolean obstaclesEnabled, int numOfObstacles, Color obstacleColor) {
         this.columnCount = columnCount >= 0 ? columnCount : DEFAULT.columnCount;
         this.rowCount = rowCount >= 0 ? rowCount : DEFAULT.rowCount;
-
         this.winRequirement = winRequirement >= 0 ? winRequirement : DEFAULT.winRequirement;
 
         this.timerEnabled = timerEnabled;
@@ -40,6 +46,10 @@ public class Settings {
 
         this.player1Color = player1Color;
         this.player2Color = player2Color;
+
+        this.obstaclesEnabled = obstaclesEnabled;
+        this.numOfObstacles = numOfObstacles;
+        this.obstacleColor = obstacleColor;
 
         App.getPlayer1().setColor(player1Color);
         App.getPlayer2().setColor(player2Color);
@@ -79,6 +89,9 @@ public class Settings {
         config.set("timerLength", timerLength);
         config.set("player1Color", player1Color.toString());
         config.set("player2Color", player2Color.toString());
+        config.set("obstaclesEnabled", obstaclesEnabled);
+        config.set("numOfObstacles", numOfObstacles);
+        config.set("obstacleColor", obstacleColor.toString());
 
         config.save();
     }
@@ -100,7 +113,11 @@ public class Settings {
                 Color.valueOf(requireNonNullElse(
                         config.get("player1Color"), DEFAULT.getPlayer1Color().toString())),
                 Color.valueOf(requireNonNullElse(
-                        config.get("player2Color"), DEFAULT.getPlayer2Color().toString())));
+                        config.get("player2Color"), DEFAULT.getPlayer2Color().toString())),
+                requireNonNullElse(config.get("obstaclesEnabled"), DEFAULT.isObstaclesEnabled()),
+                requireNonNullElse(config.get("numOfObstacles"), DEFAULT.getNumOfObstacles()),
+                Color.valueOf(requireNonNullElse(
+                        config.get("obstacleColor"), DEFAULT.getObstacleColor().toString())));
     }
 
 }
