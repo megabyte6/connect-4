@@ -40,7 +40,7 @@ public class GameController implements Controller {
             App.getPlayer1(), App.getPlayer2(),
             App.getSettings().getColumnCount(), App.getSettings().getRowCount());
 
-    private final Timer timer = new Timer(App.getSettings().getTimerLength());
+    private Timer timer;
 
     @FXML
     private AnchorPane root;
@@ -166,13 +166,8 @@ public class GameController implements Controller {
         updatePlayerScoreLabels();
         updateCurrentTurnLabel();
         // Initialize timer.
-        if (App.getSettings().isTimerEnabled()) {
-            timerLabel.setText("Time left: " + timer.getFormattedTime());
-
-            timer.setOnTimeout(() -> swapTurns());
-            timer.setOnUpdate(() -> timerLabel.setText("Time left: " + timer.getFormattedTime()));
-            App.delay(500, () -> timer.start());
-        }
+        if (App.getSettings().isTimerEnabled())
+            resetTimer();
 
         // Set up key listeners.
         markerContainer.setOnMouseMoved(event -> updateMarkerPosition(event.getX()));
@@ -344,10 +339,20 @@ public class GameController implements Controller {
         marker.setOwner(game.getCurrentPlayer());
 
         updateCurrentTurnLabel();
-        if (!game.isPaused() && !game.isGameOver()) {
-            timer.reset();
-            timer.unpause();
-        }
+        if (!game.isPaused() && !game.isGameOver())
+            resetTimer();
+    }
+
+    private void resetTimer() {
+        if (timer != null)
+            timer.stop();
+
+        timer = new Timer(App.getSettings().getTimerLength());
+        timer.setOnUpdate(() -> timerLabel.setText("Time left: " + timer.getFormattedTime()));
+        timer.setOnTimeout(() -> swapTurns());
+        timer.start();
+
+        timerLabel.setText("Time left: " + timer.getFormattedTime());
     }
 
     private void updatePlayerScoreLabels() {
@@ -427,10 +432,10 @@ public class GameController implements Controller {
     public void setDisable(boolean disabled) {
         if (!disabled && !game.isGameOver()) {
             game.unpause();
-            timer.unpause();
+            timer.resume();
         } else if (disabled) {
             game.pause();
-            timer.pause();
+            timer.stop();
         }
 
         root.setDisable(disabled);
