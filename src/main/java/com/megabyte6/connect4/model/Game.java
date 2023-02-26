@@ -10,7 +10,7 @@ import static com.megabyte6.connect4.util.Range.range;
 
 public class Game {
 
-    private boolean active = true;
+    private boolean paused = false;
     private boolean gameOver = false;
 
     private final Player player1;
@@ -65,8 +65,16 @@ public class Game {
         return rowIndex < 0 || rowIndex >= getRowCount();
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void unpause() {
+        paused = false;
     }
 
     public boolean isGameOver() {
@@ -75,7 +83,7 @@ public class Game {
 
     public void gameOver() {
         gameOver = true;
-        active = false;
+        paused = true;
     }
 
     public Player getCurrentPlayer() {
@@ -83,7 +91,7 @@ public class Game {
     }
 
     public void setSelectedColumn(int index) {
-        if (!active || index < 0 || index >= gameBoard.length)
+        if (paused || index < 0 || index >= gameBoard.length)
             return;
         selectedColumn = index;
     }
@@ -130,7 +138,7 @@ public class Game {
         if (historyPointer == -1)
             return;
 
-        active = false;
+        paused = true;
 
         var selectedAction = moveHistory.get(historyPointer);
         GamePiece selectedGamePiece = getGamePiece(selectedAction.b(), selectedAction.c());
@@ -152,7 +160,7 @@ public class Game {
         selectedGamePiece.setOwner(selectedAction.a());
 
         if (historyPointerIsAtLatestMove() && !gameOver)
-            active = true;
+            paused = false;
     }
 
     public boolean historyPointerIsAtLatestMove() {

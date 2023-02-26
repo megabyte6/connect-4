@@ -1,63 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="500.0" stylesheets="@../css/style-dark.css"
-            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.megabyte6.connect4.controller.GameController">
+
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="500.0" stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.connect4.controller.GameController">
     <children>
-        <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
+        <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <StackPane VBox.vgrow="ALWAYS">
                     <children>
-                        <Pane fx:id="markerContainer"/>
+                        <Pane fx:id="markerContainer" />
                     </children>
                 </StackPane>
                 <StackPane VBox.vgrow="ALWAYS">
                     <children>
-                        <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="395.0"
-                              prefWidth="460.0" style="-fx-background-color: blue;"/>
+                        <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="395.0" prefWidth="460.0" style="-fx-background-color: blue;" />
                     </children>
                 </StackPane>
-                <Separator prefWidth="200.0"/>
+                <Separator prefWidth="200.0" />
                 <HBox alignment="CENTER" prefHeight="30.0">
                     <children>
                         <VBox spacing="10.0">
                             <children>
                                 <HBox alignment="CENTER" spacing="10.0">
                                     <children>
-                                        <Label fx:id="player1Score" text="Label"/>
-                                        <Separator orientation="VERTICAL" prefHeight="200.0"/>
-                                        <Label fx:id="currentTurn" text="Label">
-                                            <font>
-                                                <Font size="14.0"/>
-                                            </font>
-                                        </Label>
-                                        <Separator orientation="VERTICAL" prefHeight="200.0"/>
-                                        <Label fx:id="player2Score" text="Label"/>
+                                        <Label fx:id="player1Score" text="Label" />
+                                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                              <VBox alignment="CENTER">
+                                 <children>
+                                              <Label fx:id="currentTurn" text="Label">
+                                                  <font>
+                                                      <Font size="14.0" />
+                                                  </font>
+                                              </Label>
+                                    <Label fx:id="timerLabel" text="Time left: 00:00">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                        <Label fx:id="player2Score" text="Label" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER" spacing="15.0">
                                     <children>
-                                        <Button mnemonicParsing="false" onAction="#handleBackButton" text="🡄"
-                                                HBox.hgrow="ALWAYS">
+                                        <Button mnemonicParsing="false" onAction="#handleBackButton" text="🡄" HBox.hgrow="ALWAYS">
                                             <tooltip>
-                                                <Tooltip text="Go back"/>
+                                                <Tooltip text="Go back" />
                                             </tooltip>
                                         </Button>
-                                        <Button mnemonicParsing="false" onAction="#handleCurrentMoveButton"
-                                                text="Current Move">
+                                        <Button mnemonicParsing="false" onAction="#handleCurrentMoveButton" text="Current Move">
                                             <tooltip>
-                                                <Tooltip text="Return to the current move"/>
+                                                <Tooltip text="Return to the current move" />
                                             </tooltip>
                                         </Button>
-                                        <Button mnemonicParsing="false" onAction="#handleForwardButton" text="🡆"
-                                                HBox.hgrow="ALWAYS">
+                                        <Button mnemonicParsing="false" onAction="#handleForwardButton" text="🡆" HBox.hgrow="ALWAYS">
                                             <tooltip>
-                                                <Tooltip text="Go forward"/>
+                                                <Tooltip text="Go forward" />
                                             </tooltip>
                                         </Button>
                                     </children>
@@ -68,12 +78,10 @@
                 </HBox>
             </children>
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
         </VBox>
-        <Button mnemonicParsing="false" onAction="#handleReturnToStartScreen" text="🏠" AnchorPane.bottomAnchor="20.0"
-                AnchorPane.leftAnchor="20.0"/>
-        <Button mnemonicParsing="false" onAction="#handleNewGame" text="⭮" AnchorPane.bottomAnchor="20.0"
-                AnchorPane.rightAnchor="20.0"/>
+        <Button mnemonicParsing="false" onAction="#handleReturnToStartScreen" text="🏠" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
+        <Button mnemonicParsing="false" onAction="#handleNewGame" text="⭮" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
     </children>
 </AnchorPane>

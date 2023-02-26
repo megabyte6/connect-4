@@ -1,10 +1,17 @@
 package com.megabyte6.connect4.controller;
 
+import static com.megabyte6.connect4.util.Range.range;
+import static javafx.util.Duration.millis;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.controller.dialog.ConfirmController;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
+import com.megabyte6.connect4.model.Timer;
 import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
 import com.megabyte6.connect4.util.WinChecker;
@@ -27,19 +34,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
-
-import static com.megabyte6.connect4.util.Range.range;
-import static javafx.util.Duration.millis;
-
 public class GameController implements Controller {
 
     private final Game game = new Game(
             App.getPlayer1(), App.getPlayer2(),
             App.getSettings().getColumnCount(), App.getSettings().getRowCount());
+
+    private Timer timer;
 
     @FXML
     private AnchorPane root;
@@ -56,6 +57,8 @@ public class GameController implements Controller {
     private Label player1Score;
     @FXML
     private Label currentTurn;
+    @FXML
+    private Label timerLabel;
     @FXML
     private Label player2Score;
 
@@ -162,6 +165,9 @@ public class GameController implements Controller {
         // Initialize labels.
         updatePlayerScoreLabels();
         updateCurrentTurnLabel();
+        // Initialize timer.
+        if (App.getSettings().isTimerEnabled())
+            resetTimer();
 
         // Set up key listeners.
         markerContainer.setOnMouseMoved(event -> updateMarkerPosition(event.getX()));
@@ -209,6 +215,8 @@ public class GameController implements Controller {
         game.gameOver();
         App.getWinner().incrementScore();
 
+        updatePlayerScoreLabels();
+
         final var loadedData = SceneManager.loadFXMLAndController("GameFinished");
         final Node root = loadedData.a();
         final GameFinishedController controller = (GameFinishedController) loadedData.b();
@@ -222,7 +230,7 @@ public class GameController implements Controller {
     }
 
     private void updateMarkerPosition(double mouseXPos) {
-        if (!game.isActive())
+        if (game.isPaused())
             return;
 
         final double columnWidth = gameBoard.getMaxWidth() / game.getColumnCount();
@@ -249,7 +257,7 @@ public class GameController implements Controller {
     private void placePiece() {
         if (game.isGameOver())
             return;
-        if (!game.isActive() && !game.isGameOver()) {
+        if (game.isPaused() && !game.isGameOver()) {
             SceneManager.popup("Please return to the current move.");
             return;
         }
@@ -268,6 +276,8 @@ public class GameController implements Controller {
         selectedPiece.setFill(App.BACKGROUND_COLOR);
         playDroppingAnimation(marker, selectedPiece, game.getCurrentPlayer());
 
+        swapTurns();
+
         if (checkForWin()) {
             gameWon();
             return;
@@ -276,11 +286,6 @@ public class GameController implements Controller {
             gameTie();
             return;
         }
-
-        game.swapTurns();
-        marker.setOwner(game.getCurrentPlayer());
-
-        updateCurrentTurnLabel();
     }
 
     private void playDroppingAnimation(GamePiece origin, GamePiece destination, Player player) {
@@ -331,13 +336,40 @@ public class GameController implements Controller {
         timeline.play();
     }
 
+    private void swapTurns() {
+        game.swapTurns();
+        marker.setOwner(game.getCurrentPlayer());
+
+        updateCurrentTurnLabel();
+        if (!game.isPaused() && !game.isGameOver())
+            resetTimer();
+    }
+
+    private void resetTimer() {
+        if (timer != null)
+            timer.stop();
+
+        timer = new Timer(App.getSettings().getTimerLength());
+        timer.setOnUpdate(() -> timerLabel.setText("Time left: " + timer.getFormattedTime()));
+        timer.setOnTimeout(() -> swapTurns());
+        timer.start();
+
+        timerLabel.setText("Time left: " + timer.getFormattedTime());
+    }
+
     private void updatePlayerScoreLabels() {
-        player1Score.setText(App.getPlayer1().getName() + ": " + App.getPlayer1().getScore());
-        player2Score.setText(App.getPlayer2().getName() + ": " + App.getPlayer2().getScore());
+        final String player1Plural = App.getPlayer1().getScore() == 1 ? "" : "s";
+        player1Score.setText(App.getPlayer1().getName() + " won " + App.getPlayer1().getScore()
+                + " time" + player1Plural);
+        final String player2Plural = App.getPlayer2().getScore() == 1 ? "" : "s";
+        player2Score.setText(App.getPlayer2().getName() + " won " + App.getPlayer2().getScore()
+                + " time" + player2Plural);
     }
 
     public void updateCurrentTurnLabel() {
-        currentTurn.setText(game.getCurrentPlayer().getName() + "'s turn");
+        final String name = game.getCurrentPlayer().getName();
+        final String pluralPostfix = name.charAt(name.length() - 1) == 's' ? "'" : "'s";
+        currentTurn.setText(name + pluralPostfix + " turn");
     }
 
     // Update gameBoard size because the GridPane doesn't resize automatically
@@ -400,6 +432,14 @@ public class GameController implements Controller {
 
     @Override
     public void setDisable(boolean disabled) {
+        if (!disabled && !game.isGameOver()) {
+            game.unpause();
+            timer.resume();
+        } else if (disabled) {
+            game.pause();
+            timer.stop();
+        }
+
         root.setDisable(disabled);
         root.setOpacity(disabled ? App.DISABLED_OPACITY : 1);
     }

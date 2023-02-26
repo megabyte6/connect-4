@@ -1,10 +1,6 @@
 package com.megabyte6.connect4;
 
-import static java.util.Objects.requireNonNullElse;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import com.electronwill.nightconfig.core.file.FileConfig;
-import com.electronwill.nightconfig.core.file.NoFormatFoundException;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.model.Settings;
 import com.megabyte6.connect4.util.SceneManager;
@@ -35,7 +31,7 @@ public class App extends Application {
     private static final Path settingsPath = Path.of("config.toml");
 
     public static void main(String[] args) {
-        settings = readSettings(settingsPath);
+        settings = Settings.load(settingsPath);
 
         launch(args);
     }
@@ -58,7 +54,7 @@ public class App extends Application {
         if (millis < 0)
             throw new IllegalArgumentException("Delay time cannot be negative.");
 
-        Task<Void> sleep = new Task<>() {
+        final Task<Void> sleep = new Task<>() {
             @Override
             protected Void call() {
                 try {
@@ -75,37 +71,7 @@ public class App extends Application {
         };
         sleep.setOnSucceeded(event -> runAfter.run());
 
-        new Thread(sleep);
-    }
-
-    private static Settings readSettings(Path path) {
-        if (Files.notExists(path) || Files.isDirectory(path))
-            return Settings.DEFAULT;
-
-        final FileConfig config;
-        try {
-            config = FileConfig.of(path);
-        } catch (NoFormatFoundException e) {
-            e.printStackTrace();
-            return Settings.DEFAULT;
-        }
-        config.load();
-
-        final Settings df = Settings.DEFAULT;
-        final int columnCount = requireNonNullElse(config.get("columnCount"), df.getColumnCount());
-        final int rowCount = requireNonNullElse(config.get("rowCount"), df.getRowCount());
-        final int winRequirement = requireNonNullElse(config.get("winRequirement"), df.getWinRequirement());
-        final String player1Color = requireNonNullElse(config.get("player1Color"), df.getPlayer1Color().toString());
-        final String player2Color = requireNonNullElse(config.get("player2Color"), df.getPlayer2Color().toString());
-
-        config.close();
-
-        return new Settings(
-                columnCount,
-                rowCount,
-                winRequirement,
-                Color.valueOf(player1Color),
-                Color.valueOf(player2Color));
+        new Thread(sleep).start();;
     }
 
     public static void writeSettings() {
