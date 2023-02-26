@@ -425,12 +425,12 @@ public class GameController implements Controller {
 
     @Override
     public void setDisable(boolean disabled) {
-        if (disabled) {
-            game.pause();
-            timer.pause();
-        } else {
+        if (!disabled && !game.isGameOver()) {
             game.unpause();
             timer.unpause();
+        } else if (disabled) {
+            game.pause();
+            timer.pause();
         }
 
         root.setDisable(disabled);
