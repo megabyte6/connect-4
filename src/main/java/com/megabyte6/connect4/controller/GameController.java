@@ -7,7 +7,7 @@ import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
-import com.megabyte6.connect4.util.Walker;
+import com.megabyte6.connect4.util.WinChecker;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -191,9 +191,9 @@ public class GameController implements Controller {
         final int column = lastMove.b();
         final int row = lastMove.c();
 
-        final Walker walker = new Walker(game, player, new Position(column, row));
+        final WinChecker winChecker = new WinChecker(game, player, new Position(column, row));
 
-        if (walker.findWinPosition() == null)
+        if (winChecker.findWinPosition() == null)
             return false;
 
         App.setWinner(player);

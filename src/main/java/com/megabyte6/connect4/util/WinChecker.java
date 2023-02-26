@@ -9,7 +9,7 @@ import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.tuple.Pair;
 
-public class Walker {
+public class WinChecker {
 
     enum Direction {
         UP, UPPER_RIGHT, RIGHT, LOWER_RIGHT, DOWN, LOWER_LEFT, LEFT, UPPER_LEFT
@@ -19,7 +19,7 @@ public class Walker {
     private final Player player;
     private final Position startingPos;
 
-    public Walker(Game game, Player player, Position startingPos) {
+    public WinChecker(Game game, Player player, Position startingPos) {
         this.game = game;
         this.player = player;
         this.startingPos = startingPos;
