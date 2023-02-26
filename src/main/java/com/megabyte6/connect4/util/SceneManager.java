@@ -12,6 +12,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -21,16 +22,28 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 public class SceneManager {
 
     private static final String RESOURCE_PATH = "/com/megabyte6/connect4/view/";
 
+    @Getter
     private static Stage stage;
+
+    @Getter
     private static Scene scene;
+
     private static StackPane sceneStack;
+
+    @Getter
+    @Setter
+    @NonNull
     private static Color backgroundColor;
 
     private SceneManager() {}
@@ -90,7 +103,13 @@ public class SceneManager {
         newSceneStack.getChildren().add(fxmlData);
         newSceneStack.setOpacity(0);
 
-        final Scene newScene = new Scene(newSceneStack);
+        // Check if the screen was maximized and if so, manually maximize the
+        // scene. This is due to a JavaFX bug.
+        final boolean screenMaximized = SceneManager.stage.isMaximized();
+        final Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
+        final Scene newScene = screenMaximized
+                ? new Scene(newSceneStack, screenSize.getWidth(), screenSize.getHeight())
+                : new Scene(newSceneStack);
         newScene.setFill(SceneManager.backgroundColor);
 
         // Set up fade transitions.
@@ -218,22 +237,6 @@ public class SceneManager {
 
     public static Node removeTopScene() {
         return removeScene(SceneManager.sceneStack.getChildren().size() - 1);
-    }
-
-    public static Stage getStage() {
-        return SceneManager.stage;
-    }
-
-    public static Scene getScene() {
-        return SceneManager.scene;
-    }
-
-    public static Color getBackgroundColor() {
-        return SceneManager.backgroundColor;
-    }
-
-    public static void setBackgroundColor(Color color) {
-        SceneManager.backgroundColor = color;
     }
 
 }
