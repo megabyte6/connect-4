@@ -1,7 +1,12 @@
 package com.megabyte6.connect4.model;
 
 import javafx.scene.shape.Circle;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
 
+@ToString(callSuper = true, includeFieldNames = true)
+@EqualsAndHashCode(callSuper = true)
 public class GamePiece extends Circle {
 
     private Player owner;
@@ -14,7 +19,7 @@ public class GamePiece extends Circle {
         this(Player.NONE, x, y, radius);
     }
 
-    public GamePiece(Player owner, int x, int y, double radius) {
+    public GamePiece(@NonNull Player owner, int x, int y, double radius) {
         this.owner = owner;
         setX(x);
         setY(y);
@@ -27,7 +32,7 @@ public class GamePiece extends Circle {
         return owner;
     }
 
-    public void setOwner(Player owner) {
+    public void setOwner(@NonNull Player owner) {
         this.owner = owner;
 
         this.setFill(owner.getColor());
@@ -47,36 +52,6 @@ public class GamePiece extends Circle {
 
     public void setY(double y) {
         setCenterY(y);
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        GamePiece other = (GamePiece) obj;
-        if (owner == null) {
-            if (other.owner != null)
-                return false;
-        } else if (!owner.equals(other.owner))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "GamePiece [owner=" + owner + "]";
     }
 
 }
