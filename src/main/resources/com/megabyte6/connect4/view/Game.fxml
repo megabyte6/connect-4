@@ -44,7 +44,7 @@
                                               </Label>
                                     <Label fx:id="timerLabel" text="Time left: 00:00">
                                        <font>
-                                          <Font size="18.0" />
+                                          <Font name="System Bold" size="18.0" />
                                        </font>
                                     </Label>
                                  </children>
