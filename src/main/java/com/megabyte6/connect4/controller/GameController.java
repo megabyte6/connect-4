@@ -137,7 +137,8 @@ public class GameController implements Controller {
 
         // Add obstacles.
         if (App.getSettings().isObstaclesEnabled()) {
-            for (int i : range(App.getSettings().getNumOfObstacles())) {
+            final int numOfObstacles = App.getSettings().getNumOfObstacles();
+            for (int i = 0; i < numOfObstacles; i++) {
                 // Randomly choose a column that isn't full.
                 int column, row;
                 do {
