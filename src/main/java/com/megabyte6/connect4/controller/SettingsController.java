@@ -25,7 +25,6 @@ public class SettingsController implements Controller {
     private Spinner<Integer> columnCount;
     @FXML
     private Spinner<Integer> rowCount;
-
     @FXML
     private Spinner<Integer> winningLength;
 
@@ -38,6 +37,13 @@ public class SettingsController implements Controller {
     private ColorPicker player1Color;
     @FXML
     private ColorPicker player2Color;
+
+    @FXML
+    private CheckBox obstaclesEnabled;
+    @FXML
+    private Spinner<Integer> numOfObstacles;
+    @FXML
+    private ColorPicker obstacleColor;
 
     @FXML
     private void initialize() {
@@ -74,14 +80,28 @@ public class SettingsController implements Controller {
         player1Color.setValue(App.getPlayer1().getColor());
         player2Color.setValue(App.getPlayer2().getColor());
 
+        obstaclesEnabled.setSelected(App.getSettings().isTimerEnabled());
+
+        numOfObstacles.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+        numOfObstacles.editorProperty().get().setAlignment(Pos.CENTER);
+        final SpinnerValueFactory<Integer> numOfObstaclesValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                0,
+                Integer.MAX_VALUE,
+                App.getSettings().getNumOfObstacles());
+        numOfObstacles.setValueFactory(numOfObstaclesValues);
+
+        obstacleColor.setValue(App.getSettings().getObstacleColor());
+
         // Listeners.
         columnCount.setOnMouseReleased(event -> {
             updateAppSettings();
             updateMaxWinningLength();
+            updateMaxObstacles();
         });
         rowCount.setOnMouseReleased(event -> {
             updateAppSettings();
             updateMaxWinningLength();
+            updateMaxObstacles();
         });
         winningLength.setOnMouseReleased(event -> updateAppSettings());
         timerEnabled.setOnAction(event -> {
@@ -91,6 +111,13 @@ public class SettingsController implements Controller {
         timerLength.setOnMouseReleased(event -> updateAppSettings());
         player1Color.setOnAction(event -> updateAppSettings());
         player2Color.setOnAction(event -> updateAppSettings());
+        obstaclesEnabled.setOnAction(event -> {
+            updateAppSettings();
+            numOfObstacles.setDisable(!obstaclesEnabled.isSelected());
+            obstacleColor.setDisable(!obstaclesEnabled.isSelected());
+        });
+        numOfObstacles.setOnMouseReleased(event -> updateAppSettings());
+        obstacleColor.setOnAction(event -> updateAppSettings());
     }
 
     private void updateMaxWinningLength() {
@@ -109,33 +136,41 @@ public class SettingsController implements Controller {
         }
     }
 
+    private void updateMaxObstacles() {
+        final SpinnerValueFactory<Integer> numOfObstaclesValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                0, (columnCount.getValue() * rowCount.getValue()) - winningLength.getValue());
+        numOfObstacles.setValueFactory(numOfObstaclesValues);
+    }
+
     private void updateAppSettings() {
-        App.getSettings().setColumnCount(columnCount.getValue());
-        App.getSettings().setRowCount(rowCount.getValue());
-        App.getSettings().setWinRequirement(winningLength.getValue());
-        App.getSettings().setTimerEnabled(timerEnabled.isSelected());
-        App.getSettings().setTimerLengthInSeconds(timerLength.getValue());
-        App.getSettings().setPlayer1Color(player1Color.getValue());
-        App.getSettings().setPlayer2Color(player2Color.getValue());
+        final Settings settings = App.getSettings();
+        settings.setColumnCount(columnCount.getValue());
+        settings.setRowCount(rowCount.getValue());
+        settings.setWinRequirement(winningLength.getValue());
+        settings.setTimerEnabled(timerEnabled.isSelected());
+        settings.setTimerLengthInSeconds(timerLength.getValue());
+        settings.setPlayer1Color(player1Color.getValue());
+        settings.setPlayer2Color(player2Color.getValue());
+        settings.setObstaclesEnabled(obstaclesEnabled.isSelected());
+        settings.setNumOfObstacles(numOfObstacles.getValue());
+        settings.setObstacleColor(obstacleColor.getValue());
     }
 
     private void resetAllSettings() {
         App.setSettings(Settings.DEFAULT);
 
         columnCount.getValueFactory().setValue(App.getSettings().getColumnCount());
-
         rowCount.getValueFactory().setValue(App.getSettings().getRowCount());
-
         updateMaxWinningLength();
-
         timerEnabled.setSelected(App.getSettings().isTimerEnabled());
-
         timerLength.getValueFactory().setValue(App.getSettings().getTimerLengthInSeconds());
         timerLength.setDisable(!timerEnabled.isSelected());
-
         player1Color.setValue(App.getSettings().getPlayer1Color());
-
         player2Color.setValue(App.getSettings().getPlayer2Color());
+        obstaclesEnabled.setSelected(App.getSettings().isObstaclesEnabled());
+        numOfObstacles.getValueFactory().setValue(App.getSettings().getNumOfObstacles());
+        updateMaxObstacles();
+        obstacleColor.setValue(App.getSettings().getObstacleColor());
     }
 
     public void setOnClosed(Runnable run) {
