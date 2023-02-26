@@ -85,8 +85,8 @@ public class SettingsController implements Controller {
         });
         winningLength.setOnMouseReleased(event -> updateAppSettings());
         timerEnabled.setOnAction(event -> {
-            timerLength.setDisable(!timerEnabled.isSelected());
             updateAppSettings();
+            timerLength.setDisable(!timerEnabled.isSelected());
         });
         timerLength.setOnMouseReleased(event -> updateAppSettings());
         player1Color.setOnAction(event -> updateAppSettings());
@@ -123,11 +123,18 @@ public class SettingsController implements Controller {
         App.setSettings(Settings.DEFAULT);
 
         columnCount.getValueFactory().setValue(App.getSettings().getColumnCount());
+
         rowCount.getValueFactory().setValue(App.getSettings().getRowCount());
+
         updateMaxWinningLength();
+
         timerEnabled.setSelected(App.getSettings().isTimerEnabled());
+
         timerLength.getValueFactory().setValue(App.getSettings().getTimerLengthInSeconds());
+        timerLength.setDisable(!timerEnabled.isSelected());
+
         player1Color.setValue(App.getSettings().getPlayer1Color());
+
         player2Color.setValue(App.getSettings().getPlayer2Color());
     }
 
