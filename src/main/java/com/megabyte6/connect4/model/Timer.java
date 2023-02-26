@@ -90,14 +90,21 @@ public class Timer {
         return startTime;
     }
 
-    public void setTime(long millis) {
+    public void setStartTime(long millis) {
         if (millis < 0)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Timer start time cannot be negative.");
         startTime = millis;
     }
 
     public long getRemainingTime() {
         return time;
+    }
+
+    public void setTime(long millis) {
+        if (millis < 0)
+            throw new IllegalArgumentException("Timer time cannot be negative");
+        setStartTime(millis);
+        time = millis;
     }
 
     public String getFormattedTime() {
