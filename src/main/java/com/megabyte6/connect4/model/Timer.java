@@ -3,6 +3,7 @@ package com.megabyte6.connect4.model;
 import java.time.Duration;
 import com.megabyte6.connect4.App;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 
 @ToString
@@ -110,8 +111,7 @@ public class Timer {
         final long HH = seconds / 3600;
         final long mm = (seconds % 3600) / 60;
         final long ss = seconds % 60;
-        return "Time: "
-                + (dd > 0 ? dd + ":" : "")
+        return (dd > 0 ? dd + ":" : "")
                 + (HH > 0 ? HH + ":" : "")
                 + (mm > 0 ? mm + ":" : "")
                 + (ss > 0 ? ss + "" : "0");
@@ -127,15 +127,11 @@ public class Timer {
         this.updateDelay = updateDelay;
     }
 
-    public void setOnTimeout(Runnable onTimeout) {
-        if (onTimeout == null)
-            return;
+    public void setOnTimeout(@NonNull Runnable onTimeout) {
         this.onTimeout = onTimeout;
     }
 
-    public void setOnUpdate(Runnable onUpdate) {
-        if (onUpdate == null)
-            return;
+    public void setOnUpdate(@NonNull Runnable onUpdate) {
         this.onUpdate = onUpdate;
     }
 
