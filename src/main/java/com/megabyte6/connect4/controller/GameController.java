@@ -224,15 +224,30 @@ public class GameController implements Controller {
     }
 
     private boolean checkForTie() {
-        return game.getColumnCount() * game.getRowCount() == game.getMoveCount();
+        for (int i : range(game.getColumnCount())) {
+            if (game.findNextFreeRow(i) != -1)
+                return false;
+        }
+        return true;
     }
 
     private void gameWon() {
-        setDisable(true);
         game.gameOver();
         App.getWinner().incrementScore();
-
         updatePlayerScoreLabels();
+
+        showGameFinishedScreen();
+    }
+
+    private void gameTie() {
+        game.gameOver();
+        App.setWinner(Player.NONE);
+
+        showGameFinishedScreen();
+    }
+
+    private void showGameFinishedScreen() {
+        setDisable(true);
 
         final var loadedData = SceneManager.loadFXMLAndController("GameFinished");
         final Node root = loadedData.a();
@@ -240,10 +255,6 @@ public class GameController implements Controller {
         controller.setOnClose(() -> setDisable(false));
 
         SceneManager.addScene(root);
-    }
-
-    private void gameTie() {
-        game.gameOver();
     }
 
     private void updateMarkerPosition(double mouseXPos) {
