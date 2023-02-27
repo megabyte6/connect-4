@@ -11,26 +11,18 @@
 
 ### Option 2: I don't want to install stuff.
 
-- Prerequisites:
-    - JDK 17
-        - [Adoptium](https://adoptium.net/temurin/releases)
-        - [Adoptium GitHub](https://github.com/adoptium/temurin17-binaries/releases)
-    - A bit of command line knowledge.
+Note: This project should be built with JDK 17 but the build script will install it automatically if you don't already have a compatible JDK.
 
 1. Download this repository with the green `Code` button.
 1. Navigate to the project folder. You should see a `build.gradle` file.
-1. Open a terminal and run `./gradlew run` (or `gradlew.bat run` if you're on Windows Command Prompt) to run the game.
+1. Open a terminal in this directory and run `./gradlew run` (or `gradlew.bat run` if you're on Windows Command Prompt) to run the game.
 
 ## Building this project:
 
-- Prerequisites:
-    - JDK 17
-        - [Adoptium](https://adoptium.net/temurin/releases)
-        - [Adoptium GitHub](https://github.com/adoptium/temurin17-binaries/releases)
-    - A bit of command line knowledge.
+Note: This project should be built with JDK 17 but the build script will install it automatically if you don't already have a compatible JDK.
 
 1. Download this repository with the green `Code` button.
-1. Run the build command:
+1. Run the build command using one of the following options:
     - Build portable images (this one is easier):
         1. Open `gradle.properties` and change the `jlinkTargetPlatform` property to match the OS and architecture you wish to build for.
         1. Run `./gradlew jlinkZip`
