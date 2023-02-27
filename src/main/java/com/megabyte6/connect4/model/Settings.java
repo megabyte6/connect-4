@@ -13,8 +13,8 @@ import lombok.NonNull;
 @Data
 public class Settings {
 
-    public static final Settings DEFAULT =
-            new Settings(7, 6, 4, false, 10000, Color.YELLOW, Color.RED, false, 5, Color.WHITE);
+    public static final Settings DEFAULT = new Settings(7, 6, 4, false, 10000,
+            Color.YELLOW, Color.RED, false, 5, Color.BLACK);
 
     private int columnCount;
     private int rowCount;
