@@ -42,7 +42,7 @@ public class StartController implements Controller {
                 App.getPlayer1().getName(),
                 (text) -> {
                     String name = text.isEmpty() || text.isBlank() ? "Player 1" : text;
-                    if (App.getPlayer1().equals(Player.NONE)) {
+                    if (App.getPlayer1().equals(Player.NONE.get())) {
                         App.setPlayer1(new Player(name, Color.YELLOW));
                     } else {
                         App.getPlayer1().setName(name);
@@ -50,8 +50,7 @@ public class StartController implements Controller {
 
                     getPlayer2Name();
                 },
-                () -> setDisable(false)
-        );
+                () -> setDisable(false));
     }
 
     private void getPlayer2Name() {
@@ -60,7 +59,7 @@ public class StartController implements Controller {
                 App.getPlayer2().getName(),
                 (text) -> {
                     String name = text.isEmpty() || text.isBlank() ? "Player 2" : text;
-                    if (App.getPlayer2().equals(Player.NONE)) {
+                    if (App.getPlayer2().equals(Player.NONE.get())) {
                         App.setPlayer2(new Player(name, Color.RED));
                     } else {
                         App.getPlayer2().setName(name);
@@ -68,8 +67,7 @@ public class StartController implements Controller {
 
                     SceneManager.switchScenes("Game", Duration.millis(400));
                 },
-                () -> setDisable(false)
-        );
+                () -> setDisable(false));
     }
 
     private void playerNameInputPopup(String promptText, String defaultText, Consumer<String> onOk, Runnable onCancel) {

@@ -21,7 +21,7 @@ public class GameFinishedController implements Controller {
 
     @FXML
     private void initialize() {
-        if (App.getWinner().equals(Player.NONE)) {
+        if (App.getWinner().equals(Player.NONE.get())) {
             label.setText("It's a tie!");
         } else {
             label.setText(App.getWinner().getName() + " won!");

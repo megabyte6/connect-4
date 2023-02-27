@@ -46,7 +46,7 @@ public class Game {
         final GamePiece[] column = getGameBoardColumn(columnIndex);
 
         for (int i : range(column.length - 1, -1)) {
-            if (column[i].getOwner().equals(Player.NONE))
+            if (column[i].getOwner().equals(Player.NONE.get()))
                 return i;
         }
 

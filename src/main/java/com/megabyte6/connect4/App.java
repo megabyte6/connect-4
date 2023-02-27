@@ -79,7 +79,7 @@ public class App extends Application {
     }
 
     public static void setWinner(Player player) {
-        if (!player.equals(player1) && !player.equals(player2) && !player.equals(Player.NONE))
+        if (!player.equals(player1) && !player.equals(player2) && !player.equals(Player.NONE.get()))
             return;
         App.winner = player;
     }
