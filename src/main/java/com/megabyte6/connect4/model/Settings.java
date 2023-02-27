@@ -39,14 +39,12 @@ public class Settings {
             Color player1Color, Color player2Color,
             boolean obstaclesEnabled, int numOfObstacles, Color obstacleColor) {
 
-        final Settings def = Settings.DEFAULT.get();
-
-        this.columnCount = columnCount >= 0 ? columnCount : def.columnCount;
-        this.rowCount = rowCount >= 0 ? rowCount : def.rowCount;
-        this.winRequirement = winRequirement >= 0 ? winRequirement : def.winRequirement;
+        this.columnCount = columnCount >= 0 ? columnCount : 7;
+        this.rowCount = rowCount >= 0 ? rowCount : 6;
+        this.winRequirement = winRequirement >= 0 ? winRequirement : 4;
 
         this.timerEnabled = timerEnabled;
-        this.timerLength = timerLength >= 0 ? timerLength : def.timerLength;
+        this.timerLength = timerLength >= 0 ? timerLength : 10000;
 
         this.player1Color = player1Color;
         this.player2Color = player2Color;
