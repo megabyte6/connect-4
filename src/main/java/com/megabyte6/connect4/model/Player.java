@@ -1,5 +1,6 @@
 package com.megabyte6.connect4.model;
 
+import java.util.function.Supplier;
 import javafx.scene.paint.Color;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -8,8 +9,8 @@ import lombok.Setter;
 @Data
 public class Player {
 
-    public static final Player NONE = new Player("", 0, Color.WHITE);
-    public static final Player OBSTACLE = new Player("Obstacle", 0, Color.BLACK);
+    public static final Supplier<Player> NONE = () -> new Player("", 0, Color.WHITE);
+    public static final Supplier<Player> OBSTACLE = () -> new Player("Obstacle", 0, Color.BLACK);
 
     private String name;
     @Setter(AccessLevel.NONE)

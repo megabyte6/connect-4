@@ -3,6 +3,7 @@ package com.megabyte6.connect4.model;
 import static java.util.Objects.requireNonNullElse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Supplier;
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.megabyte6.connect4.App;
 import javafx.scene.paint.Color;
@@ -13,7 +14,7 @@ import lombok.NonNull;
 @Data
 public class Settings {
 
-    public static final Settings DEFAULT = new Settings(7, 6, 4, false, 10000,
+    public static final Supplier<Settings> DEFAULT = () -> new Settings(7, 6, 4, false, 10000,
             Color.YELLOW, Color.RED, false, 5, Color.BLACK);
 
     private int columnCount;
@@ -37,12 +38,15 @@ public class Settings {
             boolean timerEnabled, int timerLength,
             Color player1Color, Color player2Color,
             boolean obstaclesEnabled, int numOfObstacles, Color obstacleColor) {
-        this.columnCount = columnCount >= 0 ? columnCount : DEFAULT.columnCount;
-        this.rowCount = rowCount >= 0 ? rowCount : DEFAULT.rowCount;
-        this.winRequirement = winRequirement >= 0 ? winRequirement : DEFAULT.winRequirement;
+
+        final Settings def = Settings.DEFAULT.get();
+
+        this.columnCount = columnCount >= 0 ? columnCount : def.columnCount;
+        this.rowCount = rowCount >= 0 ? rowCount : def.rowCount;
+        this.winRequirement = winRequirement >= 0 ? winRequirement : def.winRequirement;
 
         this.timerEnabled = timerEnabled;
-        this.timerLength = timerLength >= 0 ? timerLength : DEFAULT.timerLength;
+        this.timerLength = timerLength >= 0 ? timerLength : def.timerLength;
 
         this.player1Color = player1Color;
         this.player2Color = player2Color;
@@ -98,26 +102,28 @@ public class Settings {
 
     public static Settings load(Path path) {
         if (Files.notExists(path) || Files.isDirectory(path))
-            return Settings.DEFAULT;
+            return Settings.DEFAULT.get();
 
         @Cleanup
         final FileConfig config = FileConfig.of(path);
         config.load();
 
+        final Settings def = Settings.DEFAULT.get();
+
         return new Settings(
-                requireNonNullElse(config.get("columnCount"), DEFAULT.getColumnCount()),
-                requireNonNullElse(config.get("rowCount"), DEFAULT.getRowCount()),
-                requireNonNullElse(config.get("winRequirement"), DEFAULT.getWinRequirement()),
-                requireNonNullElse(config.get("timerEnabled"), DEFAULT.isTimerEnabled()),
-                requireNonNullElse(config.get("timerLength"), DEFAULT.getTimerLength()),
+                requireNonNullElse(config.get("columnCount"), def.getColumnCount()),
+                requireNonNullElse(config.get("rowCount"), def.getRowCount()),
+                requireNonNullElse(config.get("winRequirement"), def.getWinRequirement()),
+                requireNonNullElse(config.get("timerEnabled"), def.isTimerEnabled()),
+                requireNonNullElse(config.get("timerLength"), def.getTimerLength()),
                 Color.valueOf(requireNonNullElse(
-                        config.get("player1Color"), DEFAULT.getPlayer1Color().toString())),
+                        config.get("player1Color"), def.getPlayer1Color().toString())),
                 Color.valueOf(requireNonNullElse(
-                        config.get("player2Color"), DEFAULT.getPlayer2Color().toString())),
-                requireNonNullElse(config.get("obstaclesEnabled"), DEFAULT.isObstaclesEnabled()),
-                requireNonNullElse(config.get("numOfObstacles"), DEFAULT.getNumOfObstacles()),
+                        config.get("player2Color"), def.getPlayer2Color().toString())),
+                requireNonNullElse(config.get("obstaclesEnabled"), def.isObstaclesEnabled()),
+                requireNonNullElse(config.get("numOfObstacles"), def.getNumOfObstacles()),
                 Color.valueOf(requireNonNullElse(
-                        config.get("obstacleColor"), DEFAULT.getObstacleColor().toString())));
+                        config.get("obstacleColor"), def.getObstacleColor().toString())));
     }
 
 }

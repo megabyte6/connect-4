@@ -16,7 +16,7 @@ public class GamePiece extends Circle {
     }
 
     public GamePiece(int x, int y, double radius) {
-        this(Player.NONE, x, y, radius);
+        this(Player.NONE.get(), x, y, radius);
     }
 
     public GamePiece(@NonNull Player owner, int x, int y, double radius) {

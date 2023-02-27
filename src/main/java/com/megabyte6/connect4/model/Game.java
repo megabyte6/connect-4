@@ -142,7 +142,7 @@ public class Game {
 
         var selectedAction = moveHistory.get(historyPointer);
         GamePiece selectedGamePiece = getGamePiece(selectedAction.b(), selectedAction.c());
-        selectedGamePiece.setOwner(Player.NONE);
+        selectedGamePiece.setOwner(Player.NONE.get());
         selectedGamePiece.setFill(App.BACKGROUND_COLOR);
 
         historyPointer--;

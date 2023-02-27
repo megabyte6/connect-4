@@ -178,7 +178,7 @@ public class SettingsController implements Controller {
     }
 
     private void resetAllSettings() {
-        App.setSettings(Settings.DEFAULT);
+        App.setSettings(Settings.DEFAULT.get());
         reloadSettings();
     }
 

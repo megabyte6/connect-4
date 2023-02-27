@@ -24,7 +24,7 @@ public class App extends Application {
     @Setter
     private static Player player2 = new Player("", Color.RED);
     @Getter
-    private static Player winner = Player.NONE;
+    private static Player winner = Player.NONE.get();
 
     @Getter
     private static Settings settings;

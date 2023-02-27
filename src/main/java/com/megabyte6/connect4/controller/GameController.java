@@ -69,7 +69,7 @@ public class GameController implements Controller {
                 && game.getCurrentPlayer().equals(App.getPlayer1()))
             game.swapTurns();
 
-        App.setWinner(Player.NONE);
+        App.setWinner(Player.NONE.get());
 
         // Initialize gameBoard width and height.
         final StackPane gameBoardContainer = (StackPane) gameBoard.getParent();
@@ -147,7 +147,7 @@ public class GameController implements Controller {
                 } while (row == -1);
 
                 final GamePiece selectedPiece = game.getGamePiece(column, row);
-                selectedPiece.setOwner(Player.OBSTACLE);
+                selectedPiece.setOwner(Player.OBSTACLE.get());
                 selectedPiece.setFill(App.getSettings().getObstacleColor());
             }
         }
@@ -241,7 +241,7 @@ public class GameController implements Controller {
 
     private void gameTie() {
         game.gameOver();
-        App.setWinner(Player.NONE);
+        App.setWinner(Player.NONE.get());
 
         showGameFinishedScreen();
     }
