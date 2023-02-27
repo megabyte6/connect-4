@@ -81,7 +81,7 @@ public class SettingsController implements Controller {
         player1Color.setValue(App.getPlayer1().getColor());
         player2Color.setValue(App.getPlayer2().getColor());
 
-        obstaclesEnabled.setSelected(App.getSettings().isTimerEnabled());
+        obstaclesEnabled.setSelected(App.getSettings().isObstaclesEnabled());
 
         numOfObstacles.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
         numOfObstacles.editorProperty().get().setAlignment(Pos.CENTER);
