@@ -369,11 +369,14 @@ public class GameController implements Controller {
         marker.setOwner(game.getCurrentPlayer());
 
         updateCurrentTurnLabel();
-        if (!game.isPaused() && !game.isGameOver())
+        if (App.getSettings().isTimerEnabled() && !game.isPaused() && !game.isGameOver())
             resetTimer();
     }
 
     private void resetTimer() {
+        if (!App.getSettings().isTimerEnabled())
+            return;
+
         if (timer != null)
             timer.stop();
 
@@ -462,10 +465,12 @@ public class GameController implements Controller {
     public void setDisable(boolean disabled) {
         if (!disabled && !game.isGameOver()) {
             game.unpause();
-            timer.resume();
+            if (App.getSettings().isTimerEnabled() && timer != null)
+                timer.resume();
         } else if (disabled) {
             game.pause();
-            timer.stop();
+            if (App.getSettings().isTimerEnabled() && timer != null)
+                timer.stop();
         }
 
         root.setDisable(disabled);
