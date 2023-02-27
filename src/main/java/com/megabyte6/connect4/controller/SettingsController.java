@@ -85,9 +85,11 @@ public class SettingsController implements Controller {
 
         numOfObstacles.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
         numOfObstacles.editorProperty().get().setAlignment(Pos.CENTER);
+        final int maxObstacles = (App.getSettings().getColumnCount() * App.getSettings().getRowCount())
+                - (App.getSettings().getWinRequirement() * 2);
         final SpinnerValueFactory<Integer> numOfObstaclesValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 0,
-                Integer.MAX_VALUE,
+                maxObstacles,
                 App.getSettings().getNumOfObstacles());
         numOfObstacles.setValueFactory(numOfObstaclesValues);
         numOfObstacles.setDisable(!obstaclesEnabled.isSelected());
@@ -133,16 +135,25 @@ public class SettingsController implements Controller {
                 App.getSettings().getWinRequirement());
         winningLength.setValueFactory(winningLengthValues);
 
-        if (maxWinningLength < App.getSettings().getWinRequirement()) {
+        if (App.getSettings().getWinRequirement() > maxWinningLength) {
             winningLength.getValueFactory().setValue(maxWinningLength);
             updateAppSettings();
         }
     }
 
     private void updateMaxObstacles() {
+        final int maxObstacles = (columnCount.getValue() * rowCount.getValue())
+                - (winningLength.getValue() * 2);
         final SpinnerValueFactory<Integer> numOfObstaclesValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                0, (columnCount.getValue() * rowCount.getValue()) - winningLength.getValue());
+                0,
+                maxObstacles,
+                App.getSettings().getNumOfObstacles());
         numOfObstacles.setValueFactory(numOfObstaclesValues);
+
+        if (App.getSettings().getNumOfObstacles() > maxObstacles) {
+            numOfObstacles.getValueFactory().setValue(maxObstacles);
+            updateAppSettings();
+        }
     }
 
     private void updateAppSettings() {
