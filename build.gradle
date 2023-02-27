@@ -83,8 +83,8 @@ jlink {
 
     jpackage {
         targetPlatformName = jpackageTargetPlatform
-        imageName = 'Connect4'
-        installerName = 'Connect4-installer'
+        imageName = 'Connect 4'
+        installerName = 'connect4-installer'
         icon = 'src/main/resources/icon.ico'
         vendor = 'Brayden Chan'
 
