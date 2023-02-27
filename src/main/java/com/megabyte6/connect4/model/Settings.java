@@ -15,7 +15,7 @@ import lombok.NonNull;
 public class Settings {
 
     public static final Supplier<Settings> DEFAULT = () -> new Settings(7, 6, 4, false, 10000,
-            Color.YELLOW, Color.RED, false, 5, Color.BLACK);
+            Color.YELLOW, Color.RED, false, 5, Color.WHITE);
 
     private int columnCount;
     private int rowCount;
