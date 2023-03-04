@@ -382,7 +382,13 @@ public class GameController implements Controller {
 
         timer = new Timer(App.getSettings().getTimerLength());
         timer.setOnUpdate(() -> timerLabel.setText("Time left: " + timer.getFormattedTime()));
-        timer.setOnTimeout(() -> swapTurns());
+        timer.setOnTimeout(() -> {
+            if (App.getSettings().isTimerAutoDrop()) {
+                placePiece();
+            } else {
+                swapTurns();
+            }
+        });
         timer.start();
 
         timerLabel.setText("Time left: " + timer.getFormattedTime());
