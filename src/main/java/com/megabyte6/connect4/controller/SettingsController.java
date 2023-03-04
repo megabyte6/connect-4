@@ -32,6 +32,8 @@ public class SettingsController implements Controller {
     private CheckBox timerEnabled;
     @FXML
     private Spinner<Integer> timerLength;
+    @FXML
+    private CheckBox timerAutoDrop;
 
     @FXML
     private ColorPicker player1Color;
@@ -79,8 +81,10 @@ public class SettingsController implements Controller {
         timerEnabled.setOnAction(event -> {
             updateAppSettings();
             timerLength.setDisable(!timerEnabled.isSelected());
+            timerAutoDrop.setDisable(!timerEnabled.isSelected());
         });
         timerLength.setOnMouseReleased(event -> updateAppSettings());
+        timerAutoDrop.setOnAction(event -> updateAppSettings());
         player1Color.setOnAction(event -> updateAppSettings());
         player2Color.setOnAction(event -> updateAppSettings());
         obstaclesEnabled.setOnAction(event -> {
@@ -130,6 +134,7 @@ public class SettingsController implements Controller {
         settings.setWinRequirement(winningLength.getValue());
         settings.setTimerEnabled(timerEnabled.isSelected());
         settings.setTimerLengthInSeconds(timerLength.getValue());
+        settings.setTimerAutoDrop(timerAutoDrop.isSelected());
         settings.setPlayer1Color(player1Color.getValue());
         settings.setPlayer2Color(player2Color.getValue());
         settings.setObstaclesEnabled(obstaclesEnabled.isSelected());
@@ -157,6 +162,9 @@ public class SettingsController implements Controller {
                 Integer.MAX_VALUE,
                 App.getSettings().getTimerLengthInSeconds()));
         timerLength.setDisable(!timerEnabled.isSelected());
+
+        timerAutoDrop.setSelected(App.getSettings().isTimerAutoDrop());
+        timerAutoDrop.setDisable(!timerEnabled.isSelected());
 
         player1Color.setValue(App.getSettings().getPlayer1Color());
 

@@ -14,7 +14,7 @@ import lombok.NonNull;
 @Data
 public class Settings {
 
-    public static final Supplier<Settings> DEFAULT = () -> new Settings(7, 6, 4, false, 10000,
+    public static final Supplier<Settings> DEFAULT = () -> new Settings(7, 6, 4, false, 10000, false,
             Color.YELLOW, Color.RED, false, 5, Color.WHITE);
 
     private int columnCount;
@@ -23,6 +23,7 @@ public class Settings {
 
     private boolean timerEnabled;
     private int timerLength;
+    private boolean timerAutoDrop;
 
     @NonNull
     private Color player1Color;
@@ -35,7 +36,7 @@ public class Settings {
     private Color obstacleColor;
 
     public Settings(int columnCount, int rowCount, int winRequirement,
-            boolean timerEnabled, int timerLength,
+            boolean timerEnabled, int timerLength, boolean timerAutoDrop,
             Color player1Color, Color player2Color,
             boolean obstaclesEnabled, int numOfObstacles, Color obstacleColor) {
 
@@ -45,6 +46,7 @@ public class Settings {
 
         this.timerEnabled = timerEnabled;
         this.timerLength = timerLength >= 0 ? timerLength : 10000;
+        this.timerAutoDrop = timerAutoDrop;
 
         this.player1Color = player1Color;
         this.player2Color = player2Color;
@@ -89,6 +91,7 @@ public class Settings {
         config.set("winRequirement", winRequirement);
         config.set("timerEnabled", timerEnabled);
         config.set("timerLength", timerLength);
+        config.set("timerAutoDrop", timerAutoDrop);
         config.set("player1Color", player1Color.toString());
         config.set("player2Color", player2Color.toString());
         config.set("obstaclesEnabled", obstaclesEnabled);
@@ -114,6 +117,7 @@ public class Settings {
                 requireNonNullElse(config.get("winRequirement"), def.getWinRequirement()),
                 requireNonNullElse(config.get("timerEnabled"), def.isTimerEnabled()),
                 requireNonNullElse(config.get("timerLength"), def.getTimerLength()),
+                requireNonNullElse(config.get("timerAutoDrop"), def.isTimerAutoDrop()),
                 Color.valueOf(requireNonNullElse(
                         config.get("player1Color"), def.getPlayer1Color().toString())),
                 Color.valueOf(requireNonNullElse(

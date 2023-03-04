@@ -51,12 +51,17 @@
                </children>
             </VBox>
             <CheckBox fx:id="timerEnabled" mnemonicParsing="false" text="Timer" GridPane.rowIndex="1" />
-            <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Spinner fx:id="timerLength" prefWidth="100.0" />
-                  <Label text="seconds" />
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
+                     <children>
+                        <Spinner fx:id="timerLength" prefWidth="100.0" />
+                        <Label text="seconds" />
+                     </children>
+                  </HBox>
+                  <CheckBox fx:id="timerAutoDrop" mnemonicParsing="false" text="Auto drop" />
                </children>
-            </HBox>
+            </VBox>
             <Label text="Player 1's team color" GridPane.rowIndex="2" />
             <ColorPicker fx:id="player1Color" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Player 2's team color" GridPane.rowIndex="3" />
