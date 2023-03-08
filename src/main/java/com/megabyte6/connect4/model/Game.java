@@ -4,7 +4,9 @@ import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.util.tuple.Triplet;
 import com.megabyte6.connect4.util.tuple.Tuple;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import static com.megabyte6.connect4.util.Range.range;
 
@@ -51,6 +53,18 @@ public class Game {
         }
 
         return -1;
+    }
+
+    public List<Integer> findFreeColumns() {
+        List<Integer> freeColumns = new ArrayList<>();
+
+        for (int i = 0; i < getColumnCount(); i++) {
+            if (findNextFreeRow(i) != -1) {
+                freeColumns.add(i);
+            }
+        }
+
+        return freeColumns;
     }
 
     public boolean isOutOfBounds(int columnIndex, int rowIndex) {
