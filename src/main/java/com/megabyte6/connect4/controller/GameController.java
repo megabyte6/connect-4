@@ -191,7 +191,7 @@ public class GameController implements Controller {
 
         gameBoard.setOnMouseMoved(event -> updateMarkerPosition(event.getX()));
 
-        root.setOnMouseClicked(event -> placePiece());
+        root.setOnMouseClicked(event -> placePiece(game.getSelectedColumn()));
 
         root.setOnKeyPressed(event -> {
             if (event.isShortcutDown())
@@ -282,7 +282,7 @@ public class GameController implements Controller {
         marker.layoutXProperty().bind(markerBindings[game.getSelectedColumn()]);
     }
 
-    private void placePiece() {
+    private void placePiece(int column) {
         if (game.isGameOver())
             return;
         if (game.isPaused() && !game.isGameOver()) {
@@ -290,7 +290,6 @@ public class GameController implements Controller {
             return;
         }
 
-        final int column = game.getSelectedColumn();
         final int row = game.findNextFreeRow(column);
 
         // Column is full.
@@ -384,7 +383,13 @@ public class GameController implements Controller {
         timer.setOnUpdate(() -> timerLabel.setText("Time left: " + timer.getFormattedTime()));
         timer.setOnTimeout(() -> {
             if (App.getSettings().isTimerAutoDrop()) {
-                placePiece();
+                final List<Integer> freeColumns = game.findFreeColumns();
+                int column = game.getSelectedColumn();
+                if (!freeColumns.contains(column)) {
+                    column = freeColumns.get((int) (Math.random() * freeColumns.size()));
+                }
+                marker.layoutXProperty().bind(markerBindings[column]);
+                placePiece(column);
             } else {
                 swapTurns();
             }
