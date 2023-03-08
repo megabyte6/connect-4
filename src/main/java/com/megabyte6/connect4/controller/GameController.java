@@ -383,12 +383,13 @@ public class GameController implements Controller {
         timer.setOnUpdate(() -> timerLabel.setText("Time left: " + timer.getFormattedTime()));
         timer.setOnTimeout(() -> {
             if (App.getSettings().isTimerAutoDrop()) {
-                final List<Integer> freeColumns = game.findFreeColumns();
                 int column = game.getSelectedColumn();
-                if (!freeColumns.contains(column)) {
+                if (game.findNextFreeRow(column) == -1) {
+                    final List<Integer> freeColumns = game.findFreeColumns();
                     column = freeColumns.get((int) (Math.random() * freeColumns.size()));
+                    marker.layoutXProperty().bind(markerBindings[column]);
                 }
-                marker.layoutXProperty().bind(markerBindings[column]);
+
                 placePiece(column);
             } else {
                 swapTurns();
