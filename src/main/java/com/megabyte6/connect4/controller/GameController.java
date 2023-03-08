@@ -289,7 +289,7 @@ public class GameController implements Controller {
             SceneManager.popup("Please return to the current move.");
             return;
         }
-        
+
         final int row = game.findNextFreeRow(column);
 
         // Column is full.
@@ -390,7 +390,6 @@ public class GameController implements Controller {
                 }
                 marker.layoutXProperty().bind(markerBindings[column]);
                 placePiece(column);
-                updateMarkerBindings();
             } else {
                 swapTurns();
             }
