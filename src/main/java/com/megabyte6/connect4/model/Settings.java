@@ -79,9 +79,11 @@ public class Settings {
         App.getPlayer2().setColor(player2Color);
     }
 
-    public void save(Path path) {
+    public boolean save(Path path) {
         if (Files.isDirectory(path))
-            return;
+            return false;
+        if (!Files.isWritable(path))
+            return false;
 
         @Cleanup
         final FileConfig config = FileConfig.of(path);
@@ -99,10 +101,14 @@ public class Settings {
         config.set("obstacleColor", obstacleColor.toString());
 
         config.save();
+
+        return true;
     }
 
     public static Settings load(Path path) {
         if (Files.notExists(path) || Files.isDirectory(path))
+            return Settings.DEFAULT.get();
+        if (!Files.isReadable(path))
             return Settings.DEFAULT.get();
 
         @Cleanup
