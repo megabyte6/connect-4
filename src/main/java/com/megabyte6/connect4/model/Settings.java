@@ -80,9 +80,8 @@ public class Settings {
     }
 
     public boolean save(Path path) {
-        if (Files.isDirectory(path))
-            return false;
-        if (!Files.isWritable(path))
+        path = path.toAbsolutePath();
+        if (Files.isDirectory(path) || !Files.isWritable(path.getParent()))
             return false;
 
         @Cleanup
@@ -106,9 +105,7 @@ public class Settings {
     }
 
     public static Settings load(Path path) {
-        if (Files.notExists(path) || Files.isDirectory(path))
-            return Settings.DEFAULT.get();
-        if (!Files.isReadable(path))
+        if (Files.isDirectory(path) || !Files.isReadable(path))
             return Settings.DEFAULT.get();
 
         @Cleanup
