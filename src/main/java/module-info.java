@@ -1,10 +1,10 @@
 module com.megabyte6.connect4 {
     requires static lombok;
 
-    requires com.electronwill.nightconfig.core;
-
     requires javafx.fxml;
     requires transitive javafx.controls;
+
+    requires com.fasterxml.jackson.databind;
 
     opens com.megabyte6.connect4.controller to javafx.fxml;
     opens com.megabyte6.connect4.controller.dialog to javafx.fxml;

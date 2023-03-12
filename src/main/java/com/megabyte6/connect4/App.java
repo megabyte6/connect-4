@@ -28,10 +28,10 @@ public class App extends Application {
 
     @Getter
     private static Settings settings;
-    private static final Path settingsPath = Path.of("config.toml");
+    private static final Path settingsPath = Path.of("config.json");
 
     public static void main(String[] args) {
-        settings = Settings.load(settingsPath);
+        settings = Settings.loadElseDefault(settingsPath);
 
         launch(args);
     }
@@ -75,7 +75,11 @@ public class App extends Application {
     }
 
     public static void writeSettings() {
-        settings.save(settingsPath);
+        try {
+            settings.save(settingsPath);
+        } catch (Exception e) {
+            System.err.println("WARNING: Settings failed to save.");
+        }
     }
 
     public static void setWinner(Player player) {

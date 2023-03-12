@@ -1,13 +1,15 @@
 package com.megabyte6.connect4.model;
 
-import static java.util.Objects.requireNonNullElse;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Supplier;
-import com.electronwill.nightconfig.core.file.FileConfig;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.megabyte6.connect4.App;
 import javafx.scene.paint.Color;
-import lombok.Cleanup;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -79,56 +81,32 @@ public class Settings {
         App.getPlayer2().setColor(player2Color);
     }
 
-    public boolean save(Path path) {
-        path = path.toAbsolutePath();
-        if (Files.isDirectory(path) || !Files.isWritable(path.getParent()))
-            return false;
-
-        @Cleanup
-        final FileConfig config = FileConfig.of(path);
-
-        config.set("columnCount", columnCount);
-        config.set("rowCount", rowCount);
-        config.set("winRequirement", winRequirement);
-        config.set("timerEnabled", timerEnabled);
-        config.set("timerLength", timerLength);
-        config.set("timerAutoDrop", timerAutoDrop);
-        config.set("player1Color", player1Color.toString());
-        config.set("player2Color", player2Color.toString());
-        config.set("obstaclesEnabled", obstaclesEnabled);
-        config.set("numOfObstacles", numOfObstacles);
-        config.set("obstacleColor", obstacleColor.toString());
-
-        config.save();
-
-        return true;
+    public void save(Path path) throws IOException, StreamWriteException, DatabindException {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), this);
     }
 
-    public static Settings load(Path path) {
+    public static Settings load(Path path) throws IOException, StreamReadException, DatabindException {
         if (Files.isDirectory(path) || !Files.isReadable(path))
-            return Settings.DEFAULT.get();
+            return DEFAULT.get();
 
-        @Cleanup
-        final FileConfig config = FileConfig.of(path);
-        config.load();
+        final ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(path.toFile(), Settings.class);
+    }
 
-        final Settings def = Settings.DEFAULT.get();
+    public static Settings loadElseDefault(Path path) {
+        Settings settings;
+        try {
+            settings = load(path);
+        } catch (DatabindException dbe) {
+            dbe.printStackTrace();
+            settings = DEFAULT.get();
+        } catch (Exception e) {
+            System.err.println("WARNING: Settings failed to load.");
+            settings = DEFAULT.get();
+        }
 
-        return new Settings(
-                requireNonNullElse(config.get("columnCount"), def.getColumnCount()),
-                requireNonNullElse(config.get("rowCount"), def.getRowCount()),
-                requireNonNullElse(config.get("winRequirement"), def.getWinRequirement()),
-                requireNonNullElse(config.get("timerEnabled"), def.isTimerEnabled()),
-                requireNonNullElse(config.get("timerLength"), def.getTimerLength()),
-                requireNonNullElse(config.get("timerAutoDrop"), def.isTimerAutoDrop()),
-                Color.valueOf(requireNonNullElse(
-                        config.get("player1Color"), def.getPlayer1Color().toString())),
-                Color.valueOf(requireNonNullElse(
-                        config.get("player2Color"), def.getPlayer2Color().toString())),
-                requireNonNullElse(config.get("obstaclesEnabled"), def.isObstaclesEnabled()),
-                requireNonNullElse(config.get("numOfObstacles"), def.getNumOfObstacles()),
-                Color.valueOf(requireNonNullElse(
-                        config.get("obstacleColor"), def.getObstacleColor().toString())));
+        return settings;
     }
 
 }
