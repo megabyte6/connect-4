@@ -3,21 +3,21 @@ package com.megabyte6.connect4.model;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Supplier;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.megabyte6.connect4.App;
+import com.megabyte6.connect4.model.colorwrapper.ColorWrapperDeserializer;
+import com.megabyte6.connect4.model.colorwrapper.ColorWrapperSerializer;
 import javafx.scene.paint.Color;
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
 public class Settings {
-
-    public static final Supplier<Settings> DEFAULT = () -> new Settings(7, 6, 4, false, 10000, false,
-            Color.YELLOW, Color.RED, false, 5, Color.WHITE);
 
     private int columnCount;
     private int rowCount;
@@ -28,26 +28,48 @@ public class Settings {
     private boolean timerAutoDrop;
 
     @NonNull
+    @JsonSerialize(using = ColorWrapperSerializer.class)
+    @JsonDeserialize(using = ColorWrapperDeserializer.class)
     private Color player1Color;
     @NonNull
+    @JsonSerialize(using = ColorWrapperSerializer.class)
+    @JsonDeserialize(using = ColorWrapperDeserializer.class)
     private Color player2Color;
 
     private boolean obstaclesEnabled;
     private int numOfObstacles;
     @NonNull
+    @JsonSerialize(using = ColorWrapperSerializer.class)
+    @JsonDeserialize(using = ColorWrapperDeserializer.class)
     private Color obstacleColor;
+
+    public Settings() {
+        columnCount = 7;
+        rowCount = 6;
+        winRequirement = 4;
+        timerEnabled = false;
+        timerLength = 10000;
+        timerAutoDrop = false;
+        player1Color = Color.YELLOW;
+        player2Color = Color.RED;
+        obstaclesEnabled = false;
+        numOfObstacles = 5;
+        obstacleColor = Color.WHITE;
+    }
 
     public Settings(int columnCount, int rowCount, int winRequirement,
             boolean timerEnabled, int timerLength, boolean timerAutoDrop,
             Color player1Color, Color player2Color,
             boolean obstaclesEnabled, int numOfObstacles, Color obstacleColor) {
 
-        this.columnCount = columnCount >= 0 ? columnCount : 7;
-        this.rowCount = rowCount >= 0 ? rowCount : 6;
-        this.winRequirement = winRequirement >= 0 ? winRequirement : 4;
+        final Settings DEFAULT = new Settings();
+
+        this.columnCount = columnCount >= 0 ? columnCount : DEFAULT.getColumnCount();
+        this.rowCount = rowCount >= 0 ? rowCount : DEFAULT.getRowCount();
+        this.winRequirement = winRequirement >= 0 ? winRequirement : DEFAULT.getWinRequirement();
 
         this.timerEnabled = timerEnabled;
-        this.timerLength = timerLength >= 0 ? timerLength : 10000;
+        this.timerLength = timerLength >= 0 ? timerLength : DEFAULT.getTimerLength();
         this.timerAutoDrop = timerAutoDrop;
 
         this.player1Color = player1Color;
@@ -56,9 +78,6 @@ public class Settings {
         this.obstaclesEnabled = obstaclesEnabled;
         this.numOfObstacles = numOfObstacles;
         this.obstacleColor = obstacleColor;
-
-        App.getPlayer1().setColor(player1Color);
-        App.getPlayer2().setColor(player2Color);
     }
 
     public int getTimerLengthInSeconds() {
@@ -88,22 +107,19 @@ public class Settings {
 
     public static Settings load(Path path) throws IOException, StreamReadException, DatabindException {
         if (Files.isDirectory(path) || !Files.isReadable(path))
-            return DEFAULT.get();
+            return new Settings();
 
         final ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(path.toFile(), Settings.class);
     }
 
     public static Settings loadElseDefault(Path path) {
-        Settings settings;
+        Settings settings = new Settings();
         try {
             settings = load(path);
-        } catch (DatabindException dbe) {
-            dbe.printStackTrace();
-            settings = DEFAULT.get();
         } catch (Exception e) {
             System.err.println("WARNING: Settings failed to load.");
-            settings = DEFAULT.get();
+            e.printStackTrace();
         }
 
         return settings;

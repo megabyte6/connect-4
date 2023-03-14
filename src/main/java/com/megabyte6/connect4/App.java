@@ -79,6 +79,7 @@ public class App extends Application {
             settings.save(settingsPath);
         } catch (Exception e) {
             System.err.println("WARNING: Settings failed to save.");
+            e.printStackTrace();
         }
     }
 
