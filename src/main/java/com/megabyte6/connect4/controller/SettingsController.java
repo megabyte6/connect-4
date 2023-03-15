@@ -28,6 +28,10 @@ public class SettingsController implements Controller {
     @FXML
     private Spinner<Integer> winningLength;
     @FXML
+    private ColorPicker boardColor;
+    @FXML
+    private ColorPicker lineColor;
+    @FXML
     private CheckBox boardWrappingEnabled;
 
     @FXML
@@ -80,6 +84,8 @@ public class SettingsController implements Controller {
             updateMaxObstacles();
         });
         winningLength.setOnMouseReleased(event -> updateAppSettings());
+        boardColor.setOnAction(event -> updateAppSettings());
+        lineColor.setOnAction(event -> updateAppSettings());
         boardWrappingEnabled.setOnAction(event -> updateAppSettings());
         timerEnabled.setOnAction(event -> {
             updateAppSettings();
@@ -135,6 +141,8 @@ public class SettingsController implements Controller {
         settings.setColumnCount(columnCount.getValue());
         settings.setRowCount(rowCount.getValue());
         settings.setWinRequirement(winningLength.getValue());
+        settings.setBoardColor(boardColor.getValue());
+        settings.setLineColor(lineColor.getValue());
         settings.setBoardWrappingEnabled(boardWrappingEnabled.isSelected());
         settings.setTimerEnabled(timerEnabled.isSelected());
         settings.setTimerLengthInSeconds(timerLength.getValue());
@@ -158,6 +166,10 @@ public class SettingsController implements Controller {
                 App.getSettings().getRowCount()));
 
         updateMaxWinningLength();
+
+        boardColor.setValue(App.getSettings().getBoardColor());
+
+        lineColor.setValue(App.getSettings().getLineColor());
 
         boardWrappingEnabled.setSelected(App.getSettings().isBoardWrappingEnabled());
 

@@ -22,6 +22,14 @@ public class Settings {
     private int columnCount;
     private int rowCount;
     private int winRequirement;
+    @NonNull
+    @JsonSerialize(using = ColorWrapperSerializer.class)
+    @JsonDeserialize(using = ColorWrapperDeserializer.class)
+    private Color boardColor;
+    @NonNull
+    @JsonSerialize(using = ColorWrapperSerializer.class)
+    @JsonDeserialize(using = ColorWrapperDeserializer.class)
+    private Color lineColor;
     private boolean boardWrappingEnabled;
 
     private boolean timerEnabled;
