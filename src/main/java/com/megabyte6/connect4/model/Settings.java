@@ -22,6 +22,14 @@ public class Settings {
     private int columnCount;
     private int rowCount;
     private int winRequirement;
+    @NonNull
+    @JsonSerialize(using = ColorWrapperSerializer.class)
+    @JsonDeserialize(using = ColorWrapperDeserializer.class)
+    private Color boardColor;
+    @NonNull
+    @JsonSerialize(using = ColorWrapperSerializer.class)
+    @JsonDeserialize(using = ColorWrapperDeserializer.class)
+    private Color lineColor;
     private boolean boardWrappingEnabled;
 
     private boolean timerEnabled;
@@ -48,6 +56,8 @@ public class Settings {
         columnCount = 7;
         rowCount = 6;
         winRequirement = 4;
+        boardColor = Color.BLUE;
+        lineColor = Color.WHITE;
         boardWrappingEnabled = false;
         timerEnabled = false;
         timerLength = 10000;

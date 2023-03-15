@@ -96,10 +96,12 @@ public class Game {
     public void setPaused(boolean paused) {
         this.paused = paused;
 
-        if (paused) {
-            timer.stop();
-        } else {
-            timer.resume();
+        if (timer != null) {
+            if (paused) {
+                timer.stop();
+            } else {
+                timer.resume();
+            }
         }
     }
 

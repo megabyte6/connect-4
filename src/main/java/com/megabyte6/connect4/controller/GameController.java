@@ -27,9 +27,9 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
@@ -76,13 +76,16 @@ public class GameController implements Controller {
         gameBoardContainer.heightProperty().addListener((observable, oldValue, newValue) -> handleWindowSizeChanged(
                 new Dimension2D(gameBoardContainer.getWidth(), newValue.doubleValue())));
 
+        // Give the board a color.
+        gameBoard.setBackground(Background.fill(App.getSettings().getBoardColor()));
+
         // Draw horizontal grid lines.
         for (int i : range(game.getRowCount() + 1)) {
             final double multiplier = ((double) i) / game.getRowCount();
             final DoubleBinding y = gameBoard.heightProperty().multiply(multiplier);
 
             final Line line = new Line();
-            line.setStroke(Color.WHITE);
+            line.setStroke(App.getSettings().getLineColor());
             line.startYProperty().bind(y);
             line.endXProperty().bind(gameBoard.widthProperty());
             line.endYProperty().bind(y);
@@ -90,12 +93,12 @@ public class GameController implements Controller {
             gameBoard.getChildren().add(line);
         }
         // Draw vertical grid lines.
-        for (int i : range(game.getColumnCount())) {
+        for (int i : range(game.getColumnCount() + 1)) {
             final double multiplier = ((double) i) / game.getColumnCount();
             final DoubleBinding x = gameBoard.widthProperty().multiply(multiplier);
 
             final Line line = new Line();
-            line.setStroke(Color.WHITE);
+            line.setStroke(App.getSettings().getLineColor());
             line.startXProperty().bind(x);
             line.endXProperty().bind(x);
             line.endYProperty().bind(gameBoard.heightProperty());
@@ -126,7 +129,7 @@ public class GameController implements Controller {
                 blankPiece.layoutYProperty().bind(yBinding);
                 blankPiece.radiusProperty().bind(radiusBinding);
                 blankPiece.setFill(App.BACKGROUND_COLOR);
-                blankPiece.setStroke(Color.WHITE);
+                blankPiece.setStroke(App.getSettings().getLineColor());
 
                 game.setGamePiece(blankPiece, col, row);
             }

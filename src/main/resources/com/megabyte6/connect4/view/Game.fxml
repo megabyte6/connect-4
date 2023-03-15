@@ -23,7 +23,7 @@
                 </StackPane>
                 <StackPane VBox.vgrow="ALWAYS">
                     <children>
-                        <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="395.0" prefWidth="460.0" style="-fx-background-color: blue;" />
+                        <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="395.0" prefWidth="460.0" />
                     </children>
                 </StackPane>
                 <Separator prefWidth="200.0" />
