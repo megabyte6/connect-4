@@ -80,7 +80,10 @@ public class SettingsController implements Controller {
             updateMaxObstacles();
         });
         winningLength.setOnMouseReleased(event -> updateAppSettings());
-        boardWrappingEnabled.setOnAction(event -> updateAppSettings());
+        boardWrappingEnabled.setOnAction(event -> {
+            updateAppSettings();
+            updateMaxWinningLength();
+        });
         timerEnabled.setOnAction(event -> {
             updateAppSettings();
             timerLength.setDisable(!timerEnabled.isSelected());
