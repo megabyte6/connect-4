@@ -13,7 +13,7 @@ public class ColorWrapperDeserializer extends JsonDeserializer<Color> {
     public Color deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
         ColorWrapper colorWrapper = p.readValueAs(ColorWrapper.class);
 
-        Color color = null;
+        Color color = Color.BLACK;
         if (colorWrapper != null) {
             color = new Color(colorWrapper.getRed(), colorWrapper.getGreen(), colorWrapper.getBlue(),
                     colorWrapper.getOpacity());
