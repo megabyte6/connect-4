@@ -40,8 +40,6 @@ public class GameController implements Controller {
             App.getPlayer1(), App.getPlayer2(),
             App.getSettings().getColumnCount(), App.getSettings().getRowCount());
 
-    private Timer timer;
-
     @FXML
     private AnchorPane root;
 
@@ -374,31 +372,30 @@ public class GameController implements Controller {
     }
 
     private void resetTimer() {
-        if (!App.getSettings().isTimerEnabled())
-            return;
+        game.resetTimer(
+                () -> updateTimerLabel(),
+                () -> timerTimeout());
 
-        if (timer != null)
-            timer.stop();
+        updateTimerLabel();
+    }
 
-        timer = new Timer(App.getSettings().getTimerLength());
-        timer.setOnUpdate(() -> timerLabel.setText("Time left: " + timer.getFormattedTime()));
-        timer.setOnTimeout(() -> {
-            if (App.getSettings().isTimerAutoDrop()) {
-                int column = game.getSelectedColumn();
-                if (game.findNextFreeRow(column) == -1) {
-                    final List<Integer> freeColumns = game.findFreeColumns();
-                    column = freeColumns.get((int) (Math.random() * freeColumns.size()));
-                    marker.layoutXProperty().bind(markerBindings[column]);
-                }
+    private void updateTimerLabel() {
+        timerLabel.setText("Time left: " + game.getTimer().getFormattedTime());
+    }
 
-                placePiece(column);
-            } else {
-                swapTurns();
+    private void timerTimeout() {
+        if (App.getSettings().isTimerAutoDrop()) {
+            int column = game.getSelectedColumn();
+            if (game.findNextFreeRow(column) == -1) {
+                final List<Integer> freeColumns = game.findFreeColumns();
+                column = freeColumns.get((int) (Math.random() * freeColumns.size()));
+                marker.layoutXProperty().bind(markerBindings[column]);
             }
-        });
-        timer.start();
 
-        timerLabel.setText("Time left: " + timer.getFormattedTime());
+            placePiece(column);
+        } else {
+            swapTurns();
+        }
     }
 
     private void updatePlayerScoreLabels() {
@@ -477,13 +474,13 @@ public class GameController implements Controller {
     @Override
     public void setDisable(boolean disabled) {
         if (!disabled && !game.isGameOver()) {
-            game.unpause();
-            if (App.getSettings().isTimerEnabled() && timer != null)
-                timer.resume();
+            game.setPaused(false);
+            if (App.getSettings().isTimerEnabled() && game.getTimer() != null)
+                game.getTimer().resume();
         } else if (disabled) {
-            game.pause();
-            if (App.getSettings().isTimerEnabled() && timer != null)
-                timer.stop();
+            game.setPaused(true);
+            if (App.getSettings().isTimerEnabled() && game.getTimer() != null)
+                game.getTimer().stop();
         }
 
         root.setDisable(disabled);

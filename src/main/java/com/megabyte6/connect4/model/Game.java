@@ -9,13 +9,17 @@ import com.megabyte6.connect4.util.tuple.Triplet;
 import com.megabyte6.connect4.util.tuple.Tuple;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @EqualsAndHashCode
 public class Game {
 
+    @Getter
     private boolean paused = false;
+    @Getter
     private boolean gameOver = false;
 
     private final Player player1;
@@ -30,6 +34,10 @@ public class Game {
 
     @Getter
     private int selectedColumn;
+
+    @Getter
+    @Setter
+    private Timer timer;
 
     // Player, Column, Row
     private final LinkedList<Triplet<Player, Integer, Integer>> moveHistory = new LinkedList<>();
@@ -85,29 +93,17 @@ public class Game {
         return rowIndex < 0 || rowIndex >= getRowCount();
     }
 
-    public boolean isPaused() {
-        return paused;
-    }
-
-    public void pause() {
-        paused = true;
-    }
-
-    public void unpause() {
-        paused = false;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 
     public void gameOver() {
         gameOver = true;
-        paused = true;
+        setPaused(true);
     }
 
     public void setSelectedColumn(int index) {
-        if (paused || index < 0 || index >= gameBoard.length)
+        if (isPaused() || index < 0 || index >= gameBoard.length)
             return;
         selectedColumn = index;
     }
@@ -132,6 +128,19 @@ public class Game {
         gameBoard[columnIndex][rowIndex] = gamePiece;
     }
 
+    public void resetTimer(@NonNull Runnable onUpdate, @NonNull Runnable onTimeout) {
+        if (!App.getSettings().isTimerEnabled())
+            return;
+
+        if (timer != null)
+            timer.stop();
+
+        timer = new Timer(App.getSettings().getTimerLength());
+        timer.setOnUpdate(onUpdate);
+        timer.setOnTimeout(onTimeout);
+        timer.start();
+    }
+
     public void addMoveToHistory(Player player, int column, int row) {
         moveHistory.add(Tuple.of(player, column, row));
         historyPointer = getMoveCount() - 1;
@@ -146,7 +155,7 @@ public class Game {
         if (historyPointer == -1)
             return;
 
-        paused = true;
+        setPaused(true);
 
         var selectedAction = moveHistory.get(historyPointer);
         GamePiece selectedGamePiece = getGamePiece(selectedAction.b(), selectedAction.c());
@@ -168,7 +177,7 @@ public class Game {
         selectedGamePiece.setOwner(selectedAction.a());
 
         if (historyPointerIsAtLatestMove() && !gameOver)
-            paused = false;
+            setPaused(false);
     }
 
     public boolean historyPointerIsAtLatestMove() {
