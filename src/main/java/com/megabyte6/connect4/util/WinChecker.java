@@ -3,7 +3,6 @@ package com.megabyte6.connect4.util;
 import static com.megabyte6.connect4.util.tuple.Tuple.of;
 import java.util.LinkedList;
 import java.util.List;
-import com.megabyte6.connect4.App;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.tuple.Pair;
@@ -31,9 +30,6 @@ public class WinChecker {
      * there was.
      */
     public Position[] findWinPosition() {
-        if (boardWrapping)
-            generateFullBoard();
-
         final LinkedList<Pair<Direction, Position>> queue = new LinkedList<>();
         // Add initial 3x3 grid of cells around the starting position.
         queue.add(of(Direction.UP,
@@ -65,12 +61,20 @@ public class WinChecker {
         while (queue.size() > 0) {
             final var queueElement = queue.get(0);
             final Direction direction = queueElement.a();
-            final Position pos = queueElement.b();
+            Position pos = queueElement.b();
 
             queue.remove(0);
 
-            if (isOutOfBounds(pos.column(), pos.row()))
+            if (rowIsOutOfBounds(pos.row()))
                 continue;
+            if (columnIsOutOfBounds(pos.column())) {
+                if (!boardWrapping)
+                    continue;
+                if (pos.column() < 0)
+                    pos = new Position(getColumnCount() - 1, pos.row());
+                if (pos.column() >= getColumnCount())
+                    pos = new Position(0, pos.row());
+            }
 
             final GamePiece gamePiece = gameBoard[pos.column()][pos.row()];
             if (!gamePiece.getOwner().equals(player))
@@ -111,13 +115,13 @@ public class WinChecker {
                 }
             }
 
-            if (horizontal.size() == App.getSettings().getWinRequirement())
+            if (horizontal.size() == winRequirement)
                 return horizontal.toArray(Position[]::new);
-            if (vertical.size() == App.getSettings().getWinRequirement())
+            if (vertical.size() == winRequirement)
                 return vertical.toArray(Position[]::new);
-            if (ascendingDiagonal.size() == App.getSettings().getWinRequirement())
+            if (ascendingDiagonal.size() == winRequirement)
                 return ascendingDiagonal.toArray(Position[]::new);
-            if (descendingDiagonal.size() == App.getSettings().getWinRequirement())
+            if (descendingDiagonal.size() == winRequirement)
                 return descendingDiagonal.toArray(Position[]::new);
         }
 
@@ -132,24 +136,12 @@ public class WinChecker {
         return gameBoard[0].length;
     }
 
-    private boolean isOutOfBounds(int columnIndex, int rowIndex) {
-        return columnIsOutOfBounds(columnIndex) || rowIsOutOfBounds(rowIndex);
-    }
-
     private boolean columnIsOutOfBounds(int columnIndex) {
         return columnIndex < 0 || columnIndex >= getColumnCount();
     }
 
     private boolean rowIsOutOfBounds(int rowIndex) {
         return rowIndex < 0 || rowIndex >= getRowCount();
-    }
-
-    // Generate the full board with wrapping included.
-    private void generateFullBoard() {
-        // Don't bother generating an extended board if the piece is already completely in bounds.
-        if (!columnIsOutOfBounds(startingPos.column() - winRequirement)
-                && !columnIsOutOfBounds(startingPos.column() + winRequirement))
-            return;
     }
 
 }
