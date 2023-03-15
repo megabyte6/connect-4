@@ -90,7 +90,7 @@ public class GameController implements Controller {
             gameBoard.getChildren().add(line);
         }
         // Draw vertical grid lines.
-        for (int i : range(game.getColumnCount())) {
+        for (int i : range(game.getColumnCount() + 1)) {
             final double multiplier = ((double) i) / game.getColumnCount();
             final DoubleBinding x = gameBoard.widthProperty().multiply(multiplier);
 
