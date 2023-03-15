@@ -23,14 +23,8 @@ public class WinChecker {
     private final Player player;
     @NonNull
     private final Position startingPos;
+    private final int winRequirement;
     private final boolean boardWrapping;
-
-    public WinChecker(@NonNull GamePiece[][] gameBoard, @NonNull Player player, @NonNull Position startingPos) {
-        this.gameBoard = gameBoard;
-        this.player = player;
-        this.startingPos = startingPos;
-        boardWrapping = false;
-    }
 
     /**
      * @return {@code null} if there was no win or an array of Positions if
@@ -139,11 +133,23 @@ public class WinChecker {
     }
 
     private boolean isOutOfBounds(int columnIndex, int rowIndex) {
-        return columnIndex < 0 || columnIndex >= getColumnCount()
-                || rowIndex < 0 || rowIndex >= getRowCount();
+        return columnIsOutOfBounds(columnIndex) || rowIsOutOfBounds(rowIndex);
+    }
+
+    private boolean columnIsOutOfBounds(int columnIndex) {
+        return columnIndex < 0 || columnIndex >= getColumnCount();
+    }
+
+    private boolean rowIsOutOfBounds(int rowIndex) {
+        return rowIndex < 0 || rowIndex >= getRowCount();
     }
 
     // Generate the full board with wrapping included.
-    private void generateFullBoard() {}
+    private void generateFullBoard() {
+        // Don't bother generating an extended board if the piece is already completely in bounds.
+        if (!columnIsOutOfBounds(startingPos.column() - winRequirement)
+                && !columnIsOutOfBounds(startingPos.column() + winRequirement))
+            return;
+    }
 
 }
