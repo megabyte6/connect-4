@@ -4,7 +4,6 @@ import static com.megabyte6.connect4.util.tuple.Tuple.of;
 import java.util.LinkedList;
 import java.util.List;
 import com.megabyte6.connect4.App;
-import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.tuple.Pair;
@@ -19,15 +18,15 @@ public class WinChecker {
     }
 
     @NonNull
-    private final Game game;
+    private GamePiece[][] gameBoard;
     @NonNull
     private final Player player;
     @NonNull
     private final Position startingPos;
     private final boolean boardWrapping;
 
-    public WinChecker(@NonNull Game game, @NonNull Player player, @NonNull Position startingPos) {
-        this.game = game;
+    public WinChecker(@NonNull GamePiece[][] gameBoard, @NonNull Player player, @NonNull Position startingPos) {
+        this.gameBoard = gameBoard;
         this.player = player;
         this.startingPos = startingPos;
         boardWrapping = false;
@@ -38,6 +37,9 @@ public class WinChecker {
      * there was.
      */
     public Position[] findWinPosition() {
+        if (boardWrapping)
+            generateFullBoard();
+
         final LinkedList<Pair<Direction, Position>> queue = new LinkedList<>();
         // Add initial 3x3 grid of cells around the starting position.
         queue.add(of(Direction.UP,
@@ -73,10 +75,10 @@ public class WinChecker {
 
             queue.remove(0);
 
-            if (game.isOutOfBounds(pos.column(), pos.row()))
+            if (isOutOfBounds(pos.column(), pos.row()))
                 continue;
 
-            final GamePiece gamePiece = game.getGamePiece(pos.column(), pos.row());
+            final GamePiece gamePiece = gameBoard[pos.column()][pos.row()];
             if (!gamePiece.getOwner().equals(player))
                 continue;
 
@@ -127,5 +129,21 @@ public class WinChecker {
 
         return null;
     }
+
+    private int getColumnCount() {
+        return gameBoard.length;
+    }
+
+    private int getRowCount() {
+        return gameBoard[0].length;
+    }
+
+    private boolean isOutOfBounds(int columnIndex, int rowIndex) {
+        return columnIndex < 0 || columnIndex >= getColumnCount()
+                || rowIndex < 0 || rowIndex >= getRowCount();
+    }
+
+    // Generate the full board with wrapping included.
+    private void generateFullBoard() {}
 
 }

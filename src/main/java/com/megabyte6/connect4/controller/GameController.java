@@ -214,7 +214,7 @@ public class GameController implements Controller {
         final int column = lastMove.b();
         final int row = lastMove.c();
 
-        final WinChecker winChecker = new WinChecker(game, player, new Position(column, row));
+        final WinChecker winChecker = new WinChecker(game.getGameBoard(), player, new Position(column, row));
 
         if (winChecker.findWinPosition() == null)
             return false;
