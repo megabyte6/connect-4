@@ -2,6 +2,7 @@ package com.megabyte6.connect4.model;
 
 import javafx.scene.shape.Circle;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -9,6 +10,8 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class GamePiece extends Circle {
 
+    @Getter
+    @NonNull
     private Player owner;
 
     public GamePiece() {
@@ -26,10 +29,6 @@ public class GamePiece extends Circle {
         setRadius(radius);
 
         setFill(owner.getColor());
-    }
-
-    public Player getOwner() {
-        return owner;
     }
 
     public void setOwner(@NonNull Player owner) {

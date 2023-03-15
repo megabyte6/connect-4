@@ -22,6 +22,7 @@ public class Settings {
     private int columnCount;
     private int rowCount;
     private int winRequirement;
+    private boolean boardWrappingEnabled;
 
     private boolean timerEnabled;
     private int timerLength;
@@ -47,6 +48,7 @@ public class Settings {
         columnCount = 7;
         rowCount = 6;
         winRequirement = 4;
+        boardWrappingEnabled = false;
         timerEnabled = false;
         timerLength = 10000;
         timerAutoDrop = false;
@@ -55,29 +57,6 @@ public class Settings {
         obstaclesEnabled = false;
         numOfObstacles = 5;
         obstacleColor = Color.WHITE;
-    }
-
-    public Settings(int columnCount, int rowCount, int winRequirement,
-            boolean timerEnabled, int timerLength, boolean timerAutoDrop,
-            Color player1Color, Color player2Color,
-            boolean obstaclesEnabled, int numOfObstacles, Color obstacleColor) {
-
-        final Settings DEFAULT = new Settings();
-
-        this.columnCount = columnCount >= 0 ? columnCount : DEFAULT.getColumnCount();
-        this.rowCount = rowCount >= 0 ? rowCount : DEFAULT.getRowCount();
-        this.winRequirement = winRequirement >= 0 ? winRequirement : DEFAULT.getWinRequirement();
-
-        this.timerEnabled = timerEnabled;
-        this.timerLength = timerLength >= 0 ? timerLength : DEFAULT.getTimerLength();
-        this.timerAutoDrop = timerAutoDrop;
-
-        this.player1Color = player1Color;
-        this.player2Color = player2Color;
-
-        this.obstaclesEnabled = obstaclesEnabled;
-        this.numOfObstacles = numOfObstacles;
-        this.obstacleColor = obstacleColor;
     }
 
     public int getTimerLengthInSeconds() {
@@ -90,12 +69,12 @@ public class Settings {
         this.timerLength = timerLength * 1000;
     }
 
-    public void setPlayer1Color(Color player1Color) {
+    public void setPlayer1Color(@NonNull Color player1Color) {
         this.player1Color = player1Color;
         App.getPlayer1().setColor(player1Color);
     }
 
-    public void setPlayer2Color(Color player2Color) {
+    public void setPlayer2Color(@NonNull Color player2Color) {
         this.player2Color = player2Color;
         App.getPlayer2().setColor(player2Color);
     }

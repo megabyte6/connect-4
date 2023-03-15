@@ -3,27 +3,27 @@ package com.megabyte6.connect4.util;
 import static com.megabyte6.connect4.util.tuple.Tuple.of;
 import java.util.LinkedList;
 import java.util.List;
-import com.megabyte6.connect4.App;
-import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.tuple.Pair;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
+@AllArgsConstructor
 public class WinChecker {
 
-    enum Direction {
+    private enum Direction {
         UP, UPPER_RIGHT, RIGHT, LOWER_RIGHT, DOWN, LOWER_LEFT, LEFT, UPPER_LEFT
     }
 
-    private final Game game;
+    @NonNull
+    private GamePiece[][] gameBoard;
+    @NonNull
     private final Player player;
+    @NonNull
     private final Position startingPos;
-
-    public WinChecker(Game game, Player player, Position startingPos) {
-        this.game = game;
-        this.player = player;
-        this.startingPos = startingPos;
-    }
+    private final int winRequirement;
+    private final boolean boardWrapping;
 
     /**
      * @return {@code null} if there was no win or an array of Positions if
@@ -61,14 +61,22 @@ public class WinChecker {
         while (queue.size() > 0) {
             final var queueElement = queue.get(0);
             final Direction direction = queueElement.a();
-            final Position pos = queueElement.b();
+            Position pos = queueElement.b();
 
             queue.remove(0);
 
-            if (game.isOutOfBounds(pos.column(), pos.row()))
+            if (rowIsOutOfBounds(pos.row()))
                 continue;
+            if (columnIsOutOfBounds(pos.column())) {
+                if (!boardWrapping)
+                    continue;
+                if (pos.column() < 0)
+                    pos = new Position(getColumnCount() - 1, pos.row());
+                if (pos.column() >= getColumnCount())
+                    pos = new Position(0, pos.row());
+            }
 
-            final GamePiece gamePiece = game.getGamePiece(pos.column(), pos.row());
+            final GamePiece gamePiece = gameBoard[pos.column()][pos.row()];
             if (!gamePiece.getOwner().equals(player))
                 continue;
 
@@ -107,17 +115,33 @@ public class WinChecker {
                 }
             }
 
-            if (horizontal.size() == App.getSettings().getWinRequirement())
+            if (horizontal.size() == winRequirement)
                 return horizontal.toArray(Position[]::new);
-            if (vertical.size() == App.getSettings().getWinRequirement())
+            if (vertical.size() == winRequirement)
                 return vertical.toArray(Position[]::new);
-            if (ascendingDiagonal.size() == App.getSettings().getWinRequirement())
+            if (ascendingDiagonal.size() == winRequirement)
                 return ascendingDiagonal.toArray(Position[]::new);
-            if (descendingDiagonal.size() == App.getSettings().getWinRequirement())
+            if (descendingDiagonal.size() == winRequirement)
                 return descendingDiagonal.toArray(Position[]::new);
         }
 
         return null;
+    }
+
+    private int getColumnCount() {
+        return gameBoard.length;
+    }
+
+    private int getRowCount() {
+        return gameBoard[0].length;
+    }
+
+    private boolean columnIsOutOfBounds(int columnIndex) {
+        return columnIndex < 0 || columnIndex >= getColumnCount();
+    }
+
+    private boolean rowIsOutOfBounds(int rowIndex) {
+        return rowIndex < 0 || rowIndex >= getRowCount();
     }
 
 }
