@@ -11,7 +11,6 @@ import com.megabyte6.connect4.controller.dialog.ConfirmController;
 import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
-import com.megabyte6.connect4.model.Timer;
 import com.megabyte6.connect4.util.Position;
 import com.megabyte6.connect4.util.SceneManager;
 import com.megabyte6.connect4.util.WinChecker;
