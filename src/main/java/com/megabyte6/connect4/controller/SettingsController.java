@@ -80,10 +80,7 @@ public class SettingsController implements Controller {
             updateMaxObstacles();
         });
         winningLength.setOnMouseReleased(event -> updateAppSettings());
-        boardWrappingEnabled.setOnAction(event -> {
-            updateAppSettings();
-            updateMaxWinningLength();
-        });
+        boardWrappingEnabled.setOnAction(event -> updateAppSettings());
         timerEnabled.setOnAction(event -> {
             updateAppSettings();
             timerLength.setDisable(!timerEnabled.isSelected());
@@ -103,17 +100,9 @@ public class SettingsController implements Controller {
     }
 
     private void updateMaxWinningLength() {
-        final int maxWinningLength;
-        if (App.getSettings().isBoardWrappingEnabled()) {
-            maxWinningLength = Math.max(
-                    App.getSettings().getColumnCount(),
-                    App.getSettings().getRowCount());
-        } else {
-            maxWinningLength = Math.min(
-                    App.getSettings().getColumnCount(),
-                    App.getSettings().getRowCount());
-        }
-
+        final int maxWinningLength = Math.min(
+                App.getSettings().getColumnCount(),
+                App.getSettings().getRowCount());
         final SpinnerValueFactory<Integer> winningLengthValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(
                 3,
                 maxWinningLength,
