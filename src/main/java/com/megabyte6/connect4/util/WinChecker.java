@@ -8,21 +8,29 @@ import com.megabyte6.connect4.model.Game;
 import com.megabyte6.connect4.model.GamePiece;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.tuple.Pair;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
+@AllArgsConstructor
 public class WinChecker {
 
-    enum Direction {
+    private enum Direction {
         UP, UPPER_RIGHT, RIGHT, LOWER_RIGHT, DOWN, LOWER_LEFT, LEFT, UPPER_LEFT
     }
 
+    @NonNull
     private final Game game;
+    @NonNull
     private final Player player;
+    @NonNull
     private final Position startingPos;
+    private final boolean boardWrapping;
 
-    public WinChecker(Game game, Player player, Position startingPos) {
+    public WinChecker(@NonNull Game game, @NonNull Player player, @NonNull Position startingPos) {
         this.game = game;
         this.player = player;
         this.startingPos = startingPos;
+        boardWrapping = false;
     }
 
     /**

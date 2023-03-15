@@ -69,12 +69,12 @@ public class Settings {
         this.timerLength = timerLength * 1000;
     }
 
-    public void setPlayer1Color(Color player1Color) {
+    public void setPlayer1Color(@NonNull Color player1Color) {
         this.player1Color = player1Color;
         App.getPlayer1().setColor(player1Color);
     }
 
-    public void setPlayer2Color(Color player2Color) {
+    public void setPlayer2Color(@NonNull Color player2Color) {
         this.player2Color = player2Color;
         App.getPlayer2().setColor(player2Color);
     }

@@ -52,7 +52,7 @@ public class SceneManager {
         init(stage, fxmlName, Color.WHITE);
     }
 
-    public static void init(Stage stage, String fxmlName, Color backgroundColor) {
+    public static void init(Stage stage, String fxmlName, @NonNull Color backgroundColor) {
         SceneManager.stage = stage;
 
         SceneManager.sceneStack = new StackPane();

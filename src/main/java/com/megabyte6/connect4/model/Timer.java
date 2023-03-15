@@ -19,8 +19,10 @@ public class Timer {
     // if App.delay() is still running.
     private boolean timerInstanceActive = false;
 
+    @NonNull
     private Runnable onTimeout = () -> {
     };
+    @NonNull
     private Runnable onUpdate = () -> {
     };
 
