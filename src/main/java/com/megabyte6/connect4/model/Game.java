@@ -95,6 +95,12 @@ public class Game {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+
+        if (paused) {
+            timer.stop();
+        } else {
+            timer.resume();
+        }
     }
 
     public void gameOver() {
