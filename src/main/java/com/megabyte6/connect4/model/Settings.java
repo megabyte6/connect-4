@@ -56,6 +56,8 @@ public class Settings {
         columnCount = 7;
         rowCount = 6;
         winRequirement = 4;
+        boardColor = Color.BLUE;
+        lineColor = Color.WHITE;
         boardWrappingEnabled = false;
         timerEnabled = false;
         timerLength = 10000;
