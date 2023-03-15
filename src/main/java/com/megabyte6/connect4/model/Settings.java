@@ -22,6 +22,7 @@ public class Settings {
     private int columnCount;
     private int rowCount;
     private int winRequirement;
+    private boolean boardWrappingEnabled;
 
     private boolean timerEnabled;
     private int timerLength;
@@ -47,6 +48,7 @@ public class Settings {
         columnCount = 7;
         rowCount = 6;
         winRequirement = 4;
+        boardWrappingEnabled = false;
         timerEnabled = false;
         timerLength = 10000;
         timerAutoDrop = false;
@@ -57,7 +59,7 @@ public class Settings {
         obstacleColor = Color.WHITE;
     }
 
-    public Settings(int columnCount, int rowCount, int winRequirement,
+    public Settings(int columnCount, int rowCount, int winRequirement, boolean boardWrappingEnabled,
             boolean timerEnabled, int timerLength, boolean timerAutoDrop,
             Color player1Color, Color player2Color,
             boolean obstaclesEnabled, int numOfObstacles, Color obstacleColor) {
@@ -67,6 +69,7 @@ public class Settings {
         this.columnCount = columnCount >= 0 ? columnCount : DEFAULT.getColumnCount();
         this.rowCount = rowCount >= 0 ? rowCount : DEFAULT.getRowCount();
         this.winRequirement = winRequirement >= 0 ? winRequirement : DEFAULT.getWinRequirement();
+        this.boardWrappingEnabled = boardWrappingEnabled;
 
         this.timerEnabled = timerEnabled;
         this.timerLength = timerLength >= 0 ? timerLength : DEFAULT.getTimerLength();
