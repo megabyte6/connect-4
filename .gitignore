@@ -6,4 +6,4 @@ build
 bin
 
 # Project runtime files.
-config.toml
+config.json
