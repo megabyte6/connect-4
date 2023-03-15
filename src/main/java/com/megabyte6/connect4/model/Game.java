@@ -1,15 +1,18 @@
 package com.megabyte6.connect4.model;
 
-import com.megabyte6.connect4.App;
-import com.megabyte6.connect4.util.tuple.Triplet;
-import com.megabyte6.connect4.util.tuple.Tuple;
-
+import static com.megabyte6.connect4.util.Range.range;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import com.megabyte6.connect4.App;
+import com.megabyte6.connect4.util.tuple.Triplet;
+import com.megabyte6.connect4.util.tuple.Tuple;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-import static com.megabyte6.connect4.util.Range.range;
-
+@ToString
+@EqualsAndHashCode
 public class Game {
 
     private boolean paused = false;
@@ -18,11 +21,14 @@ public class Game {
     private final Player player1;
     private final Player player2;
 
+    @Getter
     private Player currentPlayer;
 
     // [column][row]
+    @Getter
     private final GamePiece[][] gameBoard;
 
+    @Getter
     private int selectedColumn;
 
     // Player, Column, Row
@@ -100,22 +106,10 @@ public class Game {
         paused = true;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
     public void setSelectedColumn(int index) {
         if (paused || index < 0 || index >= gameBoard.length)
             return;
         selectedColumn = index;
-    }
-
-    public int getSelectedColumn() {
-        return selectedColumn;
-    }
-
-    public GamePiece[][] getGameBoard() {
-        return gameBoard;
     }
 
     public GamePiece[] getGameBoardColumn(int columnNumber) {
