@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 public class App extends Application {
@@ -50,7 +51,7 @@ public class App extends Application {
         writeSettings();
     }
 
-    public static void delay(long millis, Runnable runAfter) {
+    public static void delay(long millis, @NonNull Runnable runAfter) {
         if (millis < 0)
             throw new IllegalArgumentException("Delay time cannot be negative.");
 
@@ -83,13 +84,13 @@ public class App extends Application {
         }
     }
 
-    public static void setWinner(Player player) {
+    public static void setWinner(@NonNull Player player) {
         if (!player.equals(player1) && !player.equals(player2) && !player.equals(Player.NONE.get()))
             return;
         App.winner = player;
     }
 
-    public static void setSettings(Settings settings) {
+    public static void setSettings(@NonNull Settings settings) {
         App.settings = settings;
         player1.setColor(settings.getPlayer1Color());
         player2.setColor(settings.getPlayer2Color());

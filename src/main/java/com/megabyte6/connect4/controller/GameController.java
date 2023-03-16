@@ -284,7 +284,7 @@ public class GameController implements Controller {
     }
 
     private void placePiece(int column) {
-        if (game.isGameOver())
+        if (game.isGameOver() || game.isControlsLocked())
             return;
         if (game.isPaused() && !game.isGameOver()) {
             SceneManager.popup("Please return to the current move.");
@@ -296,6 +296,10 @@ public class GameController implements Controller {
         // Column is full.
         if (row == -1)
             return;
+
+        // Prevent the user from accidentally dropping their opponent's piece.
+        game.setControlsLocked(true);
+        App.delay(500, () -> game.setControlsLocked(false));
 
         game.addMoveToHistory(game.getCurrentPlayer(), column, row);
 
