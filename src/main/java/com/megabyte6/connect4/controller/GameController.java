@@ -2,7 +2,7 @@ package com.megabyte6.connect4.controller;
 
 import static com.megabyte6.connect4.util.Range.range;
 import static javafx.util.Duration.millis;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -23,7 +23,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -322,40 +321,43 @@ public class GameController implements Controller {
 
     private void playDroppingAnimation(GamePiece origin, GamePiece destination, Player player) {
         final Bounds initialBounds = origin.localToScene(origin.getBoundsInLocal());
-        final Point2D initialPos = new Point2D(initialBounds.getCenterX(), initialBounds.getCenterY());
+        final double initialX = initialBounds.getCenterX();
+        final double initialY = initialBounds.getCenterY();
 
         final Bounds finalBounds = destination.localToScene(destination.getBoundsInLocal());
-        final Point2D finalPos = new Point2D(finalBounds.getCenterX(), finalBounds.getCenterY());
+        final double finalY = finalBounds.getCenterY();
 
         final Circle circle = new Circle();
         circle.setFill(origin.getFill());
         circle.setRadius(origin.getRadius());
-        circle.setCenterX(initialPos.getX());
+        circle.setCenterX(initialX);
         root.getChildren().add(circle);
 
         final DoubleProperty yPos = circle.centerYProperty();
 
-        final List<KeyFrame> keyFrames = new ArrayList<>();
-        final double totalDistance = finalPos.getY() - initialPos.getY();
-        final double initialFallTime = totalDistance / 2;
+        final List<KeyFrame> keyFrames = new LinkedList<>();
+        final double displacement = finalY - initialY;
+        final double initialFallTime = (displacement / 2) - (circle.getCenterY() * 5);
         double time = 0;
-        double bounceHeight = totalDistance;
-        double bouncesLeft = 3;
+        double deltaTime;
+        double bounceHeight = displacement;
 
-        while (bouncesLeft > 0) {
-            final double deltaTime = bounceHeight / totalDistance * initialFallTime;
+        // Change the check case of the for loop to change the number of bounces.
+        for (int i = 0; i < 3; i++) {
+            // Change constant to adjust speed.
+            deltaTime = (i + 0.6) * bounceHeight / displacement * initialFallTime;
 
             keyFrames.add(new KeyFrame(
                     millis(time),
-                    new KeyValue(yPos, finalPos.getY() - bounceHeight, Interpolator.EASE_OUT)));
+                    new KeyValue(yPos, finalY - bounceHeight, Interpolator.EASE_OUT)));
             time += deltaTime;
             keyFrames.add(new KeyFrame(
                     millis(time),
-                    new KeyValue(yPos, finalPos.getY(), Interpolator.EASE_IN)));
+                    new KeyValue(yPos, finalY, Interpolator.EASE_IN)));
             time += deltaTime;
 
-            bounceHeight /= (bouncesLeft + 1);
-            bouncesLeft--;
+            // Change constant to change the hight of each bounce.
+            bounceHeight = displacement / (i + 3);
         }
 
         final Timeline timeline = new Timeline();
@@ -364,7 +366,6 @@ public class GameController implements Controller {
             destination.setFill(player.getColor());
             root.getChildren().remove(circle);
         });
-
         timeline.play();
     }
 
