@@ -337,15 +337,15 @@ public class GameController implements Controller {
 
         final List<KeyFrame> keyFrames = new LinkedList<>();
         final double displacement = finalY - initialY;
-        final double initialFallTime = (displacement / 2) - (circle.getCenterY() * 5);
+        final double initialFallTime = (displacement / 2) - circle.getRadius();
         double time = 0;
         double deltaTime;
         double bounceHeight = displacement;
 
         // Change the check case of the for loop to change the number of bounces.
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             // Change constant to adjust speed.
-            deltaTime = (i + 0.6) * bounceHeight / displacement * initialFallTime;
+            deltaTime = ((i + 1) * bounceHeight / displacement) * initialFallTime;
 
             keyFrames.add(new KeyFrame(
                     millis(time),
@@ -357,7 +357,7 @@ public class GameController implements Controller {
             time += deltaTime;
 
             // Change constant to change the hight of each bounce.
-            bounceHeight = displacement / (i + 3);
+            bounceHeight = displacement / (i + 8);
         }
 
         final Timeline timeline = new Timeline();
