@@ -20,6 +20,9 @@ public class Game {
     @Getter
     private boolean paused = false;
     @Getter
+    @Setter
+    private boolean controlsLocked = false;
+    @Getter
     private boolean gameOver = false;
 
     private final Player player1;
