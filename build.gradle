@@ -90,7 +90,7 @@ jlink {
         vendor = 'Brayden Chan'
 
         if (jpackageOutputType != 'default') {
-            installerOptions = ['--type', jpackageOutputType]
+            installerOptions = ["--type $jpackageOutputType"]
         } else {
             installerOptions = []
         }
