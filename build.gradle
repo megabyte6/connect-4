@@ -85,17 +85,31 @@ jlink {
         targetPlatformName = jpackageTargetPlatform
         imageName = 'Connect 4'
         installerName = 'connect4-installer'
-        icon = 'src/main/resources/icon.ico'
+        icon = 'src/main/resources/icon.png'
         vendor = 'Brayden Chan'
 
-        if (System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0) {
-            installerOptions = [
+        if (jpackageOutputType != 'default') {
+            installerOptions = ['--type', jpackageOutputType]
+        } else {
+            installerOptions = []
+        }
+
+        osName = System.getProperty("os.name")
+        if (osName.toLowerCase().indexOf("windows") != -1) {
+            installerOptions += [
                 '--win-dir-chooser',
                 '--win-menu',
                 '--win-menu-group', 'Connect 4',
                 '--win-per-user-install',
                 '--win-shortcut',
-                '--win-shortcut-prompt'
+                '--win-shortcut-prompt',
+                '--win-update-url', 'https://github.com/megabyte6/connect-4/releases/latest'
+            ]
+        } else if (osName.toLowerCase().indexOf("linux") != -1) {
+            installerOptions += [
+                '--linux-package-name', 'Connect 4',
+                '--linux-menu-group', 'Connect 4',
+                '--linux-shortcut'
             ]
         }
     }
