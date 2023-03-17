@@ -17,6 +17,7 @@ plugins {
 }
 
 version = appVersion
+def osName = System.getProperty("os.name")
 
 ext {
     // Links for downloading jdks.
@@ -94,7 +95,6 @@ jlink {
             installerOptions = []
         }
 
-        osName = System.getProperty("os.name")
         if (osName.toLowerCase().indexOf("windows") != -1) {
             installerOptions += [
                 '--win-dir-chooser',
