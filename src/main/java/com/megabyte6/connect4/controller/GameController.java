@@ -337,7 +337,7 @@ public class GameController implements Controller {
 
         final List<KeyFrame> keyFrames = new LinkedList<>();
         final double displacement = finalY - initialY;
-        final double initialFallTime = (displacement / 2) - circle.getRadius();
+        final double initialFallTime = (displacement - circle.getRadius()) / 2;
         double time = 0;
         double deltaTime;
         double bounceHeight = displacement;
