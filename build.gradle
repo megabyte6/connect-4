@@ -106,12 +106,13 @@ jlink {
                 '--win-update-url', 'https://github.com/megabyte6/connect-4/releases/latest'
             ]
         } else if (osName.toLowerCase().indexOf("linux") != -1) {
-            icon = 'src/main/resources/icon.png'
             installerOptions += [
                 '--linux-package-name', 'Connect 4',
                 '--linux-menu-group', 'Connect 4',
                 '--linux-shortcut'
             ]
+        } else {
+            icon = 'src/main/resources/icon.png'
         }
     }
 }
