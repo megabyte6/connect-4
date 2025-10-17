@@ -4,11 +4,11 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     // Apply javafxplugin for JavaFX support.
-    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
     // Apply jlink for building the app.
-    id 'org.beryx.jlink' version '2.25.0'
+    id 'org.beryx.jlink' version '3.1.4-rc'
     // Apply lombok.
-    id 'io.freefair.lombok' version '6.6.3'
+    id 'io.freefair.lombok' version '9.0.0'
 
     // Current fix for an upstream bug relating to
     // https://github.com/redhat-developer/vscode-java/issues/881
@@ -20,13 +20,12 @@ version = appVersion
 def osName = System.getProperty("os.name")
 
 ext {
-    // Links for downloading jdks.
+    // Links for downloading jdks
     jdkLinks = [
-        'linux-aarch64': 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.6_10.tar.gz',
-        'linux-x64'    : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.6_10.tar.gz',
-        'macos-aarch64': 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.6_10.tar.gz',
-        'macos-x64'    : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_mac_hotspot_17.0.6_10.tar.gz',
-        'win-x64'      : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_windows_hotspot_17.0.6_10.zip'
+        'linux-x64'    : 'https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25%2B36/OpenJDK25U-jdk_x64_linux_hotspot_25_36.tar.gz',
+        'macos-aarch64': 'https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25%2B36/OpenJDK25U-jdk_aarch64_mac_hotspot_25_36.tar.gz',
+        'macos-x64'    : 'https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25%2B36/OpenJDK25U-jdk_x64_mac_hotspot_25_36.tar.gz',
+        'win-x64'      : 'https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25%2B36/OpenJDK25U-jdk_x64_windows_hotspot_25_36.zip'
     ]
 }
 
@@ -36,12 +35,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -72,13 +71,13 @@ jlink {
         jdkLinks.each { key, value ->
             targetPlatform(key) {
                 jdkHome = jdkDownload(value)
-                addExtraModulePath('jmods/' + key.split('-').join('/'))
+                addExtraModulePath("jmods/${key.split('-').join('/')}")
             }
         }
     } else {
         targetPlatform(jlinkTargetPlatform) {
             jdkHome = jdkDownload(jdkLinks[jlinkTargetPlatform])
-            addExtraModulePath('jmods/' + jlinkTargetPlatform.split('-').join('/'))
+            addExtraModulePath("jmods/${jlinkTargetPlatform.split('-').join('/')}")
         }
     }
 

@@ -31,7 +31,7 @@ Note:
 
 ### Option 2: I don't want to install stuff.
 
-Note: This project should be built with JDK 17 but the build script will install it automatically if you don't already have a compatible JDK.
+Note: This project should be built with JDK 25 but the build script will install it automatically if you don't already have a compatible JDK.
 
 1. Download this repository with the green `Code` button.
 1. Navigate to the project folder. You should see a `build.gradle` file.
@@ -41,7 +41,7 @@ Note: This project should be built with JDK 17 but the build script will install
 
 ## Building this project:
 
-Note: This project should be built with JDK 17 but the build script will install it automatically if you don't already have a compatible JDK.
+Note: This project should be built with JDK 25 but the build script will install it automatically if you don't already have a compatible JDK.
 
 1. Download this repository with the green `Code` button.
 1. Run the build command using one of the following options:
