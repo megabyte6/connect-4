@@ -58,6 +58,15 @@ Note: This project should be built with JDK 25 but the build script will install
 
 ---
 
+## Contributing
+
+Contributions are welcome! Create an issue or open a pull request!
+
+Note:
+If editing on VSCode, run `./gradlew eclipse` to fix errors in `module-info.java` that occur due to a bug in the java extension.
+
+---
+
 ## License
 
 This project uses the [MIT License](https://opensource.org/licenses/MIT).
