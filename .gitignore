@@ -11,5 +11,9 @@ bin
 .classpath
 .project
 
+# Nix direnv
+.envrc
+.direnv/
+
 # Project runtime files.
 config.json
