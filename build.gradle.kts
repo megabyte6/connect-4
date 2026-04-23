@@ -14,7 +14,7 @@ plugins {
 // Project/version variables from gradle.properties
 val appVersion: String by project
 val javafxVersion: String by project
-val jpackageOutputType: String by project
+val jpackageFormat: String by project
 
 version = appVersion
 
@@ -60,8 +60,8 @@ jlink {
         installerName = "connect4-installer"
         vendor = "Brayden Chan"
 
-        installerOptions = if (jpackageOutputType != "default") {
-            listOf("--type", jpackageOutputType)
+        installerOptions = if (jpackageFormat != "default") {
+            listOf("--type", jpackageFormat)
         } else {
             emptyList()
         }
