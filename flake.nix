@@ -16,6 +16,7 @@
       inputs.nixpkgs.lib.genAttrs supportedSystems (
         system:
           f {
+            inherit system;
             pkgs = import inputs.nixpkgs {
               inherit system;
               overlays = [inputs.self.overlays.default];
@@ -33,7 +34,10 @@
     };
 
     devShells = forEachSupportedSystem (
-      {pkgs}: {
+      {
+        pkgs,
+        system,
+      }: {
         default = pkgs.mkShellNoCC {
           packages = with pkgs; [
             gcc
@@ -43,18 +47,30 @@
             ncurses
             patchelf
             zlib
+            self.formatter.${system}
           ];
 
           shellHook = let
             loadLombok = "-javaagent:${pkgs.lombok}/share/java/lombok.jar";
             prev = "\${JAVA_TOOL_OPTIONS:+ $JAVA_TOOL_OPTIONS}";
+
+            # JavaFX Linux runtime dependencies
+            libPath = with pkgs; lib.makeLibraryPath [
+              glib
+              libGL
+              libxtst
+              libxxf86vm
+            ];
           in ''
             export PATH="${pkgs.jdk}/bin:$PATH"
             export JAVA_HOME="${pkgs.jdk}"
             export JAVA_TOOL_OPTIONS="${loadLombok}${prev}"
+            export LD_LIBRARY_PATH="${libPath}:''${LD_LIBRARY_PATH:-}"
           '';
         };
       }
     );
+
+    formatter = forEachSupportedSystem ({pkgs, ...}: pkgs.nixfmt);
   };
 }
