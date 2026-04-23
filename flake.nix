@@ -48,6 +48,39 @@
             libxtst
             libxxf86vm
           ];
+
+        # Fixed-output derivation that pre-fetches all Gradle dependencies
+        # (both build-script plugins and project dependencies) with network
+        # access.  The resulting store path is passed as GRADLE_USER_HOME in
+        # the main build so it can run fully offline.
+        #
+        # When dependencies change, update the hash by:
+        #   1. Set outputHash to lib.fakeHash below.
+        #   2. Run `nix build .#packages.<system>.default 2>&1 | grep "got:"`.
+        #   3. Replace lib.fakeHash with the printed sha256 hash.
+        offlineDeps = pkgs.stdenv.mkDerivation {
+          name = "connect-4-gradle-deps";
+          src = ./.;
+
+          nativeBuildInputs = with pkgs; [gradle jdk];
+
+          buildPhase = ''
+            export HOME="$TMPDIR"
+            export GRADLE_USER_HOME="$TMPDIR/gradle-home"
+            # buildEnvironment resolves buildscript plugin dependencies;
+            # dependencies resolves the project's runtime dependencies.
+            # No test dependencies are declared in this project.
+            gradle --no-daemon buildEnvironment dependencies
+          '';
+
+          installPhase = ''
+            cp -r "$TMPDIR/gradle-home" "$out"
+          '';
+
+          outputHashAlgo = "sha256";
+          outputHashMode = "recursive";
+          outputHash = lib.fakeHash;
+        };
       in {
         default = pkgs.stdenv.mkDerivation {
           pname = "connect-4";
@@ -66,8 +99,8 @@
             runHook preBuild
 
             export HOME="$TMPDIR"
-            export GRADLE_USER_HOME="$TMPDIR/gradle-home"
-            gradle --no-daemon clean jlinkZip
+            export GRADLE_USER_HOME="${offlineDeps}"
+            gradle --no-daemon --offline clean jlinkZip
 
             runHook postBuild
           '';
