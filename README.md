@@ -53,7 +53,7 @@ Note: This project should be built with JDK 25.
         1. Check [Oracle's website](https://docs.oracle.com/en/java/javase/14/jpackage/packaging-overview.html#GUID-786E15C0-2CE7-4BDF-9B2F-AC1C57249134:~:text=Java%20Runtime%20Requirements-,Packaging%20Pre%2DReqs,WiX%203.0%20or%20later%20is%20required.,-Application%20Preparation) for info on your system's prerequisites.
         1. Optionally change the `jpackageFormat` option in `gradle.properties` if you want to build a different type of installer/executable. By default, it will choose a format based on your current operating system.
         1. Run `./gradlew jpackage`
-        1. Check `build/jpackage` for the installer(s) and `build/jpackage/connect-4` for the executable(s).
+        1. Check `build/jpackage` for the installer(s) and `build/jpackage/Connect 4` for the executable(s).
 
 ---
 
