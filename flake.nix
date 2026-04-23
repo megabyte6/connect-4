@@ -59,6 +59,7 @@
             gradle
             jdk
             makeWrapper
+            unzip
           ];
 
           buildPhase = ''
@@ -75,7 +76,7 @@
             runHook preInstall
 
             mkdir -p "$out"
-            unzip -q build/connect-4.zip -d "$out"
+            unzip -q build/connect4.zip -d "$out"
             appDir="$(find "$out" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
             mkdir -p "$out/bin"
 
@@ -107,7 +108,7 @@
       {system, ...}: {
         default = {
           type = "app";
-          program = "${self.devShells.${system}.bin}/bin/connect-4";
+          program = "${self.packages.${system}.default}/bin/connect-4";
         };
         connect-4 = self.apps.${system}.default;
       }
