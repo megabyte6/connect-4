@@ -41,20 +41,19 @@ Note: This project should be built with JDK 25 but the build script will install
 
 ## Building this project:
 
-Note: This project should be built with JDK 25 but the build script will install it automatically if you don't already have a compatible JDK.
+Note: This project should be built with JDK 25.
 
 1. Download this repository with the green `Code` button.
 1. Run the build command using one of the following options:
     - Build portable images (this one is easier):
-        1. Open `gradle.properties` and change the `jlinkTargetPlatform` property to match the OS and architecture you wish to build for.
         1. Run `./gradlew jlinkZip`
         1. Check the `build` folder for the `.zip` image.
         1. Play it by extracting the zip and running the `connect-4` in the `bin` folder
     - Build installers & executables:
         1. Check [Oracle's website](https://docs.oracle.com/en/java/javase/14/jpackage/packaging-overview.html#GUID-786E15C0-2CE7-4BDF-9B2F-AC1C57249134:~:text=Java%20Runtime%20Requirements-,Packaging%20Pre%2DReqs,WiX%203.0%20or%20later%20is%20required.,-Application%20Preparation) for info on your system's prerequisites.
-        1. Open `gradle.properties` and change the `jpackageTargetPlatform` property to match your operating system and architecture. This must match your current operating system and hardware.
+        1. Optionally change the `jpackageFormat` option in `gradle.properties` if you want to build a different type of installer/executable. By default, it will choose a format based on your current operating system.
         1. Run `./gradlew jpackage`
-        1. Check `build/jpackage` for the installer(s) and `build/jpackage/Wordle` for the executable(s).
+        1. Check `build/jpackage` for the installer(s) and `build/jpackage/Connect 4` for the executable(s).
 
 ---
 
