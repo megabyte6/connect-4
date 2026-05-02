@@ -1,0 +1,72 @@
+name: Build packages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-packages:
+    name: ${{ matrix.os }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+            gradle: ./gradlew
+            shell: bash
+          - os: ubuntu-24.04-arm
+            arch: arm64
+            gradle: ./gradlew
+            shell: bash
+          - os: windows-latest
+            arch: amd64
+            gradle: .\\gradlew.bat
+            shell: pwsh
+          - os: macos-26-intel
+            arch: amd64
+            gradle: ./gradlew
+            shell: bash
+          - os: macos-26
+            arch: arm64
+            gradle: ./gradlew
+            shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Ensure Gradle wrapper is executable
+        if: runner.os != 'Windows'
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Build jlinkZip and jpackage
+        run: ${{ matrix.gradle }} jlinkZip jpackage
+        shell: ${{ matrix.shell }}
+
+      - name: Upload jlinkZip
+        uses: actions/upload-artifact@v4
+        with:
+          name: connect4-${{ matrix.os }}-${{ matrix.arch }}-jlink
+          path: build/connect4.zip
+          if-no-files-found: error
+
+      - name: Upload jpackage
+        uses: actions/upload-artifact@v4
+        with:
+          name: connect4-${{ matrix.os }}-${{ matrix.arch }}-jpackage
+          path: build/jpackage/**
+          if-no-files-found: error
