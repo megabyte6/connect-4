@@ -33,6 +33,13 @@ java {
     }
 }
 
+// Suppress module warnings such as "module name component should avoid
+// terminal digits". This project is called "Connect 4", and "4" is a terminal
+// digit, but it's not worth changing the module name to avoid it.
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.add("-Xlint:-module")
+}
+
 application {
     mainModule.set("com.megabyte6.connect4")
     mainClass.set("com.megabyte6.connect4.App")
