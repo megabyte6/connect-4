@@ -1,10 +1,22 @@
 {
   description = "A Nix-flake-based Java development environment";
 
-  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+  inputs = {
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+    gradle2nix.url = "github:tadfisher/gradle2nix/v2";
+  };
 
   outputs = {self, ...} @ inputs: let
     javaVersion = 25;
+
+    # JavaFX Linux runtime dependencies
+    libPathFor = pkgs:
+      pkgs.lib.makeLibraryPath [
+        pkgs.glib
+        pkgs.libGL
+        pkgs.libxtst
+        pkgs.libxxf86vm
+      ];
 
     supportedSystems = [
       "x86_64-linux"
@@ -29,7 +41,7 @@
     in {
       inherit jdk;
       maven = prev.maven.override {jdk_headless = jdk;};
-      gradle = prev.gradle.override {java = jdk;};
+      gradle = prev.gradle_9.override {java = jdk;};
       lombok = prev.lombok.override {inherit jdk;};
     };
 
@@ -37,113 +49,67 @@
       {
         pkgs,
         system,
-      }: let
-        lib = pkgs.lib;
-        isLinux = pkgs.stdenv.hostPlatform.isLinux;
-
-        javaFxLibPath = with pkgs;
-          lib.makeLibraryPath [
-            glib
-            libGL
-            libxtst
-            libxxf86vm
-          ];
-
-        # Fixed-output derivation that pre-fetches all Gradle dependencies
-        # (both build-script plugins and project dependencies) with network
-        # access.  The resulting store path is passed as GRADLE_USER_HOME in
-        # the main build so it can run fully offline.
-        #
-        # When dependencies change, update the hash by:
-        #   1. Set outputHash to lib.fakeHash below.
-        #   2. Run `nix build .#packages.<system>.default 2>&1 | grep "got:"`.
-        #   3. Replace lib.fakeHash with the printed sha256 hash.
-        offlineDeps = pkgs.stdenv.mkDerivation {
-          name = "connect-4-gradle-deps";
-          src = ./.;
-
-          nativeBuildInputs = with pkgs; [gradle jdk];
-
-          buildPhase = ''
-            export HOME="$TMPDIR"
-            export GRADLE_USER_HOME="$TMPDIR/gradle-home"
-            # buildEnvironment resolves buildscript plugin dependencies;
-            # dependencies resolves the project's runtime dependencies.
-            # No test dependencies are declared in this project.
-            gradle --no-daemon buildEnvironment dependencies
-          '';
-
-          installPhase = ''
-            cp -r "$TMPDIR/gradle-home" "$out"
-          '';
-
-          outputHashAlgo = "sha256";
-          outputHashMode = "recursive";
-          outputHash = lib.fakeHash;
-        };
-      in {
-        default = pkgs.stdenv.mkDerivation {
+      }: {
+        connect-4 = inputs.gradle2nix.builders.${system}.buildGradlePackage {
           pname = "connect-4";
           version = "2.0";
-
           src = ./.;
 
+          lockFile = ./gradle.lock;
+          gradle = pkgs.gradle;
+          buildJdk = pkgs.jdk;
+
+          gradleBuildFlags = ["jlinkZip"];
           nativeBuildInputs = with pkgs; [
-            gradle
-            jdk
             makeWrapper
             unzip
           ];
+          installPhase = let
+            libPath = libPathFor pkgs;
+          in ''
+            tmp="$(mktemp -d)"
+            unzip -q build/connect4.zip -d "$tmp"
+            if [ -d "$tmp/image" ]; then
+              mkdir -p "$out"
+              cp -a "$tmp/image/." "$out/"
 
-          buildPhase = ''
-            runHook preBuild
-
-            export HOME="$TMPDIR"
-            export GRADLE_USER_HOME="${offlineDeps}"
-            gradle --no-daemon --offline clean jlinkZip
-
-            runHook postBuild
-          '';
-
-          installPhase = ''
-            runHook preInstall
-
-            mkdir -p "$out"
-            unzip -q build/connect4.zip -d "$out"
-            appDir="$(find "$out" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-            mkdir -p "$out/bin"
-
-            makeWrapper "$appDir/bin/connect-4" "$out/bin/connect-4" \
-              --set JAVA_HOME "${pkgs.jdk}" \
-              ${
-              if isLinux
-              then "--prefix LD_LIBRARY_PATH : ${javaFxLibPath}"
+              if [ -f "$out/bin/connect-4" ]; then
+                wrapProgram "$out/bin/connect-4" \
+                  --set JAVA_HOME "${pkgs.jdk}" \
+                  --unset JAVA_TOOL_OPTIONS \
+                  ${
+              if pkgs.stdenv.hostPlatform.isLinux
+              then "--prefix LD_LIBRARY_PATH : ${libPath}"
               else ""
             }
-
-            runHook postInstall
+              fi
+            else
+              echo "Expected 'image/' directory not found in connect4.zip" >&2
+              exit 1
+            fi
           '';
 
           meta = with pkgs.lib; {
             description = "A simple Connect 4 game implemented in JavaFX";
             homepage = "https://github.com/megabyte6/connect-4";
             license = licenses.mit;
-            platforms = supportedSystems;
             mainProgram = "connect-4";
+            platforms = supportedSystems;
           };
         };
 
-        connect-4 = self.packages.${system}.default;
+        default = self.packages.${system}.connect-4;
       }
     );
 
     apps = forEachSupportedSystem (
       {system, ...}: {
-        default = {
+        connect-4 = {
           type = "app";
           program = "${self.packages.${system}.default}/bin/connect-4";
         };
-        connect-4 = self.apps.${system}.default;
+
+        default = self.apps.${system}.connect-4;
       }
     );
 
@@ -151,16 +117,7 @@
       {
         pkgs,
         system,
-      }: let
-        # JavaFX Linux runtime dependencies
-        javaFxLibPath = with pkgs;
-          lib.makeLibraryPath [
-            glib
-            libGL
-            libxtst
-            libxxf86vm
-          ];
-      in {
+      }: {
         default = pkgs.mkShellNoCC {
           packages = with pkgs; [
             gcc
@@ -176,11 +133,12 @@
           shellHook = let
             loadLombok = "-javaagent:${pkgs.lombok}/share/java/lombok.jar";
             prev = "\${JAVA_TOOL_OPTIONS:+ $JAVA_TOOL_OPTIONS}";
+            libPath = libPathFor pkgs;
           in ''
             export PATH="${pkgs.jdk}/bin:$PATH"
             export JAVA_HOME="${pkgs.jdk}"
             export JAVA_TOOL_OPTIONS="${loadLombok}${prev}"
-            export LD_LIBRARY_PATH="${javaFxLibPath}:''${LD_LIBRARY_PATH:-}"
+            export LD_LIBRARY_PATH="${libPath}:''${LD_LIBRARY_PATH:-}"
           '';
         };
       }
