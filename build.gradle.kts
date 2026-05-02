@@ -6,9 +6,9 @@ plugins {
     // Apply javafxplugin for JavaFX support.
     id("org.openjfx.javafxplugin") version "0.1.0"
     // Apply jlink for building the app.
-    id("org.beryx.jlink") version "3.2.1"
+    id("org.beryx.jlink") version "4.0.0"
     // Apply lombok.
-    id("io.freefair.lombok") version "9.4.0"
+    id("io.freefair.lombok") version "9.5.0"
 }
 
 // Project/version variables from gradle.properties
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.21.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.21.3")
 }
 
 java {
@@ -70,7 +70,7 @@ jlink {
         when {
             "windows" in osName -> {
                 icon = "src/main/resources/icon.ico"
-                installerOptions = installerOptions + listOf(
+                installerOptions.addAll(listOf(
                     "--win-dir-chooser",
                     "--win-menu",
                     "--win-menu-group", "Connect 4",
@@ -78,14 +78,14 @@ jlink {
                     "--win-shortcut",
                     "--win-shortcut-prompt",
                     "--win-update-url", "https://github.com/megabyte6/connect-4/releases/latest"
-                )
+                ))
             }
             "linux" in osName -> {
-                installerOptions = installerOptions + listOf(
+                installerOptions.addAll(listOf(
                     "--linux-package-name", "Connect 4",
                     "--linux-menu-group", "Connect 4",
                     "--linux-shortcut"
-                )
+                ))
             }
             else -> {
                 icon = "src/main/resources/icon.png"

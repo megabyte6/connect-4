@@ -5,16 +5,16 @@
       "hash": "sha256-/LvxwYyQR+aRfThPIGTiG0Klj8hfsFI6ni4BXv98YZ0="
     }
   },
-  "com.fasterxml.jackson:jackson-base:2.21.2": {
-    "jackson-base-2.21.2.pom": {
-      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-base/2.21.2/jackson-base-2.21.2.pom",
-      "hash": "sha256-OMeJjHY7iZH/+9dpRZly4Bdr8MUFxzlRjHD3xX0W7tc="
+  "com.fasterxml.jackson:jackson-base:2.21.3": {
+    "jackson-base-2.21.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-base/2.21.3/jackson-base-2.21.3.pom",
+      "hash": "sha256-xELoDDE7VTLbLqfc0g4KAw+odvJACDRqS44Qof0uP/g="
     }
   },
-  "com.fasterxml.jackson:jackson-bom:2.21.2": {
-    "jackson-bom-2.21.2.pom": {
-      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-bom/2.21.2/jackson-bom-2.21.2.pom",
-      "hash": "sha256-vGxUnmMpJ7udigraIMhGe1AH07eXx/XbA6m2DR3lm+M="
+  "com.fasterxml.jackson:jackson-bom:2.21.3": {
+    "jackson-bom-2.21.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jackson-bom/2.21.3/jackson-bom-2.21.3.pom",
+      "hash": "sha256-BccqDyCuH9ec7X7SnP9y2yhC0WCXCn6gM06bX9BH1Zc="
     }
   },
   "com.fasterxml.jackson:jackson-parent:2.21": {
@@ -37,32 +37,32 @@
       "hash": "sha256-ccrFOSFR4qUozJoJF58KM0F58FxS+OWWz1jd8Suyfys="
     }
   },
-  "com.fasterxml.jackson.core:jackson-core:2.21.2": {
-    "jackson-core-2.21.2.jar": {
-      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.jar",
-      "hash": "sha256-EuhlWxACZ7RNDxTQGx9QgqUQXmFhdNxDB74adh6SQHs="
+  "com.fasterxml.jackson.core:jackson-core:2.21.3": {
+    "jackson-core-2.21.3.jar": {
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.21.3/jackson-core-2.21.3.jar",
+      "hash": "sha256-uvi3OenZuTvNsz8lBGv9uNvXTJfeKoaYU5++DH7qwLs="
     },
-    "jackson-core-2.21.2.module": {
-      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.module",
-      "hash": "sha256-mO7k69IcgrUmtDiIjgOta245Zvxucizk433UWQ0+Sic="
+    "jackson-core-2.21.3.module": {
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.21.3/jackson-core-2.21.3.module",
+      "hash": "sha256-Oo16qn2FkIvxkaH2sqngDg77Viok2JShyrjnpFzfxs8="
     },
-    "jackson-core-2.21.2.pom": {
-      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.21.2/jackson-core-2.21.2.pom",
-      "hash": "sha256-urDlWZZJzLWrIanPnS5XGS3h5I5tI1JNwlPWL8c8ljQ="
+    "jackson-core-2.21.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.21.3/jackson-core-2.21.3.pom",
+      "hash": "sha256-t7i+9Rpmfc4nBvbq5X4megm/FgUHRjJVsKhUgFcjBHI="
     }
   },
-  "com.fasterxml.jackson.core:jackson-databind:2.21.2": {
-    "jackson-databind-2.21.2.jar": {
-      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.jar",
-      "hash": "sha256-jJgvAfFI2AXwqqwjOQESRHV+DffG/4lR8vo/QzuO2Ek="
+  "com.fasterxml.jackson.core:jackson-databind:2.21.3": {
+    "jackson-databind-2.21.3.jar": {
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.21.3/jackson-databind-2.21.3.jar",
+      "hash": "sha256-85dWPY5nYwwQyrjCM0yg5Vr4Mvo+veFgo3nCyW1DvyU="
     },
-    "jackson-databind-2.21.2.module": {
-      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.module",
-      "hash": "sha256-qODdfyv9PgmoyLc0nGEFb96cuGL4ZOvG8jGT5fYIXzg="
+    "jackson-databind-2.21.3.module": {
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.21.3/jackson-databind-2.21.3.module",
+      "hash": "sha256-aeyjtvp+FA2CxKsy1DYbTHPdqyeN4u4R1NOO/fWdrH0="
     },
-    "jackson-databind-2.21.2.pom": {
-      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.21.2/jackson-databind-2.21.2.pom",
-      "hash": "sha256-z44OzcNfAtoG4n9BV2ALqddknFJy5Na3le8qQvBwomI="
+    "jackson-databind-2.21.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.21.3/jackson-databind-2.21.3.pom",
+      "hash": "sha256-GtcwZNlrjQKDccdJnGgHymjAh+1usDl2Y1qJTPMwEK4="
     }
   },
   "com.google.code.findbugs:jsr305:3.0.2": {
@@ -85,24 +85,24 @@
       "hash": "sha256-hGDJUBJ8o1mHZhYeOLT/jWO01p+4MQoW4As1E1ABDBE="
     }
   },
-  "io.freefair.gradle:lombok-plugin:9.4.0": {
-    "lombok-plugin-9.4.0.jar": {
-      "url": "https://plugins.gradle.org/m2/io/freefair/gradle/lombok-plugin/9.4.0/lombok-plugin-9.4.0.jar",
-      "hash": "sha256-xY3bl72cusvV/tE9Cv8F6LxZV93tDrv9sGZe1WPz5Gc="
+  "io.freefair.gradle:lombok-plugin:9.5.0": {
+    "lombok-plugin-9.5.0.jar": {
+      "url": "https://plugins.gradle.org/m2/io/freefair/gradle/lombok-plugin/9.5.0/lombok-plugin-9.5.0.jar",
+      "hash": "sha256-wzhmNBvOdKNj95jouIlcUkAec2Y22XxI7nwe37eLOBw="
     },
-    "lombok-plugin-9.4.0.module": {
-      "url": "https://plugins.gradle.org/m2/io/freefair/gradle/lombok-plugin/9.4.0/lombok-plugin-9.4.0.module",
-      "hash": "sha256-EmNMiSMLYD8YGkTW/sNmXzpqSE5ROBN/iVeAP+a8pKY="
+    "lombok-plugin-9.5.0.module": {
+      "url": "https://plugins.gradle.org/m2/io/freefair/gradle/lombok-plugin/9.5.0/lombok-plugin-9.5.0.module",
+      "hash": "sha256-YMC1p9uDDrsXlXgwQix4YJJLBt36cPWS0jL9TWnicGI="
     },
-    "lombok-plugin-9.4.0.pom": {
-      "url": "https://plugins.gradle.org/m2/io/freefair/gradle/lombok-plugin/9.4.0/lombok-plugin-9.4.0.pom",
-      "hash": "sha256-gbOqgm2a6bjLDwfJZAwT0X9tFroPI/ZvswAGQvdpe6g="
+    "lombok-plugin-9.5.0.pom": {
+      "url": "https://plugins.gradle.org/m2/io/freefair/gradle/lombok-plugin/9.5.0/lombok-plugin-9.5.0.pom",
+      "hash": "sha256-ZTs8WkK0fX/9rN4L0c55bjWUBbCaSuISF3qBud+3aYg="
     }
   },
-  "io.freefair.lombok:io.freefair.lombok.gradle.plugin:9.4.0": {
-    "io.freefair.lombok.gradle.plugin-9.4.0.pom": {
-      "url": "https://plugins.gradle.org/m2/io/freefair/lombok/io.freefair.lombok.gradle.plugin/9.4.0/io.freefair.lombok.gradle.plugin-9.4.0.pom",
-      "hash": "sha256-o1zojz/INIQu2AZjMxchWdqDeDNXBeI8KzrnrxbcM4I="
+  "io.freefair.lombok:io.freefair.lombok.gradle.plugin:9.5.0": {
+    "io.freefair.lombok.gradle.plugin-9.5.0.pom": {
+      "url": "https://plugins.gradle.org/m2/io/freefair/lombok/io.freefair.lombok.gradle.plugin/9.5.0/io.freefair.lombok.gradle.plugin-9.5.0.pom",
+      "hash": "sha256-VctE1czYHztX23WKglDn2Gbe0LHf2IEIoEhhJbhXr68="
     }
   },
   "kr.motd.maven:os-maven-plugin:1.7.1": {
@@ -115,24 +115,24 @@
       "hash": "sha256-S3WABEIrljPdMY8p54Tx0YC9ilkgzVCvGTCGH21qVHY="
     }
   },
-  "org.beryx:badass-jlink-plugin:3.2.1": {
-    "badass-jlink-plugin-3.2.1.jar": {
-      "url": "https://plugins.gradle.org/m2/org/beryx/badass-jlink-plugin/3.2.1/badass-jlink-plugin-3.2.1.jar",
-      "hash": "sha256-bArtr/xRR7/gMI1+Ksn6ZEK5odgieegguqq2Rp6d6kk="
+  "org.beryx:badass-jlink-plugin:4.0.0": {
+    "badass-jlink-plugin-4.0.0.jar": {
+      "url": "https://plugins.gradle.org/m2/org/beryx/badass-jlink-plugin/4.0.0/badass-jlink-plugin-4.0.0.jar",
+      "hash": "sha256-xHUVV3sKt2tEv0pCT2nqYSZzqpabtzKDbri4BmOTusQ="
     },
-    "badass-jlink-plugin-3.2.1.module": {
-      "url": "https://plugins.gradle.org/m2/org/beryx/badass-jlink-plugin/3.2.1/badass-jlink-plugin-3.2.1.module",
-      "hash": "sha256-yNTtqq9WRSq++JTsxFNaebz01nWbe0ei8KwyoeTR6A4="
+    "badass-jlink-plugin-4.0.0.module": {
+      "url": "https://plugins.gradle.org/m2/org/beryx/badass-jlink-plugin/4.0.0/badass-jlink-plugin-4.0.0.module",
+      "hash": "sha256-lDf1JWSIKwmXgitUaQM44qwZ5dbISxgdqEquzPphK2o="
     },
-    "badass-jlink-plugin-3.2.1.pom": {
-      "url": "https://plugins.gradle.org/m2/org/beryx/badass-jlink-plugin/3.2.1/badass-jlink-plugin-3.2.1.pom",
-      "hash": "sha256-AP5U4mGl7w2XTqOnuYgoyV9WOQJpM/P4h4MaATceAmM="
+    "badass-jlink-plugin-4.0.0.pom": {
+      "url": "https://plugins.gradle.org/m2/org/beryx/badass-jlink-plugin/4.0.0/badass-jlink-plugin-4.0.0.pom",
+      "hash": "sha256-QJ9mev20NgY9i4nxnWrkWzOEuU6BWXblw3qzZJPKgSc="
     }
   },
-  "org.beryx.jlink:org.beryx.jlink.gradle.plugin:3.2.1": {
-    "org.beryx.jlink.gradle.plugin-3.2.1.pom": {
-      "url": "https://plugins.gradle.org/m2/org/beryx/jlink/org.beryx.jlink.gradle.plugin/3.2.1/org.beryx.jlink.gradle.plugin-3.2.1.pom",
-      "hash": "sha256-WDsyl9x6uWkPafqKlLlTVha8fdmBrlhW0TzdzeTNjKQ="
+  "org.beryx.jlink:org.beryx.jlink.gradle.plugin:4.0.0": {
+    "org.beryx.jlink.gradle.plugin-4.0.0.pom": {
+      "url": "https://plugins.gradle.org/m2/org/beryx/jlink/org.beryx.jlink.gradle.plugin/4.0.0/org.beryx.jlink.gradle.plugin-4.0.0.pom",
+      "hash": "sha256-CLbhRc6ZkoxyLJkrkcnmx93x4BrHZEVjNuM20/z7YbQ="
     }
   },
   "org.gradle.toolchains:foojay-resolver:1.0.0": {
