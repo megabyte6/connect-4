@@ -14,11 +14,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-24.04
+          - os: linux
             arch: amd64
             runner: ubuntu-24.04
             gradle: ./gradlew
-          - os: ubuntu-24.04
+          - os: linux
             arch: arm64
             runner: ubuntu-24.04-arm
             gradle: ./gradlew
@@ -26,11 +26,11 @@ jobs:
             arch: amd64
             runner: windows-latest
             gradle: .\\gradlew.bat
-          - os: macos-26
+          - os: macos
             arch: amd64
             runner: macos-26-intel
             gradle: ./gradlew
-          - os: macos-26
+          - os: macos
             arch: arm64
             runner: macos-26
             gradle: ./gradlew
