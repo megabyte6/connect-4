@@ -1,39 +1,39 @@
-name: Build packages
+name: Build release artifacts
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v*
   workflow_dispatch:
 
 jobs:
-  build-packages:
+  build-release-artifacts:
     name: ${{ matrix.os }}-${{ matrix.arch }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: ubuntu-24.04
             arch: amd64
+            runner: ubuntu-24.04
             gradle: ./gradlew
-            shell: bash
-          - os: ubuntu-24.04-arm
+          - os: ubuntu-24.04
             arch: arm64
+            runner: ubuntu-24.04-arm
             gradle: ./gradlew
-            shell: bash
-          - os: windows-latest
+          - os: windows
             arch: amd64
+            runner: windows-latest
             gradle: .\\gradlew.bat
-            shell: pwsh
-          - os: macos-26-intel
+          - os: macos-26
             arch: amd64
+            runner: macos-26-intel
             gradle: ./gradlew
-            shell: bash
           - os: macos-26
             arch: arm64
+            runner: macos-26
             gradle: ./gradlew
-            shell: bash
 
     steps:
       - name: Checkout
@@ -51,22 +51,23 @@ jobs:
       - name: Ensure Gradle wrapper is executable
         if: runner.os != 'Windows'
         run: chmod +x ./gradlew
-        shell: bash
 
-      - name: Build jlinkZip and jpackage
-        run: ${{ matrix.gradle }} jlinkZip jpackage
-        shell: ${{ matrix.shell }}
+      - name: Build jlinkZip
+        run: ${{ matrix.gradle }} jlinkZip
 
       - name: Upload jlinkZip
         uses: actions/upload-artifact@v4
         with:
-          name: connect4-${{ matrix.os }}-${{ matrix.arch }}-jlink
+          name: connect4-${{ matrix.os }}-${{ matrix.arch }}-portable
           path: build/connect4.zip
           if-no-files-found: error
+
+      - name: Build jpackage
+        run: ${{ matrix.gradle }} jpackage
 
       - name: Upload jpackage
         uses: actions/upload-artifact@v4
         with:
-          name: connect4-${{ matrix.os }}-${{ matrix.arch }}-jpackage
+          name: connect4-${{ matrix.os }}-${{ matrix.arch }}-installer
           path: build/jpackage/**
           if-no-files-found: error
