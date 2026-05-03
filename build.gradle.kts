@@ -79,6 +79,7 @@ jlink {
                 icon = "src/main/resources/icon.ico"
                 installerOptions.addAll(listOf(
                     "--win-dir-chooser",
+                    "--win-help-url", "https://github.com/megabyte6/connect-4/issues",
                     "--win-menu",
                     "--win-menu-group", "Connect 4",
                     "--win-per-user-install",
@@ -90,13 +91,17 @@ jlink {
             "linux" in osName -> {
                 icon = "src/main/resources/icon.png"
                 installerOptions.addAll(listOf(
-                    "--linux-package-name", "Connect 4",
+                    "--linux-package-name", "connect-4",
                     "--linux-menu-group", "Connect 4",
                     "--linux-shortcut"
                 ))
             }
             "mac" in osName -> {
                 icon = "src/main/resources/icon.icns"
+                imageOptions.addAll(listOf(
+                    "--mac-package-identifier", "connect-4",
+                    "--mac-package-name", "Connect 4"
+                ))
             }
             else -> {
                 icon = "src/main/resources/icon.png"
