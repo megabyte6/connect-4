@@ -75,5 +75,4 @@ jobs:
             build/jpackage/*.deb
             build/jpackage/*.pkg
             build/jpackage/*.dmg
-          archive: false
           if-no-files-found: error
