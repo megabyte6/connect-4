@@ -25,7 +25,7 @@ jobs:
           - os: windows
             arch: amd64
             runner: windows-latest
-            gradle: .\\gradlew.bat
+            gradle: .\gradlew.bat
           - os: macos
             arch: amd64
             runner: macos-26-intel
@@ -52,69 +52,75 @@ jobs:
         if: runner.os != 'Windows'
         run: chmod +x ./gradlew
 
-      - name: Build portable
+      - name: Build portable archive
         run: ${{ matrix.gradle }} jlink
 
-      - name: Upload portable
+      - name: Upload portable archive
         uses: actions/upload-artifact@v7
         with:
           name: connect-4_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
-          path: build/image
+          path: build/image/
           if-no-files-found: error
 
       - name: Build package
         run: ${{ matrix.gradle }} jpackage
 
+      - name: Rename package (Windows)
+        if: matrix.os == 'windows'
+        run: |
+          Rename-Item build\jpackage\*.msi -NewName "connect-4_${{ matrix.os }}-${{ matrix.arch }}.msi"
+          Rename-Item build\jpackage\*.exe -NewName "connect-4_${{ matrix.os }}-${{ matrix.arch }}.exe"
       - name: Upload package (msi)
         if: matrix.os == 'windows'
         uses: actions/upload-artifact@v7
         with:
-          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.msi
-          path: build/jpackage/*.msi
+          path: build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.msi
           if-no-files-found: error
           archive: false
-
       - name: Upload package (exe)
         if: matrix.os == 'windows'
         uses: actions/upload-artifact@v7
         with:
-          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.exe
-          path: build/jpackage/*.exe
+          path: build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.exe
           if-no-files-found: error
           archive: false
 
+      - name: Rename package (Linux)
+        if: matrix.os == 'linux'
+        run: |
+          mv build/jpackage/*.deb build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.deb
+          mv build/jpackage/*.rpm build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.rpm
       - name: Upload package (deb)
         if: matrix.os == 'linux'
         uses: actions/upload-artifact@v7
         with:
-          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.deb
-          path: build/jpackage/*.deb
+          path: build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.deb
           if-no-files-found: error
           archive: false
-
       - name: Upload package (rpm)
         if: matrix.os == 'linux'
         uses: actions/upload-artifact@v7
         with:
-          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.rpm
-          path: build/jpackage/*.rpm
+          path: build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.rpm
           if-no-files-found: error
           archive: false
 
+      - name: Rename package (macOS)
+        if: matrix.os == 'macos'
+        run: |
+          mv build/jpackage/*.dmg build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.dmg
+          mv build/jpackage/*.pkg build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.pkg
       - name: Upload package (dmg)
         if: matrix.os == 'macos'
         uses: actions/upload-artifact@v7
         with:
-          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.dmg
-          path: build/jpackage/*.dmg
+          path: build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.dmg
           if-no-files-found: error
           archive: false
-
       - name: Upload package (pkg)
         if: matrix.os == 'macos'
         uses: actions/upload-artifact@v7
         with:
-          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.pkg
-          path: build/jpackage/*.pkg
+          path: build/jpackage/connect-4_${{ matrix.os }}-${{ matrix.arch }}.pkg
           if-no-files-found: error
           archive: false
