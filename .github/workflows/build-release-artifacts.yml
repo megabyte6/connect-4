@@ -52,22 +52,28 @@ jobs:
         if: runner.os != 'Windows'
         run: chmod +x ./gradlew
 
-      - name: Build jlinkZip
-        run: ${{ matrix.gradle }} jlinkZip
+      - name: Build portable
+        run: ${{ matrix.gradle }} jlink
 
-      - name: Upload jlinkZip
-        uses: actions/upload-artifact@v4
+      - name: Upload portable
+        uses: actions/upload-artifact@v7
         with:
-          name: connect4-${{ matrix.os }}-${{ matrix.arch }}-portable
-          path: build/connect4.zip
+          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
+          path: build/image
           if-no-files-found: error
 
-      - name: Build jpackage
+      - name: Build installer
         run: ${{ matrix.gradle }} jpackage
 
-      - name: Upload jpackage
-        uses: actions/upload-artifact@v4
+      - name: Upload installer
+        uses: actions/upload-artifact@v7
         with:
-          name: connect4-${{ matrix.os }}-${{ matrix.arch }}
-          path: build/jpackage/**
+          path: |
+            build/jpackage/*.exe
+            build/jpackage/*.msi
+            build/jpackage/*.rpm
+            build/jpackage/*.deb
+            build/jpackage/*.pkg
+            build/jpackage/*.dmg
+          archive: false
           if-no-files-found: error
