@@ -88,11 +88,15 @@ jlink {
                 ))
             }
             "linux" in osName -> {
+                icon = "src/main/resources/icon.png"
                 installerOptions.addAll(listOf(
                     "--linux-package-name", "Connect 4",
                     "--linux-menu-group", "Connect 4",
                     "--linux-shortcut"
                 ))
+            }
+            "mac" in osName -> {
+                icon = "src/main/resources/icon.icns"
             }
             else -> {
                 icon = "src/main/resources/icon.png"
