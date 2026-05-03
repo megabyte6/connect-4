@@ -62,18 +62,59 @@ jobs:
           path: build/image
           if-no-files-found: error
 
-      - name: Build installer
+      - name: Build package
         run: ${{ matrix.gradle }} jpackage
 
-      - name: Upload installer
+      - name: Upload package (msi)
+        if: matrix.os == 'windows'
         uses: actions/upload-artifact@v7
         with:
-          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}
-          path: |
-            build/jpackage/*.exe
-            build/jpackage/*.msi
-            build/jpackage/*.rpm
-            build/jpackage/*.deb
-            build/jpackage/*.pkg
-            build/jpackage/*.dmg
+          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.msi
+          path: build/jpackage/*.msi
           if-no-files-found: error
+          archive: false
+
+      - name: Upload package (exe)
+        if: matrix.os == 'windows'
+        uses: actions/upload-artifact@v7
+        with:
+          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.exe
+          path: build/jpackage/*.exe
+          if-no-files-found: error
+          archive: false
+
+      - name: Upload package (deb)
+        if: matrix.os == 'linux'
+        uses: actions/upload-artifact@v7
+        with:
+          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.deb
+          path: build/jpackage/*.deb
+          if-no-files-found: error
+          archive: false
+
+      - name: Upload package (rpm)
+        if: matrix.os == 'linux'
+        uses: actions/upload-artifact@v7
+        with:
+          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.rpm
+          path: build/jpackage/*.rpm
+          if-no-files-found: error
+          archive: false
+
+      - name: Upload package (dmg)
+        if: matrix.os == 'macos'
+        uses: actions/upload-artifact@v7
+        with:
+          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.dmg
+          path: build/jpackage/*.dmg
+          if-no-files-found: error
+          archive: false
+
+      - name: Upload package (pkg)
+        if: matrix.os == 'macos'
+        uses: actions/upload-artifact@v7
+        with:
+          name: connect-4_${{ matrix.os }}-${{ matrix.arch }}.pkg
+          path: build/jpackage/*.pkg
+          if-no-files-found: error
+          archive: false
