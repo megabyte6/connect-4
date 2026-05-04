@@ -1,4 +1,4 @@
-# connect-4
+# Connect 4
 
 ## About
 
@@ -30,11 +30,11 @@
         description = "Example flake that includes connect-4 as a package";
 
         inputs = {
-          nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-          connect4.url = "github:megabyte6/connect-4";
+          nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+          connect-4.url = "github:megabyte6/connect-4";
         };
 
-        outputs = { self, nixpkgs, connect4, ... }:
+        outputs = { self, nixpkgs, connect-4, ... }:
         let
           system = "x86_64-linux";
         in {
@@ -43,7 +43,7 @@
           modules = [
             ({ pkgs, ... }: {
               environment.systemPackages = [
-                connect4.packages.${system}.default
+                connect-4.packages.${system}.default
               ];
             })
           ];
@@ -52,16 +52,11 @@
       }
       ```
 
-Note:
-
-- The installers are currently only available for Windows.
-- If you're on Windows and wish to use a portable build, you can use `connect4-win-x64-x.x.zip` (which ships with a JVM) or `connect4-win-x64-portable-x.x.zip` (which has a windows executable. This option is recommended).
-
 ---
 
 ### Option 2: I don't want to install stuff.
 
-Note: This project should be built with JDK 25 but the build script will install it automatically if you don't already have a compatible JDK.
+Note: This project should be built with JDK 25 of later.
 
 1. Download this repository with the green `Code` button.
 1. Navigate to the project folder. You should see a `build.gradle` file.
@@ -71,7 +66,7 @@ Note: This project should be built with JDK 25 but the build script will install
 
 ## Building this project:
 
-Note: This project should be built with JDK 25.
+Note: This project should be built with JDK 25 or later.
 
 1. Download this repository with the green `Code` button.
 1. Run the build command using one of the following options:
@@ -97,7 +92,7 @@ For NixOS users, the nix package is recommended as it has trouble finding the co
 
 Contributions are welcome! [Create an issue](https://github.com/megabyte6/connect-4/issues/new/choose) or open a [pull request](https://github.com/megabyte6/connect-4/compare)! If you are interested in contributing but don't know where to start, check out the [existing issues](https://github.com/megabyte6/connect-4/issues) for some ideas.
 
-If you are on NixOS, you can use the dev shell to set up a development environment with all the necessary dependencies. To enter the dev shell, run `nix develop` in the project directory. This works well with `direnv` if you wish to use it. **If you plan to update any Gradle dependencies/plugins or similar, remember to delete `gradle.lock` and regenerate it with `nix run github:tadfisher/gradle2nix/v2 -- --task=jlinkZip` so Nix can correctly pre-download the correct versions.**
+If you are on NixOS, you can use the dev shell to set up a development environment with all the necessary dependencies. To enter the dev shell, run `nix develop` in the project directory. This works well with `direnv` if you wish to use it. **If you plan to update any Gradle dependencies, plugins or similar, remember to delete `gradle.lock` and regenerate it with `nix run github:tadfisher/gradle2nix/v2 -- --task=jlinkZip` so Nix can correctly pre-download the correct versions.**
 
 Note:
 If editing on VSCode, run `./gradlew eclipse` to fix errors in `module-info.java` that occur due to a bug in the Java language server extension.
