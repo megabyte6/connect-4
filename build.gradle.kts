@@ -76,7 +76,7 @@ jlink {
         val osName = System.getProperty("os.name").lowercase()
         when {
             "windows" in osName -> {
-                icon = "src/main/resources/icon.ico"
+                icon = "src/main/resources/logo.ico"
                 installerOptions.addAll(listOf(
                     "--win-dir-chooser",
                     "--win-help-url", "https://github.com/megabyte6/connect-4/issues",
@@ -89,7 +89,7 @@ jlink {
                 ))
             }
             "linux" in osName -> {
-                icon = "src/main/resources/icon.png"
+                icon = "src/main/resources/logo.png"
                 installerOptions.addAll(listOf(
                     "--linux-package-name", "connect-4",
                     "--linux-menu-group", "Connect 4",
@@ -97,7 +97,7 @@ jlink {
                 ))
             }
             "mac" in osName -> {
-                icon = "src/main/resources/icon.icns"
+                icon = "src/main/resources/logo.icns"
                 imageOptions.addAll(listOf(
                     "--mac-package-identifier", "connect-4",
                     "--mac-package-name", "Connect 4"

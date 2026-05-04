@@ -43,7 +43,7 @@ public class App extends Application {
     public void start(Stage primaryStage) {
         SceneManager.init(primaryStage, "Start", BACKGROUND_COLOR);
 
-        primaryStage.getIcons().add(new Image("icon.png"));
+        primaryStage.getIcons().add(new Image("logo.png"));
         primaryStage.setTitle("Connect 4");
         primaryStage.show();
     }
