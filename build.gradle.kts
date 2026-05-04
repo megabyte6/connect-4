@@ -98,10 +98,6 @@ jlink {
             }
             "mac" in osName -> {
                 icon = "src/main/resources/logo.icns"
-                imageOptions.addAll(listOf(
-                    "--mac-package-identifier", "connect-4",
-                    "--mac-package-name", "Connect 4"
-                ))
             }
             else -> {
                 icon = "src/main/resources/icon.png"
