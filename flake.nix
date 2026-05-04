@@ -49,10 +49,18 @@
       {
         pkgs,
         system,
-      }: {
+      }: let
+        gradleProperties = builtins.readFile ./gradle.properties;
+        appVersion = let
+          match = builtins.match ".*appVersion[[:space:]]*=[[:space:]]*([^[:space:]]+).*" gradleProperties;
+        in
+          if match == null
+          then "0.0"
+          else builtins.elemAt match 0;
+      in {
         connect-4 = inputs.gradle2nix.builders.${system}.buildGradlePackage {
           pname = "connect-4";
-          version = "2.0";
+          version = appVersion;
           src = ./.;
 
           lockFile = ./gradle.lock;
