@@ -22,7 +22,7 @@ out/
 .project
 
 # Nix
-result/
+result
 
 # Project runtime files
 config.json
