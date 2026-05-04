@@ -58,18 +58,16 @@ jobs:
           version="$(grep -E '^appVersion\s*=' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')"
           echo "APP_VERSION=$version" >> "$GITHUB_ENV"
 
-      - name: Build portable archive
-        run: ${{ matrix.gradle }} jlink
+      - name: Build package
+        run: ${{ matrix.gradle }} jpackage
 
       - name: Upload portable archive
+        if: matrix.os == 'windows'
         uses: actions/upload-artifact@v7
         with:
           name: connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
-          path: build/image/
+          path: "build/jpackage/Connect 4/"
           if-no-files-found: error
-
-      - name: Build package
-        run: ${{ matrix.gradle }} jpackage
 
       - name: Rename package (Windows)
         if: matrix.os == 'windows'
