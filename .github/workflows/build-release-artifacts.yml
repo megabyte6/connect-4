@@ -62,10 +62,19 @@ jobs:
         run: ${{ matrix.gradle }} jpackage
 
       - name: Upload portable archive
+        if: matrix.os != 'macos'
         uses: actions/upload-artifact@v7
         with:
           name: connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
-          path: "build/jpackage/Connect 4/"
+          path: "build/jpackage/Connect 4"
+          if-no-files-found: error
+
+      - name: Upload portable archive (macOS)
+        if: matrix.os == 'macos'
+        uses: actions/upload-artifact@v7
+        with:
+          name: connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
+          path: "build/jpackage/Connect 4.app"
           if-no-files-found: error
 
       - name: Rename package (Windows)
