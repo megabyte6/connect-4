@@ -74,6 +74,7 @@
               cp -a "$tmp/image/." "$out/"
 
               if [ -f "$out/bin/connect-4" ]; then
+                chmod +x "$out"/bin/*
                 wrapProgram "$out/bin/connect-4" \
                   --set JAVA_HOME "${pkgs.jdk}" \
                   --unset JAVA_TOOL_OPTIONS \
