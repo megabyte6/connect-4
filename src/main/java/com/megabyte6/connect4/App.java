@@ -95,6 +95,9 @@ public class App extends Application {
     }
 
     private static Settings loadSettings() {
+        if (Files.isReadable(settingsPath) && !Files.isDirectory(settingsPath))
+            return Settings.loadElseDefault(settingsPath);
+
         final Path configPath = getConfigPath();
         if (Files.isReadable(configPath) && !Files.isDirectory(configPath))
             return Settings.loadElseDefault(configPath);
