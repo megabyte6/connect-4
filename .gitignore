@@ -21,5 +21,8 @@ out/
 .classpath
 .project
 
+# Nix
+result/
+
 # Project runtime files
 config.json
