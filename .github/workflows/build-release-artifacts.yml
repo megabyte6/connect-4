@@ -62,7 +62,6 @@ jobs:
         run: ${{ matrix.gradle }} jpackage
 
       - name: Upload portable archive
-        if: matrix.os == 'windows'
         uses: actions/upload-artifact@v7
         with:
           name: connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
