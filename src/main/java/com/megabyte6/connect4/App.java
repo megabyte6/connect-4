@@ -1,5 +1,6 @@
 package com.megabyte6.connect4;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.model.Settings;
@@ -30,9 +31,10 @@ public class App extends Application {
     @Getter
     private static Settings settings;
     private static final Path settingsPath = Path.of("config.json");
+    private static final String XDG_APP_DIR = "connect-4";
 
     public static void main(String[] args) {
-        settings = Settings.loadElseDefault(settingsPath);
+        settings = loadSettings();
 
         launch(args);
     }
@@ -76,12 +78,8 @@ public class App extends Application {
     }
 
     public static void writeSettings() {
-        try {
-            settings.save(settingsPath);
-        } catch (Exception e) {
-            System.err.println("WARNING: Settings failed to save.");
-            e.printStackTrace();
-        }
+        if (!saveSettingsToPath(getConfigPath()))
+            saveSettingsToPath(settingsPath);
     }
 
     public static void setWinner(@NonNull Player player) {
@@ -94,6 +92,50 @@ public class App extends Application {
         App.settings = settings;
         player1.setColor(settings.getPlayer1Color());
         player2.setColor(settings.getPlayer2Color());
+    }
+
+    private static Settings loadSettings() {
+        final Path configPath = getConfigPath();
+        if (Files.isReadable(configPath) && !Files.isDirectory(configPath))
+            return Settings.loadElseDefault(configPath);
+
+        return Settings.loadElseDefault(settingsPath);
+    }
+
+    private static Path getConfigPath() {
+        String configDir = System.getProperty("user.home");
+        final String osName = System.getProperty("os.name", "").toLowerCase();
+        if (osName.contains("win")) {
+            String appData = System.getenv("APPDATA");
+            if (appData == null || appData.isBlank())
+                appData = System.getenv("LOCALAPPDATA");
+            if (appData != null && !appData.isBlank())
+                configDir = appData;
+        } else if (osName.contains("mac")) {
+            configDir = Path.of(System.getProperty("user.home"), "Library", "Application Support").toString();
+        } else {
+            String configHome = System.getenv("XDG_CONFIG_HOME");
+            if (configHome == null || configHome.isBlank())
+                configHome = Path.of(System.getProperty("user.home"), ".config").toString();
+            configDir = configHome;
+        }
+
+        return Path.of(configDir, XDG_APP_DIR, "config.json");
+    }
+
+    private static boolean saveSettingsToPath(Path path) {
+        try {
+            final Path parent = path.getParent();
+            if (parent != null)
+                Files.createDirectories(parent);
+
+            settings.save(path);
+            return true;
+        } catch (Exception e) {
+            System.err.println("WARNING: Settings failed to save to " + path + ".");
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
