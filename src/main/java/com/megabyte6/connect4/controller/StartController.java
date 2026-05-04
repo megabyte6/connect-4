@@ -41,7 +41,7 @@ public class StartController implements Controller {
                 "What's Player 1's name?",
                 App.getPlayer1().getName(),
                 (text) -> {
-                    String name = text.isEmpty() || text.isBlank() ? "Player 1" : text;
+                    String name = text.isBlank() ? "Player 1" : text;
                     if (App.getPlayer1().equals(Player.NONE.get())) {
                         App.setPlayer1(new Player(name, Color.YELLOW));
                     } else {
@@ -58,7 +58,7 @@ public class StartController implements Controller {
                 "What's Player 2's name",
                 App.getPlayer2().getName(),
                 (text) -> {
-                    String name = text.isEmpty() || text.isBlank() ? "Player 2" : text;
+                    String name = text.isBlank() ? "Player 2" : text;
                     if (App.getPlayer2().equals(Player.NONE.get())) {
                         App.setPlayer2(new Player(name, Color.RED));
                     } else {

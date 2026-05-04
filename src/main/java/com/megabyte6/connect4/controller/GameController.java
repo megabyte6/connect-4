@@ -285,7 +285,7 @@ public class GameController implements Controller {
     private void placePiece(int column) {
         if (game.isGameOver() || game.isControlsLocked())
             return;
-        if (game.isPaused() && !game.isGameOver()) {
+        if (game.isPaused()) {
             SceneManager.popup("Please return to the current move.");
             return;
         }
@@ -315,7 +315,6 @@ public class GameController implements Controller {
         }
         if (checkForTie()) {
             gameTie();
-            return;
         }
     }
 
@@ -379,9 +378,7 @@ public class GameController implements Controller {
     }
 
     private void resetTimer() {
-        game.resetTimer(
-                () -> updateTimerLabel(),
-                () -> timerTimeout());
+        game.resetTimer(this::updateTimerLabel, this::timerTimeout);
 
         updateTimerLabel();
     }

@@ -3,6 +3,7 @@ package com.megabyte6.connect4.model;
 import java.time.Duration;
 import com.megabyte6.connect4.App;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -10,8 +11,11 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class Timer {
 
+    @Getter
     private long startTime;
-    private long time;
+    @Getter
+    private long remainingTime;
+    @Getter
     private long updateDelay;
     private boolean active = false;
 
@@ -32,7 +36,7 @@ public class Timer {
 
     public Timer(long millis, long updateDelay) {
         startTime = millis;
-        time = startTime;
+        remainingTime = startTime;
         this.updateDelay = updateDelay;
     }
 
@@ -42,19 +46,19 @@ public class Timer {
             return;
         }
 
-        time -= updateDelay;
+        remainingTime -= updateDelay;
         onUpdate.run();
 
-        if (time <= 0) {
+        if (remainingTime <= 0) {
             timerInstanceActive = false;
             stop();
-            time = 0;
+            remainingTime = 0;
 
             onTimeout.run();
             return;
         }
 
-        App.delay(updateDelay, () -> update());
+        App.delay(updateDelay, this::update);
         timerInstanceActive = true;
     }
 
@@ -71,37 +75,29 @@ public class Timer {
         active = true;
 
         if (!timerInstanceActive)
-            App.delay(updateDelay, () -> update());
+            App.delay(updateDelay, this::update);
     }
 
     public void reset() {
         active = false;
-        setTime(startTime);
+        setRemainingTime(startTime);
     }
 
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(long millis) {
+    public void setStartTime(long millis) throws IllegalStateException {
         if (millis < 0)
             throw new IllegalArgumentException("Timer start time cannot be negative.");
         startTime = millis;
     }
 
-    public long getRemainingTime() {
-        return time;
-    }
-
-    public void setTime(long millis) {
+    public void setRemainingTime(long millis) throws IllegalArgumentException {
         if (millis < 0)
             throw new IllegalArgumentException("Timer time cannot be negative");
         setStartTime(millis);
-        time = millis;
+        remainingTime = millis;
     }
 
     public String getFormattedTime() {
-        final Duration duration = Duration.ofMillis(time);
+        final Duration duration = Duration.ofMillis(remainingTime);
         final long seconds = duration.getSeconds();
         final long dd = seconds / 86400;
         final long HH = seconds / 3600;
@@ -111,10 +107,6 @@ public class Timer {
                 + (HH > 0 ? HH + ":" : "")
                 + (mm > 0 ? mm + ":" : "")
                 + (ss > 0 ? ss + "" : "0");
-    }
-
-    public long getUpdateDelay() {
-        return updateDelay;
     }
 
     public void setUpdateDelay(long updateDelay) {

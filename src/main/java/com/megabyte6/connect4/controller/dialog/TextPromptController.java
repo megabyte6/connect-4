@@ -7,13 +7,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import lombok.Setter;
 
 import java.util.function.Consumer;
 
 public class TextPromptController implements Controller {
 
+    @Setter
     private Consumer<String> onOk = (text) -> {
     };
+    @Setter
     private Runnable onCancel = () -> {
     };
 
@@ -53,14 +56,6 @@ public class TextPromptController implements Controller {
         this.selectText = selectText;
 
         textField.selectAll();
-    }
-
-    public void setOnOk(Consumer<String> run) {
-        onOk = run;
-    }
-
-    public void setOnCancel(Runnable run) {
-        onCancel = run;
     }
 
     @FXML

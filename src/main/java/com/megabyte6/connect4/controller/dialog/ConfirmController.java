@@ -4,28 +4,23 @@ import com.megabyte6.connect4.controller.Controller;
 import com.megabyte6.connect4.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import lombok.Setter;
 
 public class ConfirmController implements Controller {
 
     @FXML
     private Label textLabel;
 
+    @Setter
     private Runnable onOk = () -> {
     };
+    @Setter
     private Runnable onCancel = () -> {
     };
 
     @FXML
     private void initialize() {
         textLabel.setText("The developer forgot to set this text :)");
-    }
-
-    public void setOnOk(Runnable run) {
-        onOk = run;
-    }
-
-    public void setOnCancel(Runnable run) {
-        onCancel = run;
     }
 
     public void setText(String text) {
