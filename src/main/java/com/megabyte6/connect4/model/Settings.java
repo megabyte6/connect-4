@@ -89,12 +89,12 @@ public class Settings {
         App.getPlayer2().setColor(player2Color);
     }
 
-    public void save(Path path) throws IOException, StreamWriteException, DatabindException {
+    public void save(Path path) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), this);
     }
 
-    public static Settings load(Path path) throws IOException, StreamReadException, DatabindException {
+    public static Settings load(Path path) throws IOException {
         if (Files.isDirectory(path) || !Files.isReadable(path))
             return new Settings();
 

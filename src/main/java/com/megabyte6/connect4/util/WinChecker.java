@@ -58,12 +58,12 @@ public class WinChecker {
         final List<Position> descendingDiagonal = new LinkedList<>();
         descendingDiagonal.add(startingPos);
 
-        while (queue.size() > 0) {
-            final var queueElement = queue.get(0);
+        while (!queue.isEmpty()) {
+            final var queueElement = queue.getFirst();
             final Direction direction = queueElement.a();
             Position pos = queueElement.b();
 
-            queue.remove(0);
+            queue.removeFirst();
 
             if (rowIsOutOfBounds(pos.row()))
                 continue;

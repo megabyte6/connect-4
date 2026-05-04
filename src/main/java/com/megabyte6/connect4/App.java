@@ -33,7 +33,7 @@ public class App extends Application {
     private static final Path settingsPath = Path.of("config.json");
     private static final String XDG_APP_DIR = "connect-4";
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         settings = loadSettings();
 
         launch(args);
@@ -72,9 +72,9 @@ public class App extends Application {
                 return null;
             }
         };
-        sleep.setOnSucceeded(event -> runAfter.run());
+        sleep.setOnSucceeded(_ -> runAfter.run());
 
-        new Thread(sleep).start();;
+        new Thread(sleep).start();
     }
 
     public static void writeSettings() {

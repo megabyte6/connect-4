@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 public class ColorWrapperDeserializer extends JsonDeserializer<Color> {
 
     @Override
-    public Color deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+    public Color deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         ColorWrapper colorWrapper = p.readValueAs(ColorWrapper.class);
 
         Color color = Color.BLACK;
