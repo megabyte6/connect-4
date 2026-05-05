@@ -43,13 +43,13 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: "25"
+          java-version: '25'
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
       - name: Ensure Gradle wrapper is executable
-        if: runner.os != 'Windows'
+        if: matrix.os != 'windows'
         run: chmod +x ./gradlew
 
       - name: Read app version
@@ -65,13 +65,13 @@ jobs:
         if: matrix.os != 'windows'
         run: |
           cd build/jpackage
-          zip -r "connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip" Connect\ 4*
+          zip -r connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip Connect\ 4*
 
       - name: Zip portable archive (Windows)
         if: matrix.os == 'windows'
         run: |
           cd build\jpackage
-          Compress-Archive -Path "Connect 4" -DestinationPath "connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip"
+          Compress-Archive -Path 'Connect 4' -DestinationPath connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
 
       - name: Upload portable archive
         uses: actions/upload-artifact@v7
@@ -83,8 +83,8 @@ jobs:
       - name: Rename package (Windows)
         if: matrix.os == 'windows'
         run: |
-          Rename-Item build\jpackage\*.msi -NewName "connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.msi"
-          Rename-Item build\jpackage\*.exe -NewName "connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.exe"
+          Rename-Item build\jpackage\*.msi -NewName connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.msi
+          Rename-Item build\jpackage\*.exe -NewName connect-4_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.exe
       - name: Upload package (msi)
         if: matrix.os == 'windows'
         uses: actions/upload-artifact@v7
