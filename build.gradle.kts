@@ -31,6 +31,12 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(25))
     }
+    modularity.inferModulePath.set(true)
+}
+
+// Prevent Gradle from adding its own `--module-path` for the "run" task
+tasks.named<JavaExec>("run") {
+    modularity.inferModulePath.set(false)
 }
 
 // Suppress module warnings such as "module name component should avoid
