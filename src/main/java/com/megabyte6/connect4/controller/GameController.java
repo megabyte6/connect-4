@@ -338,7 +338,7 @@ public class GameController implements Controller {
         double bounceHeight = finalY - initialBounds.getCenterY();
         do {
             // adjust the value here to change the strength of gravity/speed
-            double deltaTime = 10 * Math.sqrt(bounceHeight);
+            double deltaTime = 14 * Math.sqrt(bounceHeight);
             keyFrames.add(new KeyFrame(millis(time), new KeyValue(y, finalY - bounceHeight, GRAVITY_RISE)));
             time += deltaTime;
             keyFrames.add(new KeyFrame(millis(time),new KeyValue(y, finalY, GRAVITY_FALL)));
@@ -346,7 +346,7 @@ public class GameController implements Controller {
 
             // adjust the value here to change the elasticity of the game piece
             bounceHeight *= 0.25;
-        } while (bounceHeight > circle.getRadius());
+        } while (bounceHeight > circle.getRadius() / 2);
 
         final Timeline timeline = new Timeline();
         timeline.getKeyFrames().addAll(keyFrames);
