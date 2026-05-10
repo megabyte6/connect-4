@@ -165,50 +165,50 @@
       "hash": "sha256-AbAd+jZlULQKxXYFSKfXKLYQnRfEUeg4ZNHl4M6GLJQ="
     }
   },
-  "org.openjfx:javafx:25": {
-    "javafx-25.pom": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx/25/javafx-25.pom",
-      "hash": "sha256-55IzCPyt1/LGiwcgQfR9jnNVIj2EZVnutceA3EuivxM="
+  "org.openjfx:javafx:25.0.3": {
+    "javafx-25.0.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx/25.0.3/javafx-25.0.3.pom",
+      "hash": "sha256-ZKtSL/GJcNZACgnd1GJvjJDTXG8qnHzmXrO6LBqfRuk="
     }
   },
-  "org.openjfx:javafx-base:25": {
-    "javafx-base-25-linux.jar": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-base/25/javafx-base-25-linux.jar",
-      "hash": "sha256-MkJZRruLjbBxfPovsuAOIc1InzW5ZitvrKGLYVpKlmk="
+  "org.openjfx:javafx-base:25.0.3": {
+    "javafx-base-25.0.3-linux.jar": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-base/25.0.3/javafx-base-25.0.3-linux.jar",
+      "hash": "sha256-6idRmHl+DPUtwaLOaV3iPtxoIkKC9IRNoID7y29z5sw="
     },
-    "javafx-base-25.pom": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-base/25/javafx-base-25.pom",
-      "hash": "sha256-XFYpcqK673qkB7J9Wc4XOl6lCht7dRgEO3/I92/v5Tc="
+    "javafx-base-25.0.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-base/25.0.3/javafx-base-25.0.3.pom",
+      "hash": "sha256-NNn/M7LOHGagGv60zzYnRZpDUXvUrkOw13k4EwsMc44="
     }
   },
-  "org.openjfx:javafx-controls:25": {
-    "javafx-controls-25-linux.jar": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-controls/25/javafx-controls-25-linux.jar",
-      "hash": "sha256-NzVeTZHGfoj9mBX2AeasW1Xd3p9em5P8j0qgRXfmkdM="
+  "org.openjfx:javafx-controls:25.0.3": {
+    "javafx-controls-25.0.3-linux.jar": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-controls/25.0.3/javafx-controls-25.0.3-linux.jar",
+      "hash": "sha256-m7hGIfiOCzNJuWzgboKyUB1t2+SdYAGMn1c5ATEB/R0="
     },
-    "javafx-controls-25.pom": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-controls/25/javafx-controls-25.pom",
-      "hash": "sha256-74cad6gX7nuDrKWKKe6yv5h2AvRseKHRXEYAgzpq1uM="
+    "javafx-controls-25.0.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-controls/25.0.3/javafx-controls-25.0.3.pom",
+      "hash": "sha256-30Km2OXotpW8xo09UMW09vf9NRQVDzaSapwVxfnodwE="
     }
   },
-  "org.openjfx:javafx-fxml:25": {
-    "javafx-fxml-25-linux.jar": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-fxml/25/javafx-fxml-25-linux.jar",
-      "hash": "sha256-OUrjL2TBIsFPvRDvSb3efbsFVpt6uOf58XDIGSS5Wis="
+  "org.openjfx:javafx-fxml:25.0.3": {
+    "javafx-fxml-25.0.3-linux.jar": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-fxml/25.0.3/javafx-fxml-25.0.3-linux.jar",
+      "hash": "sha256-gGRRI7gpgkyOmJdjqPuXNNeUmUiqGB1qJ/rLx6ZWO4A="
     },
-    "javafx-fxml-25.pom": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-fxml/25/javafx-fxml-25.pom",
-      "hash": "sha256-RopsFNQeVHnwNK4v4FPwyJEpfqJoo8dtf/047zyrsio="
+    "javafx-fxml-25.0.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-fxml/25.0.3/javafx-fxml-25.0.3.pom",
+      "hash": "sha256-l1bc4TK9LZ883RnrWz2TuM3HaX9pT4MPPA26y+hxEII="
     }
   },
-  "org.openjfx:javafx-graphics:25": {
-    "javafx-graphics-25-linux.jar": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-graphics/25/javafx-graphics-25-linux.jar",
-      "hash": "sha256-PlGLwX7lWFWaKsWKX3/UUmFRCNnVCI9lsTvuk5nDcis="
+  "org.openjfx:javafx-graphics:25.0.3": {
+    "javafx-graphics-25.0.3-linux.jar": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-graphics/25.0.3/javafx-graphics-25.0.3-linux.jar",
+      "hash": "sha256-VyNoMC5we2Wx4OwFCCJym5Mai/7EARu0uEyZFwL8nCc="
     },
-    "javafx-graphics-25.pom": {
-      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-graphics/25/javafx-graphics-25.pom",
-      "hash": "sha256-zB2jY7Id7uvymRWBk9qmIB+USw+Setv13DhL62qDOfQ="
+    "javafx-graphics-25.0.3.pom": {
+      "url": "https://repo.maven.apache.org/maven2/org/openjfx/javafx-graphics/25.0.3/javafx-graphics-25.0.3.pom",
+      "hash": "sha256-3FeO0TBQuidCJhs1kq+jcLqhlioCGc1Z/d8Xr6QPuMo="
     }
   },
   "org.openjfx:javafx-plugin:0.1.0": {
