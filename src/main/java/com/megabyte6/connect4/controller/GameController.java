@@ -46,6 +46,7 @@ public class GameController implements Controller {
     private Pane markerContainer;
     private GamePiece marker;
     private final DoubleBinding[] markerBindings = new DoubleBinding[game.getColumnCount()];
+    private Timeline markerMoveTimeline;
 
     @FXML
     private Pane gameBoard;
@@ -172,12 +173,13 @@ public class GameController implements Controller {
 
         // Initialize marker.
         marker = new GamePiece();
-        marker.layoutXProperty().bind(markerBindings[game.getSelectedColumn()]);
+        marker.setLayoutX(markerBindings[game.getSelectedColumn()].get());
         marker.layoutYProperty().bind(markerContainer.heightProperty().divide(2));
         marker.radiusProperty().bind(radiusBinding);
         marker.setFill(game.getCurrentPlayer().getColor());
-
         markerContainer.getChildren().add(marker);
+        markerContainer.widthProperty().addListener(_ ->
+                marker.setLayoutX(markerBindings[game.getSelectedColumn()].get()));
 
         // Initialize labels.
         updatePlayerScoreLabels();
@@ -272,15 +274,38 @@ public class GameController implements Controller {
         moveMarkerToIndex(mouseColumn);
     }
 
-    private void moveMarkerToIndex(int index) {
-        if (index < 0 || index >= markerBindings.length)
-            return;
-        game.setSelectedColumn(index);
-        updateMarkerBindings();
+    private void moveMarkerToIndex(int column) {
+        moveMarkerToIndex(column, null);
     }
 
-    private void updateMarkerBindings() {
-        marker.layoutXProperty().bind(markerBindings[game.getSelectedColumn()]);
+    private void moveMarkerToIndex(int index, Runnable onFinished) {
+        if (index < 0 || index >= markerBindings.length)
+            return;
+
+        game.setSelectedColumn(index);
+
+        final double targetX = markerBindings[index].get();
+        if (Math.abs(marker.getLayoutX() - targetX) > marker.getRadius() * 2) {
+            animateMarkerTo(targetX, onFinished);
+        } else {
+            if (onFinished != null)
+                onFinished.run();
+        }
+    }
+
+    private void animateMarkerTo(double targetX, Runnable onFinished) {
+        if (markerMoveTimeline != null) {
+            markerMoveTimeline.stop();
+            markerMoveTimeline.setOnFinished(null);
+        }
+
+        markerMoveTimeline = new Timeline(
+                new KeyFrame(millis(0), new KeyValue(marker.layoutXProperty(), marker.getLayoutX())),
+                new KeyFrame(millis(100), new KeyValue(marker.layoutXProperty(), targetX, Interpolator.EASE_BOTH))
+        );
+        if (onFinished != null)
+            markerMoveTimeline.setOnFinished(_ -> onFinished.run());
+        markerMoveTimeline.play();
     }
 
     private void placePiece(int column) {
@@ -379,13 +404,13 @@ public class GameController implements Controller {
     private void timerTimeout() {
         if (App.getSettings().isTimerAutoDrop()) {
             int column = game.getSelectedColumn();
-            if (game.findNextFreeRow(column) == -1) {
+            if (game.findNextFreeRow(column) > 0) {
+                placePiece(column);
+            } else {
                 final List<Integer> freeColumns = game.findFreeColumns();
-                column = freeColumns.get((int) (Math.random() * freeColumns.size()));
-                marker.layoutXProperty().bind(markerBindings[column]);
+                final int randomColumn = freeColumns.get((int) (Math.random() * freeColumns.size()));
+                moveMarkerToIndex(randomColumn, () -> placePiece(randomColumn));
             }
-
-            placePiece(column);
         } else {
             swapTurns();
         }
