@@ -11,6 +11,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class SettingsController implements Controller {
@@ -213,10 +214,11 @@ public class SettingsController implements Controller {
     }
 
     @FXML
-    private void handleCloseButton() {
+    private void handleCloseButton(MouseEvent event) {
+        if (event != null)
+            event.consume();
         updateAppSettings();
         App.writeSettings();
-
         SceneManager.removeTopScene();
         runAfter.run();
     }

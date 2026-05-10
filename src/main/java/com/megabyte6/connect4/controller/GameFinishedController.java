@@ -5,6 +5,7 @@ import com.megabyte6.connect4.model.Player;
 import com.megabyte6.connect4.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -38,7 +39,9 @@ public class GameFinishedController implements Controller {
     }
 
     @FXML
-    private void handleClose() {
+    private void handleClose(MouseEvent event) {
+        if (event != null)
+            event.consume();
         SceneManager.removeTopScene();
         runOnClose.run();
     }

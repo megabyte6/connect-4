@@ -11,8 +11,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.connect4.controller.SettingsController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.connect4.controller.SettingsController">
    <children>
       <GridPane layoutX="44.0" layoutY="41.0" vgap="20.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
         <columnConstraints>
@@ -98,6 +99,6 @@
          </children>
       </GridPane>
       <Button mnemonicParsing="false" onAction="#handleResetAllButton" text="Reset All" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
-      <Button cancelButton="true" mnemonicParsing="false" onAction="#handleCloseButton" text="❌" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
+      <SVGPath accessibleRole="BUTTON" accessibleText="Close" content="m 3.019531 2 c -0.265625 0 -0.519531 0.105469 -0.707031 0.292969 c -0.390625 0.390625 -0.390625 1.023437 0 1.414062 l 4.292969 4.292969 l -4.292969 4.292969 c -0.390625 0.390625 -0.390625 1.023437 0 1.414062 s 1.023438 0.390625 1.414062 0 l 4.292969 -4.292969 l 4.292969 4.292969 c 0.390625 0.390625 1.023438 0.390625 1.414062 0 c 0.390626 -0.390625 0.390626 -1.023437 0 -1.414062 l -4.292968 -4.292969 l 4.292968 -4.292969 c 0.390626 -0.390625 0.390626 -1.023437 0 -1.414062 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 s -0.519531 0.105469 -0.707031 0.292969 l -4.292969 4.292969 l -4.292969 -4.292969 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 z m 0 0" onMouseClicked="#handleCloseButton" pickOnBounds="true" scaleX="1.5" scaleY="1.5" styleClass="svg-path" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
    </children>
 </AnchorPane>
