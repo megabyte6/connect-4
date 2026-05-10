@@ -30,7 +30,8 @@ public class App extends Application {
 
     @Getter
     private static Settings settings;
-    private static final Path settingsPath = Path.of("config.json");
+    private static final Path defaultSettingsPath = Path.of("config.json");
+    private static Path settingsPath = defaultSettingsPath;
 
     @Override
     public void init() {
@@ -76,8 +77,9 @@ public class App extends Application {
     }
 
     public static void writeSettings() {
-        if (!saveSettingsToPath(getSystemConfigPath()))
-            saveSettingsToPath(settingsPath);
+        if (!settingsPath.equals(defaultSettingsPath) && saveSettingsToPath(settingsPath))
+            return;
+        saveSettingsToPath(defaultSettingsPath);
     }
 
     public static void setWinner(@NonNull Player player) {
@@ -96,9 +98,11 @@ public class App extends Application {
         if (Files.isReadable(settingsPath) && !Files.isDirectory(settingsPath))
             return Settings.loadElseDefault(settingsPath);
 
-        final Path configPath = getSystemConfigPath();
-        if (Files.isReadable(configPath) && !Files.isDirectory(configPath))
-            return Settings.loadElseDefault(configPath);
+        final Path userConfigPath = getSystemConfigPath();
+        if (Files.isReadable(userConfigPath) && !Files.isDirectory(userConfigPath)) {
+            settingsPath = userConfigPath;
+            return Settings.loadElseDefault(userConfigPath);
+        }
 
         return Settings.loadElseDefault(settingsPath);
     }
