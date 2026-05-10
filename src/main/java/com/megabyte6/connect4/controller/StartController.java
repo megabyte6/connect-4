@@ -7,8 +7,11 @@ import com.megabyte6.connect4.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.function.Consumer;
@@ -23,7 +26,7 @@ public class StartController implements Controller {
         root.setOnKeyPressed(event -> {
             if (event.isShortcutDown()) {
                 if (event.getCode() == KeyCode.S)
-                    handleSettingsButton();
+                    handleSettingsButton(null);
             }
         });
 
@@ -85,13 +88,24 @@ public class StartController implements Controller {
     }
 
     @FXML
-    private void handleSettingsButton() {
+    private void handleSettingsButton(MouseEvent event) {
+        if (event != null)
+            event.consume();
         setDisable(true);
 
         final var loadedData = SceneManager.loadFXMLAndController("Settings");
         final Node root = loadedData.a();
         final SettingsController controller = (SettingsController) loadedData.b();
         controller.setOnClosed(() -> setDisable(false));
+
+        // Configure size relative to the current Stage
+        final Stage stage = SceneManager.getStage();
+        if (root instanceof Region region && stage != null) {
+            region.prefWidthProperty().bind(stage.widthProperty().multiply(0.8));
+            region.prefHeightProperty().bind(stage.heightProperty().multiply(0.8));
+            region.setMinWidth(400);
+            region.setMinHeight(500);
+        }
 
         SceneManager.addScene(root);
     }

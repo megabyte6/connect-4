@@ -16,6 +16,14 @@ AnchorPane {
     -fx-background-color: #3d3d3d;
 }
 
+.svg-path {
+    -fx-fill: #e0e0e0;
+}
+
+.svg-path:hover {
+    -fx-fill: #ffffff;
+}
+
 .text-field {
     -fx-background-color: #3d3d3d;
     -fx-text-fill: white;

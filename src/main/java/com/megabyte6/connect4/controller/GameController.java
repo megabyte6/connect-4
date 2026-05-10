@@ -25,6 +25,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
@@ -195,8 +196,8 @@ public class GameController implements Controller {
         root.setOnKeyPressed(event -> {
             if (event.isShortcutDown())
                 switch (event.getCode()) {
-                    case Q -> handleReturnToStartScreen();
-                    case N -> handleNewGame();
+                    case Q -> handleReturnToStartScreen(null);
+                    case N -> handleNewGame(null);
                     default -> {
                     }
                 }
@@ -429,12 +430,16 @@ public class GameController implements Controller {
     }
 
     @FXML
-    private void handleBackButton() {
+    private void handleBackButton(MouseEvent event) {
+        if (event != null)
+            event.consume();
         game.moveHistoryPointerBack();
     }
 
     @FXML
-    private void handleForwardButton() {
+    private void handleForwardButton(MouseEvent event) {
+        if (event != null)
+            event.consume();
         game.moveHistoryPointerForward();
     }
 
@@ -446,32 +451,32 @@ public class GameController implements Controller {
     }
 
     @FXML
-    private void handleReturnToStartScreen() {
+    private void handleReturnToStartScreen(MouseEvent event) {
+        if (event != null)
+            event.consume();
         setDisable(true);
 
         final var loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
         final Node root = loadedData.a();
         final ConfirmController controller = (ConfirmController) loadedData.b();
-
         controller.setText("Are you sure you want to leave the game?");
         controller.setOnOk(() -> SceneManager.switchScenes("Start", millis(400)));
         controller.setOnCancel(() -> setDisable(false));
-
         SceneManager.addScene(root);
     }
 
     @FXML
-    private void handleNewGame() {
+    private void handleNewGame(MouseEvent event) {
+        if (event != null)
+            event.consume();
         setDisable(true);
 
         final var loadedData = SceneManager.loadFXMLAndController("dialog/Confirm");
         final Node root = loadedData.a();
         final ConfirmController controller = (ConfirmController) loadedData.b();
-
         controller.setText("Are you sure you want to reset the game?");
         controller.setOnOk(() -> SceneManager.switchScenes("Game", millis(400)));
         controller.setOnCancel(() -> setDisable(false));
-
         SceneManager.addScene(root);
     }
 
