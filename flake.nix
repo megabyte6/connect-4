@@ -143,8 +143,6 @@
             prev = "\${JAVA_TOOL_OPTIONS:+ $JAVA_TOOL_OPTIONS}";
             libPath = libPathFor pkgs;
           in ''
-            export PATH="${pkgs.jdk}/bin:$PATH"
-            export JAVA_HOME="${pkgs.jdk}"
             export JAVA_TOOL_OPTIONS="${loadLombok}${prev}"
             export LD_LIBRARY_PATH="${libPath}:''${LD_LIBRARY_PATH:-}"
           '';
