@@ -321,44 +321,32 @@ public class GameController implements Controller {
 
     private void playDroppingAnimation(GamePiece origin, GamePiece destination, Player player) {
         final Bounds initialBounds = origin.localToScene(origin.getBoundsInLocal());
-        final double initialX = initialBounds.getCenterX();
-        final double initialY = initialBounds.getCenterY();
-
         final Bounds finalBounds = destination.localToScene(destination.getBoundsInLocal());
         final double finalY = finalBounds.getCenterY();
 
         final Circle circle = new Circle();
         circle.setFill(origin.getFill());
         circle.setRadius(origin.getRadius());
-        circle.setCenterX(initialX);
+        circle.setCenterX(initialBounds.getCenterX());
         root.getChildren().add(circle);
 
-        final DoubleProperty yPos = circle.centerYProperty();
-
         final List<KeyFrame> keyFrames = new LinkedList<>();
-        final double displacement = finalY - initialY;
-        final double initialFallTime = (displacement - circle.getRadius()) / 2;
+        final Interpolator GRAVITY_RISE = Interpolator.SPLINE(0, 0.55, 0.45, 1);
+        final Interpolator GRAVITY_FALL = Interpolator.SPLINE(0.55, 0, 1, 0.45);
+        final DoubleProperty y = circle.centerYProperty();
         double time = 0;
-        double deltaTime;
-        double bounceHeight = displacement;
-
-        // Change the check case of the for loop to change the number of bounces.
-        for (int i = 0; i < 2; i++) {
-            // Change constant to adjust speed.
-            deltaTime = ((i + 1) * bounceHeight / displacement) * initialFallTime;
-
-            keyFrames.add(new KeyFrame(
-                    millis(time),
-                    new KeyValue(yPos, finalY - bounceHeight, Interpolator.EASE_OUT)));
+        double bounceHeight = finalY - initialBounds.getCenterY();
+        do {
+            // adjust the value here to change the strength of gravity/speed
+            double deltaTime = 14 * Math.sqrt(bounceHeight);
+            keyFrames.add(new KeyFrame(millis(time), new KeyValue(y, finalY - bounceHeight, GRAVITY_RISE)));
             time += deltaTime;
-            keyFrames.add(new KeyFrame(
-                    millis(time),
-                    new KeyValue(yPos, finalY, Interpolator.EASE_IN)));
+            keyFrames.add(new KeyFrame(millis(time),new KeyValue(y, finalY, GRAVITY_FALL)));
             time += deltaTime;
 
-            // Change constant to change the hight of each bounce.
-            bounceHeight = displacement / (i + 8);
-        }
+            // adjust the value here to change the elasticity of the game piece
+            bounceHeight *= 0.25;
+        } while (bounceHeight > circle.getRadius() / 2);
 
         final Timeline timeline = new Timeline();
         timeline.getKeyFrames().addAll(keyFrames);
