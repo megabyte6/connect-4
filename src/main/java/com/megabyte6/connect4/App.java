@@ -31,12 +31,10 @@ public class App extends Application {
     @Getter
     private static Settings settings;
     private static final Path settingsPath = Path.of("config.json");
-    private static final String XDG_APP_DIR = "connect-4";
 
-    static void main(String[] args) {
+    @Override
+    public void init() {
         settings = loadSettings();
-
-        launch(args);
     }
 
     @Override
@@ -78,7 +76,7 @@ public class App extends Application {
     }
 
     public static void writeSettings() {
-        if (!saveSettingsToPath(getConfigPath()))
+        if (!saveSettingsToPath(getSystemConfigPath()))
             saveSettingsToPath(settingsPath);
     }
 
@@ -98,14 +96,14 @@ public class App extends Application {
         if (Files.isReadable(settingsPath) && !Files.isDirectory(settingsPath))
             return Settings.loadElseDefault(settingsPath);
 
-        final Path configPath = getConfigPath();
+        final Path configPath = getSystemConfigPath();
         if (Files.isReadable(configPath) && !Files.isDirectory(configPath))
             return Settings.loadElseDefault(configPath);
 
         return Settings.loadElseDefault(settingsPath);
     }
 
-    private static Path getConfigPath() {
+    private static Path getSystemConfigPath() {
         String configDir = System.getProperty("user.home");
         final String osName = System.getProperty("os.name", "").toLowerCase();
         if (osName.contains("win")) {
@@ -123,7 +121,7 @@ public class App extends Application {
             configDir = configHome;
         }
 
-        return Path.of(configDir, XDG_APP_DIR, "config.json");
+        return Path.of(configDir, "connect-4", "config.json");
     }
 
     private static boolean saveSettingsToPath(Path path) {
