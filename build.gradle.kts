@@ -1,17 +1,11 @@
 plugins {
-    // Apply the java plugin for better toolchain detection support.
     id("java")
-    // Apply the application plugin to add support for building a CLI application in Java.
     id("application")
-    // Apply javafxplugin for JavaFX support.
     id("org.openjfx.javafxplugin") version "0.1.0"
-    // Apply jlink for building the app.
     id("org.beryx.jlink") version "4.0.0"
-    // Apply lombok.
     id("io.freefair.lombok") version "9.5.0"
 }
 
-// Project/version variables from gradle.properties
 val appVersion: String by project
 val javafxVersion: String by project
 val jpackageFormat: String by project
@@ -19,7 +13,6 @@ val jpackageFormat: String by project
 version = appVersion
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
@@ -66,19 +59,17 @@ jlink {
         noConsole = true
     }
 
-    imageZip.set(layout.buildDirectory.file("connect4.zip"))
+    imageZip.set(layout.buildDirectory.file("connect-4.zip"))
 
     jpackage {
         imageName = "Connect 4"
-        installerName = "connect4-installer"
+        installerName = "connect-4"
         vendor = "Brayden Chan"
-
         installerOptions = if (jpackageFormat != "default") {
             listOf("--type", jpackageFormat)
         } else {
             emptyList()
         }
-
         val osName = System.getProperty("os.name").lowercase()
         when {
             "windows" in osName -> {
