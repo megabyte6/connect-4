@@ -6,7 +6,7 @@
 
 ---
 
-## How to run it.
+## Running Connect 4:
 
 ### Option 1: I just wanna play it.
 
