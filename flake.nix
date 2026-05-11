@@ -75,7 +75,7 @@
             libPath = libPathFor pkgs;
           in ''
             tmp="$(mktemp -d)"
-            unzip -q build/connect4.zip -d "$tmp"
+            unzip -q build/connect-4.zip -d "$tmp"
             if [ -d "$tmp/image" ]; then
               mkdir -p "$out"
               cp -a "$tmp/image/." "$out/"
