@@ -8,7 +8,7 @@
 
 ## Running Connect 4:
 
-### Option 1: I just wanna play it.
+### Option 1: I just wanna play it
 
 - Installer instructions:
     - Head to [the latest release](https://github.com/megabyte6/connect-4/releases/latest).
@@ -54,7 +54,7 @@
 
 ---
 
-### Option 2: I don't want to install stuff.
+### Option 2: I don't want to install stuff
 
 Note: This project should be built with JDK 25 of later.
 
